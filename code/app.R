@@ -1,18 +1,12 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
 
-### Next step: Change input factors to match random forest
-
+library(dplyr)
+library(forcats)
+library(randomForest)
 library(shiny)
 
-rfs <- readRDS("../data/rfs141516.rds")
 source("../code/helper-functions.R")
+
+rfs <- readRDS("../data/rfs141516.rds")
 
 # Define UI for miles per gallon app ----
 ui <- pageWithSidebar(
@@ -37,11 +31,11 @@ ui <- pageWithSidebar(
         textInput("Yolk_SD", "Embryo Standard Deviation (mm):"),
         textInput("Yolk_CV", "Embryo Coefficient of Variation:"),
         textInput("Yolk_to_Membrane_Ratio", "Perivitelline Space Index:"),
-        textInput("Larval_Length", "Late Stage Embryo Midline Length (mm)"),
+        textInput("Larval_Length", "Late Stage Embryo Midline Length (mm):"),
         selectInput("Deflated", "Deflated Membrane:", c("", "Yes", "No")),
         selectInput("Pigment", "Pigment Presence:", c("", "Yes", "No")),
-        selectInput("Egg_Stage", "Egg Development Stage", c("", "1", "2", "3", "4", "5", "6", "7", "8", "Broken", "D")),
-        selectInput("Compact_Diffuse", "Compact or Diffuse Embryo", c("", "Compact", "Diffuse")),
+        selectInput("Egg_Stage", "Egg Development Stage:", c("", "1", "2", "3", "4", "5", "6", "7", "8", "Broken", "D")),
+        selectInput("Compact_Diffuse", "Compact or Diffuse Embryo:", c("", "Compact", "Diffuse")),
         selectInput("Sticky_Debris", "Debris on Egg:", c("", "Yes", "No"))
         
     ),
@@ -59,6 +53,7 @@ server <- function(input, output) {
     
     output$selected_var <- renderTable({ 
         
+        # Put the specified input variables in a data frame
         input_vars = data.frame(
             "Month" = input$Month,
             "Julian_Day" = input$Julian_Day,
@@ -79,8 +74,22 @@ server <- function(input, output) {
             "Sticky_Debris" = input$Sticky_Debris
         )
         
-        input_vars
-
+        # Prepare the inputs for the random forest
+        rf_inputs <- 
+            input_vars %>%
+            adjust_variable_types() %>%
+            adjust_factor_levels()
+        
+        # Obtain the random forest predictions and put them in a table
+        data.frame(
+            `Taxonomic Level` = c("Family", "Genus", "Species"),
+            `Random Forest Prediction` = c(
+                as.character(predict(rfs$Family_ACGC, rf_inputs)),
+                as.character(predict(rfs$Genus_ACGC, rf_inputs)),
+                as.character(predict(rfs$Common_Name_ACGC, rf_inputs))
+            )
+        )
+        
     })
     
 }

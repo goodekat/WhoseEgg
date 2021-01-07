@@ -1,4 +1,68 @@
 
+# example_vars <-
+#   data.frame(
+#     Month = 4,
+#     Julian_Day = 120,
+#     Temperature = 16,
+#     Conductivity = 435,
+#     Larval_Length = 0,
+#     Membrane_Ave = 1.393,
+#     Membrane_SD = 0.12109,
+#     Membrane_CV = 0.08692,
+#     Yolk_to_Membrane_Ratio = 0.57986,
+#     Yolk_Ave = 0.80777,
+#     Yolk_SD = 0.1685,
+#     Yolk_CV = 0.2086,
+#     Egg_Stage = 1,
+#     Compact_Diffuse = "Compact",
+#     Pigment = "Yes",
+#     Sticky_Debris = "No",
+#     Deflated = "No"
+#   )
+# 
+# rf_inputs <- 
+#   example_vars %>%
+#   adjust_variable_types() %>%
+#   adjust_factor_levels()
+# 
+# data.frame(predict(rfs$Family_ACGC, rf_inputs))
+
+# Function for specifying the variable types
+adjust_variable_types <- function(df) {
+  df %>%
+    # Integer variables
+    mutate_at(.vars = c("Month", "Julian_Day"), .funs = as.integer) %>%
+    # Numeric variables
+    mutate_at(
+      .vars = c(
+        "Temperature",
+        "Conductivity",
+        "Larval_Length",
+        "Membrane_Ave",
+        "Membrane_SD",
+        "Membrane_CV",
+        "Yolk_to_Membrane_Ratio",
+        "Yolk_Ave",
+        "Yolk_SD",
+        "Yolk_CV",
+        "Egg_Stage"
+      ),
+      .funs = as.numeric
+    ) %>%
+    # Factor variables
+    mutate_at(
+      .vars = c(
+        "Egg_Stage",
+        "Compact_Diffuse",
+        "Pigment",
+        "Sticky_Debris",
+        "Deflated"
+      ),
+      .funs = factor
+    )
+  
+}
+
 # Function for adjusting the factor levels of the data frame with the
 # morphometric variables as needed
 adjust_factor_levels <- function(df) {
@@ -12,6 +76,9 @@ adjust_factor_levels <- function(df) {
   # level that is not in the training data is found)
   
   # Egg stage
+  if ("Broken" %in% levels(df$Egg_Stage)) {
+    df <- df %>% mutate(Egg_Stage = fct_recode(Egg_Stage, "BROKEN" = "Broken"))
+  }
   if (sum(levels(df$Egg_Stage) != es_levels) > 0) {
     if (!(sum(levels(df$Egg_Stage) %in% es_levels))) {
       stop ("Level in Egg_Stage that is not in training data.")
@@ -20,6 +87,12 @@ adjust_factor_levels <- function(df) {
   }
   
   # Compact diffuse
+  if ("Compact" %in% levels(df$Compact_Diffuse)) {
+    df <- df %>% mutate(Compact_Diffuse = fct_recode(Compact_Diffuse, "C" = "Compact"))
+  }
+  if ("Diffuse" %in% levels(df$Compact_Diffuse)) {
+    df <- df %>% mutate(Compact_Diffuse = fct_recode(Compact_Diffuse, "D" = "Diffuse"))
+  }
   if (sum(levels(df$Compact_Diffuse) != cd_levels) > 0) {
     if (!(sum(levels(df$Compact_Diffuse) %in% cd_levels))) {
       stop ("Level in Compact_Diffuse that is not in training data.")
@@ -28,6 +101,12 @@ adjust_factor_levels <- function(df) {
   }
   
   # Pigment
+  if ("Yes" %in% levels(df$Pigment)) {
+    df <- df %>% mutate(Pigment = fct_recode(Pigment, "Y" = "Yes"))
+  }
+  if ("No" %in% levels(df$Pigment)) {
+    df <- df %>% mutate(Pigment = fct_recode(Pigment, "N" = "No"))
+  }
   if (sum(levels(df$Pigment) != yn_levels) > 0) {
     if (!(sum(levels(df$Pigment) %in% yn_levels))) {
       stop ("Level in Pigment that is not in training data.")
@@ -36,6 +115,12 @@ adjust_factor_levels <- function(df) {
   }
   
   # Sticky debris
+  if ("Yes" %in% levels(df$Sticky_Debris)) {
+    df <- df %>% mutate(Sticky_Debris = fct_recode(Sticky_Debris, "Y" = "Yes"))
+  }
+  if ("No" %in% levels(df$Sticky_Debris)) {
+    df <- df %>% mutate(Sticky_Debris = fct_recode(Sticky_Debris, "N" = "No"))
+  }
   if (sum(levels(df$Sticky_Debris) != yn_levels) > 0) {
     if (!(sum(levels(df$Sticky_Debris) %in% yn_levels))) {
       stop ("Level in Sticky_Debris that is not in training data.")
@@ -44,6 +129,12 @@ adjust_factor_levels <- function(df) {
   }
   
   # Deflated
+  if ("Yes" %in% levels(df$Deflated)) {
+    df <- df %>% mutate(Deflated = fct_recode(Deflated, "Y" = "Yes"))
+  }
+  if ("No" %in% levels(df$Deflated)) {
+    df <- df %>% mutate(Deflated = fct_recode(Deflated, "N" = "No"))
+  }
   if (sum(levels(df$Deflated) != yn_levels) > 0) {
     if (!(sum(levels(df$Deflated) %in% yn_levels))) {
       stop ("Level in Deflated that is not in training data.")
