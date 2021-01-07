@@ -11,8 +11,8 @@
 
 library(shiny)
 
-rfs <- readRDS("data/rfs141516.rds")
-source("helper-functions.R")
+rfs <- readRDS("../data/rfs141516.rds")
+source("../code/helper-functions.R")
 
 # Define UI for miles per gallon app ----
 ui <- pageWithSidebar(
