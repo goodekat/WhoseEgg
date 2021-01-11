@@ -1,4 +1,4 @@
-
+# 
 # example_vars <-
 #   data.frame(
 #     Month = 4,
@@ -19,6 +19,9 @@
 #     Sticky_Debris = "No",
 #     Deflated = "No"
 #   )
+
+#write.csv(example_vars, file = "data/example.csv", row.names = FALSE)
+
 # 
 # rf_inputs <- 
 #   example_vars %>%
@@ -26,6 +29,29 @@
 #   adjust_factor_levels()
 # 
 # data.frame(predict(rfs$Family_ACGC, rf_inputs))
+
+# Function for putting input values into a data frame
+inputs_to_df <- function(input) {
+  data.frame(
+    "Month" = input$Month,
+    "Julian_Day" = input$Julian_Day,
+    "Temperature" = input$Temperature,
+    "Conductivity" = input$Conductivity,
+    "Membrane_Ave" = input$Membrane_Ave,
+    "Membrane_SD" = input$Membrane_SD,
+    "Membrane_CV" = input$Membrane_CV,
+    "Yolk_Ave" = input$Yolk_Ave,
+    "Yolk_SD" = input$Yolk_SD,
+    "Yolk_CV" = input$Yolk_CV,
+    "Yolk_to_Membrane_Ratio" = input$Yolk_to_Membrane_Ratio,
+    "Larval_Length" = input$Larval_Length,
+    "Deflated" = input$Deflated,
+    "Pigment" = input$Pigment,
+    "Egg_Stage" = input$Egg_Stage,
+    "Compact_Diffuse" = input$Compact_Diffuse,
+    "Sticky_Debris" = input$Sticky_Debris
+  )
+}
 
 # Function for specifying the variable types
 adjust_variable_types <- function(df) {

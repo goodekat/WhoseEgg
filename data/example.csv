@@ -1,0 +1,2 @@
+"Month","Julian_Day","Temperature","Conductivity","Larval_Length","Membrane_Ave","Membrane_SD","Membrane_CV","Yolk_to_Membrane_Ratio","Yolk_Ave","Yolk_SD","Yolk_CV","Egg_Stage","Compact_Diffuse","Pigment","Sticky_Debris","Deflated"
+4,120,16,435,0,1.393,0.12109,0.08692,0.57986,0.80777,0.1685,0.2086,1,"Compact","Yes","No","No"
