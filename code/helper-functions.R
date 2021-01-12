@@ -173,3 +173,17 @@ adjust_factor_levels <- function(df) {
   
 }
 
+# Function to create bar plot of random forest probabilities
+rf_prob_plot <- function(rf_probs, tax_level) {
+  rf_probs %>%
+    pivot_longer(names_to = "level", values_to = "rf_prob", cols = everything()) %>%
+    ggplot(aes(x = level, y = rf_prob, label = round(rf_prob, 2))) +
+    geom_col() + 
+    geom_text(nudge_y = 0.05) +
+    ylim(0, 1) + 
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      axis.title.x = element_blank()
+    ) + 
+    labs(y = "Random Forest Probability", title = tax_level)
+}
