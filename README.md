@@ -6,9 +6,6 @@ predicting fish species
 
 ## To do list for app
 
-  - Add multiple tabs (see this
-    [example](https://shiny.rstudio.com/gallery/soil-profiles.html))
-  - Think about how best to organize the app
   - Update to work for more than one prediction at a time
   - Add ability to download the resulting predictions
   - Create info page
