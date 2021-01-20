@@ -7,15 +7,18 @@ always_allow_html: yes
 
 Repository to store the code associated with the random forest app for predicting fish species
 
+## Changes made
+
+- Change to date (instead of month and Julian day)
+- Switch to using an Excel spreadsheet
+- Reorder variables in data set and input options by category (group as: month to conductivity, qualitative egg characteristics, numeric egg characteristics)
+- Change to computing membrane CV, yolk CV, and ratio
+
 ## To do list for app
 
 - Improve on input of data:
-  - Switch to using an Excel spreadsheet
-  - Reorder variables in data set and input options by category (group as: month to conductivity, qualitative egg characteristics, numeric egg characteristics)
   - Change ACGC to invasive carp in data
-  - Change to date (instead of month and Julian day)
   - Add download button for prepared data
-  - Change to computing membrane CV, yolk CV, and ratio
   - Add column for egg ID
   - Add checks to app and/or Excel
   - Allow options for multiple qualitative levels

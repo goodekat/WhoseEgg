@@ -34,7 +34,11 @@ ui <- navbarPage(
     selectInput(
       inputId = "input_opt",
       label = "Select a manner in which to provide input values for the random forest",
-      choices = c("Upload csv file", "Manually input values")
+      choices = c("Upload Excel file", "Upload csv file", "Manually input values")
+    ),
+    conditionalPanel(
+      condition = "input.input_opt == 'Upload Excel file'",
+      fileInput("excel", "Select an Excel file to upload")
     ),
     conditionalPanel(
       condition = "input.input_opt == 'Upload csv file'",
@@ -42,23 +46,22 @@ ui <- navbarPage(
     ), 
     conditionalPanel(
       condition = "input.input_opt == 'Manually input values'",
-      textInput("Month", "Month of Collection:"),
-      textInput("Julian_Day", "Julian Day of Collection:"),
+      # Location variables
+      dateInput("Date", "Date of Collection (YYYY-MM-DD):", format = "yyyy-mm-dd"),
       textInput("Temperature", "Water Temperature (C):"),
       textInput("Conductivity", "Conductivity (muS/cm):"),
-      textInput("Membrane_Ave", "Membrane Average (mm):"),
-      textInput("Membrane_SD", "Membrane Standard Deviation (mm):"),
-      textInput("Membrane_CV", "Membrance Coefficient of Variation:"),
-      textInput("Yolk_Ave", "Embryo Average (mm):"),
-      textInput("Yolk_SD", "Embryo Standard Deviation (mm):"),
-      textInput("Yolk_CV", "Embryo Coefficient of Variation:"),
-      textInput("Yolk_to_Membrane_Ratio", "Perivitelline Space Index:"),
-      textInput("Larval_Length", "Late Stage Embryo Midline Length (mm):"),
+      # Categorical egg measurements
       selectInput("Deflated", "Deflated Membrane:", c("", "Yes", "No")),
       selectInput("Pigment", "Pigment Presence:", c("", "Yes", "No")),
-      selectInput("Egg_Stage", "Egg Development Stage:", c("", "1", "2", "3", "4", "5", "6", "7", "8", "Broken", "D")),
+      selectInput("Egg_Stage", "Egg Development Stage:", c("", "1", "2", "3", "4", "5", "6", "7", "8", "Broken", "Diffuse")),
       selectInput("Compact_Diffuse", "Compact or Diffuse Embryo:", c("", "Compact", "Diffuse")),
-      selectInput("Sticky_Debris", "Debris on Egg:", c("", "Yes", "No"))
+      selectInput("Sticky_Debris", "Debris on Egg:", c("", "Yes", "No")),
+      # Quantitative egg measurements
+      textInput("Membrane_Ave", "Membrane Average (mm):"),
+      textInput("Membrane_SD", "Membrane Standard Deviation (mm):"),
+      textInput("Yolk_Ave", "Embryo Average (mm):"),
+      textInput("Yolk_SD", "Embryo Standard Deviation (mm):"),
+      textInput("Larval_Length", "Late Stage Embryo Midline Length (mm):")
     )
   ),
   
@@ -100,7 +103,13 @@ server <- function(input, output) {
   
   # Put the specified input variables in a data frame
   prepareInputs <- reactive({
-    if (input$input_opt == "Upload csv file") {
+    if (input$input_opt == "Upload Excel file") {
+      file <- input$excel
+      ext <- tools::file_ext(file$datapath)
+      req(file)
+      validate(need(ext %in% c("xlsx", "xls"), "Please upload an Excel file"))
+      readxl::read_excel(file$datapath)
+    } else if (input$input_opt == "Upload csv file") {
       file <- input$csv
       ext <- tools::file_ext(file$datapath)
       req(file)
@@ -116,7 +125,9 @@ server <- function(input, output) {
     
     # Prepare the inputs for the random forest
     inputs_clean <-
-      prepareInputs() %>%
+      #prepareInputs() %>%
+      example_vars %>%
+      compute_variables() %>%
       adjust_variable_types() %>%
       adjust_factor_levels()
     

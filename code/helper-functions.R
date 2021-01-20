@@ -1,24 +1,28 @@
-# 
-# example_vars <-
-#   data.frame(
-#     Month = 4,
-#     Julian_Day = 120,
-#     Temperature = 16,
-#     Conductivity = 435,
-#     Larval_Length = 0,
-#     Membrane_Ave = 1.393,
-#     Membrane_SD = 0.12109,
-#     Membrane_CV = 0.08692,
-#     Yolk_to_Membrane_Ratio = 0.57986,
-#     Yolk_Ave = 0.80777,
-#     Yolk_SD = 0.1685,
-#     Yolk_CV = 0.2086,
-#     Egg_Stage = 1,
-#     Compact_Diffuse = "Compact",
-#     Pigment = "Yes",
-#     Sticky_Debris = "No",
-#     Deflated = "No"
-#   )
+
+example_vars <-
+  data.frame(
+    #Month = 4,
+    #Julian_Day = 120,
+    Date = "2020-01-12",
+    Temperature = 16,
+    Conductivity = 435,
+    
+    Egg_Stage = 1,
+    Compact_Diffuse = "Compact",
+    Pigment = "Yes",
+    Sticky_Debris = "No",
+    Deflated = "No",
+    
+    Larval_Length = 0,
+    Membrane_Ave = 1.393,
+    Membrane_SD = 0.12109,
+    #Membrane_CV = 0.08692,
+    #Yolk_to_Membrane_Ratio = 0.57986,
+    Yolk_Ave = 0.80777,
+    Yolk_SD = 0.1685#,
+    #Yolk_CV = 0.2086
+    
+  )
 
 #write.csv(example_vars, file = "data/example.csv", row.names = FALSE)
 
@@ -33,24 +37,36 @@
 # Function for putting input values into a data frame
 inputs_to_df <- function(input) {
   data.frame(
-    "Month" = input$Month,
-    "Julian_Day" = input$Julian_Day,
+    # Location variables
+    "Date" = input$Date,
     "Temperature" = input$Temperature,
     "Conductivity" = input$Conductivity,
-    "Membrane_Ave" = input$Membrane_Ave,
-    "Membrane_SD" = input$Membrane_SD,
-    "Membrane_CV" = input$Membrane_CV,
-    "Yolk_Ave" = input$Yolk_Ave,
-    "Yolk_SD" = input$Yolk_SD,
-    "Yolk_CV" = input$Yolk_CV,
-    "Yolk_to_Membrane_Ratio" = input$Yolk_to_Membrane_Ratio,
-    "Larval_Length" = input$Larval_Length,
+    # Categorical egg measurements
     "Deflated" = input$Deflated,
     "Pigment" = input$Pigment,
     "Egg_Stage" = input$Egg_Stage,
     "Compact_Diffuse" = input$Compact_Diffuse,
-    "Sticky_Debris" = input$Sticky_Debris
+    "Sticky_Debris" = input$Sticky_Debris,
+    # Quantitative egg measurements
+    "Membrane_Ave" = input$Membrane_Ave,
+    "Membrane_SD" = input$Membrane_SD,
+    "Yolk_Ave" = input$Yolk_Ave,
+    "Yolk_SD" = input$Yolk_SD,
+    "Larval_Length" = input$Larval_Length
   )
+}
+
+# Function for computing variables based on given input values
+compute_variables <- function(df) {
+  df %>% 
+    # Compute month and Julian day
+    mutate(Date = lubridate::ymd(Date)) %>%
+    mutate(Month = lubridate::month(Date), 
+           Julian_Day = lubridate::yday(Date)) %>%
+    select(-Date) %>%
+    mutate(Membrane_CV = Membrane_SD / Membrane_Ave,
+           Yolk_CV = Yolk_SD / Yolk_Ave, 
+           Yolk_to_Membrane_Ratio = Yolk_Ave / Membrane_Ave)
 }
 
 # Function for specifying the variable types
@@ -104,6 +120,9 @@ adjust_factor_levels <- function(df) {
   # Egg stage
   if ("Broken" %in% levels(df$Egg_Stage)) {
     df <- df %>% mutate(Egg_Stage = fct_recode(Egg_Stage, "BROKEN" = "Broken"))
+  }
+  if ("Diffuse" %in% levels(df$Egg_Stage)) {
+    df <- df %>% mutate(Egg_Stage = fct_recode(Egg_Stage, "D" = "Diffuse"))
   }
   if (sum(levels(df$Egg_Stage) != es_levels) > 0) {
     if (!(sum(levels(df$Egg_Stage) %in% es_levels))) {
