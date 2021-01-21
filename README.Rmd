@@ -27,7 +27,7 @@ Repository to store the code associated with the random forest app for predictin
   - Look into research on data input in apps
   - Add option for input of individual membrane and yolk measurements
   - Could I create an option to input one predictor at a time with arrow buttons
-
+- Order the levels in the plot by highest to lowest probabilities
 - Update to work for more than one prediction at a time 
 - Add ability to download the resulting predictions
 - Create info page

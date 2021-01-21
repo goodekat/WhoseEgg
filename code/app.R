@@ -23,77 +23,117 @@ ui <- navbarPage(
   tabPanel(
     title = "Overview",
     fluidPage(
-      h2("Add information about the app:"), 
-      p("information on the random forest model, how to use the app, previous papers, etc.")
+      h2("Predicting Fish Taxonomy Based on Egg Characteristics"), 
+      p("Add:"),
+      p("- information on the random forest model"), 
+      p("- how to use the app"),
+      p("- previous papers"), 
+      p("- picture(s) of fish or logo"),
+      p("- etc.")
     )
   ),
   
   tabPanel(
     title = "Input Data",
-    h2("Egg Characteristics"),
-    selectInput(
-      inputId = "input_opt",
-      label = "Select a manner in which to provide input values for the random forest",
-      choices = c("Upload Excel file", "Upload csv file", "Manually input values")
+    fluidRow(
+      column(
+        h2("Egg Characteristics"),
+        p("The random forest predictions of the taxonomy of the fish eggs are based on various egg characteristics. This page provides various ways to provide these egg characteristics. Either a spreadsheet (.xls, .xlsx, or .csv) file may be provided, or values may be entered manually."),
+        h3("Data Input Option"),
+        selectInput(
+          inputId = "input_opt",
+          label = "Select a manner in which to provide input values for the random forest",
+          choices = c(" ", "Upload Excel file", "Upload csv file", "Manually input values")
+        ),
+        width = 4
+      ),
+      column(
+        conditionalPanel(
+          h3("Excel Spreadsheet"),
+          condition = "input.input_opt == 'Upload Excel file'",
+          fileInput("excel", "Select an Excel file to upload")
+        ),
+        conditionalPanel(
+          condition = "input.input_opt == 'Upload csv file'",
+          fileInput("csv", "Select a csv file to upload")
+        ),
+        conditionalPanel(
+          condition = "input.input_opt == 'Manually input values'",
+          tabsetPanel(
+            type = "tabs",
+            tabPanel(
+              "Egg Identification", 
+              textInput("Egg_ID", "Egg ID:")
+            ),
+            tabPanel(
+              "Environment Variables",
+              dateInput("Date", "Date of Collection (YYYY-MM-DD):", format = "yyyy-mm-dd"),
+              textInput("Temperature", "Water Temperature (C):"),
+              textInput("Conductivity", "Conductivity (muS/cm):")
+            ),
+            tabPanel(
+              "Categorical Egg Measurements",
+              column(
+                selectInput("Deflated", "Deflated Membrane:", c("", "Yes", "No")),
+                selectInput("Pigment", "Pigment Presence:", c("", "Yes", "No")),
+                selectInput("Egg_Stage", "Egg Development Stage:", c("", "1", "2", "3", "4", "5", "6", "7", "8", "Broken", "Diffuse")),
+                width = 6
+              ),
+              column(
+                selectInput("Compact_Diffuse", "Compact or Diffuse Embryo:", c("", "Compact", "Diffuse")),
+                selectInput("Sticky_Debris", "Debris on Egg:", c("", "Yes", "No")),
+                width = 6
+              )
+            ),
+            tabPanel(
+              "Quantitative Egg Measurements",
+              column(
+                textInput("Membrane_Ave", "Membrane Average (mm):"),
+                textInput("Yolk_Ave", "Embryo Average (mm):"),
+                textInput("Larval_Length", "Late Stage Embryo Midline Length (mm):"),
+                width = 6
+              ),
+              column(
+                textInput("Membrane_SD", "Membrane Standard Deviation (mm):"), 
+                textInput("Yolk_SD", "Embryo Standard Deviation (mm):"),
+                width = 6
+              )
+            )
+          )
+        ),
+        width = 8
+      )
     ),
     conditionalPanel(
-      condition = "input.input_opt == 'Upload Excel file'",
-      fileInput("excel", "Select an Excel file to upload")
-    ),
-    conditionalPanel(
-      condition = "input.input_opt == 'Upload csv file'",
-      fileInput("csv", "Select a csv file to upload")
-    ), 
-    conditionalPanel(
-      condition = "input.input_opt == 'Manually input values'",
-      # Location variables
-      dateInput("Date", "Date of Collection (YYYY-MM-DD):", format = "yyyy-mm-dd"),
-      textInput("Temperature", "Water Temperature (C):"),
-      textInput("Conductivity", "Conductivity (muS/cm):"),
-      # Categorical egg measurements
-      selectInput("Deflated", "Deflated Membrane:", c("", "Yes", "No")),
-      selectInput("Pigment", "Pigment Presence:", c("", "Yes", "No")),
-      selectInput("Egg_Stage", "Egg Development Stage:", c("", "1", "2", "3", "4", "5", "6", "7", "8", "Broken", "Diffuse")),
-      selectInput("Compact_Diffuse", "Compact or Diffuse Embryo:", c("", "Compact", "Diffuse")),
-      selectInput("Sticky_Debris", "Debris on Egg:", c("", "Yes", "No")),
-      # Quantitative egg measurements
-      textInput("Membrane_Ave", "Membrane Average (mm):"),
-      textInput("Membrane_SD", "Membrane Standard Deviation (mm):"),
-      textInput("Yolk_Ave", "Embryo Average (mm):"),
-      textInput("Yolk_SD", "Embryo Standard Deviation (mm):"),
-      textInput("Larval_Length", "Late Stage Embryo Midline Length (mm):")
+      condition = "input.input_opt != ' '",
+      h3("Predictor variables inputs"),
+      DT::dataTableOutput("input_table")
     )
   ),
   
   tabPanel(
-    title = "Random Forest",
+    title = "Predictions",
     column(
       width = 5,
-      h2("Random forest prediction"),
-      tableOutput("pred_table"),
-      h2("Predictor variables inputs"),
-      tableOutput("input_table")
+      h2("Random Forest Predictions"),
+      tableOutput("pred_table")
     ),
     column(
       width = 7,
-      h2("Random forest probabilities for all taxonomic levels"),
+      h3("Random forest probabilities for all taxonomic levels"),
       plotOutput("prob_plot")
     )
   ),
   
   tabPanel(
     title = "Help",
+    h2("Help Page"),
     p("Place to put helpful information including a glossary for egg characteristics")
   ),
   
   tabPanel(
     title = "Questions",
-    p("Name for app?"),
-    p("How to order the variables?"),
-    p("Random forests with reduced variables? (currently full)"),
-    p("What does the egg stage of 'D' stand for?"),
-    p("Should we change the level of ACGC to Invasive Carp?"),
-    p("Should we order the levels in the plot by highest to lowest probabilities?")
+    p("Random forests with reduced variables? (currently full)")
   )
   
 )
@@ -144,13 +184,16 @@ server <- function(input, output) {
   })
   
   # Create a table with the input values
-  output$input_table <- renderTable({
+  output$input_table <- DT::renderDataTable({
     # Adjust format of df for viewing
-    prepareInputs() %>%
-      mutate_all(.funs = as.character) %>%
-      pivot_longer(names_to = "Variable",
-                   values_to = "Input Value",
-                   cols = everything())
+    datatable(prepareInputs() %>%
+                    mutate_all(.funs = as.character), #%>%
+                  # pivot_longer(names_to = "Variable",
+                  #              values_to = "Input Value",
+                  #              cols = everything()), 
+              options = list(scrollX=TRUE, scrollCollapse=TRUE, 
+                             autoWidth = TRUE,
+                             columnDefs = list(list(width = '1px', targets = "_all"))))
   })
   
   # Create a table with random forest prediction results
