@@ -1,0 +1,2 @@
+﻿Egg_ID,Dataset,Site,River,Year,Date,Month,Julian_Day,Temperature,Conductivity,Larval_Length,Membrane_Ave,Membrane_SD,Membrane_CV,Yolk_to_Membrane_Ratio,Yolk_Ave,Yolk_SD,Yolk_CV,Egg_Stage,Compact_Diffuse,Pigment,Sticky_Debris,Deflated,Genus,Common_Name,Family_ACGC,Genus_ACGC,Common_Name_ACGC,
+1,original,UPI,UMR,2014,2014-07-27,7,209,24.7,522,0,1.42716625,0.043584913,0.030539479,1,1.42716625,0.043584913,0.030539479,D,D,Y,N,N,Aplodinotus,Freshwater Drum,Sciaenidae,Aplodinotus,Freshwater Drum,

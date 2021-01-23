@@ -1,43 +1,54 @@
-
-example_vars <-
-  data.frame(
-    #Month = 4,
-    #Julian_Day = 120,
-    Date = "2020-01-12",
-    Temperature = 16,
-    Conductivity = 435,
-    
-    Egg_Stage = 1,
-    Compact_Diffuse = "Compact",
-    Pigment = "Yes",
-    Sticky_Debris = "No",
-    Deflated = "No",
-    
-    Larval_Length = 0,
-    Membrane_Ave = 1.393,
-    Membrane_SD = 0.12109,
-    #Membrane_CV = 0.08692,
-    #Yolk_to_Membrane_Ratio = 0.57986,
-    Yolk_Ave = 0.80777,
-    Yolk_SD = 0.1685#,
-    #Yolk_CV = 0.2086
-    
-  )
-
-#write.csv(example_vars, file = "data/example.csv", row.names = FALSE)
-
 # 
-# rf_inputs <- 
-#   example_vars %>%
+# example_vars <-
+#   data.frame(
+#     Egg_ID = 1,
+#     #Month = 4,
+#     #Julian_Day = 120,
+#     Date = "2020-01-12",
+#     Temperature = 16,
+#     Conductivity = 435,
+#     Egg_Stage = 1,
+#     Compact_Diffuse = "Compact",
+#     Pigment = "Yes",
+#     Sticky_Debris = "No",
+#     Deflated = "No",
+#     Larval_Length = 0,
+#     Membrane_Ave = 1.393,
+#     Membrane_SD = 0.12109,
+#     #Membrane_CV = 0.08692,
+#     #Yolk_to_Membrane_Ratio = 0.57986,
+#     Yolk_Ave = 0.80777,
+#     Yolk_SD = 0.1685#,
+#     #Yolk_CV = 0.2086
+#   )
+# # 
+# example_vars <- readxl::read_excel("data/example_data/one_obs_min_vars.xlsx")
+# 
+# example_vars <- read.csv("data/example_data/one_obs_min_vars.csv")
+# check_for_vars(example_vars)
+# get_missing_vars(example_vars)
+# 
+# example_vars <- read.csv("data/example_data/one_obs_missing_vars.csv")
+# check_for_vars(example_vars)
+# get_missing_vars(example_vars)
+# 
+# rf_inputs <-
+#   ex_min %>%
+#   compute_variables() %>%
 #   adjust_variable_types() %>%
 #   adjust_factor_levels()
 # 
-# data.frame(predict(rfs$Family_ACGC, rf_inputs))
+# rfs <- readRDS("data/rfs141516.rds")
+# 
+# predict(rfs$Family_ACGC, rf_inputs)
+# predict(rfs$Genus_ACGC, rf_inputs)
+# predict(rfs$Common_Name_ACGC, rf_inputs)
 
 # Function for putting input values into a data frame
 inputs_to_df <- function(input) {
   data.frame(
     # Location variables
+    "Egg_ID" = input$Egg_ID,
     "Date" = input$Date,
     "Temperature" = input$Temperature,
     "Conductivity" = input$Conductivity,
@@ -86,8 +97,7 @@ adjust_variable_types <- function(df) {
         "Yolk_to_Membrane_Ratio",
         "Yolk_Ave",
         "Yolk_SD",
-        "Yolk_CV",
-        "Egg_Stage"
+        "Yolk_CV"
       ),
       .funs = as.numeric
     ) %>%
@@ -102,7 +112,6 @@ adjust_variable_types <- function(df) {
       ),
       .funs = factor
     )
-  
 }
 
 # Function for adjusting the factor levels of the data frame with the
@@ -205,4 +214,71 @@ rf_prob_plot <- function(rf_probs, tax_level) {
       axis.title.x = element_blank()
     ) + 
     labs(y = "Random Forest Probability", title = tax_level)
+}
+
+# Function to sort variables
+sort_vars <- function(df) {
+  df %>%
+    select(
+      Egg_ID,
+      Month, 
+      Julian_Day,
+      Temperature,
+      Conductivity,
+      Deflated,
+      Pigment,
+      Egg_Stage,
+      Compact_Diffuse,
+      Sticky_Debris,
+      Membrane_Ave,
+      Membrane_SD,
+      Membrane_CV,
+      Yolk_Ave,
+      Yolk_SD,
+      Yolk_CV,
+      Yolk_to_Membrane_Ratio,
+      Larval_Length
+    )
+}
+
+check_for_vars <- function(df) {
+  necessary_vars <- 
+    c(
+      "Egg_ID",
+      "Date",
+      "Temperature",
+      "Conductivity",
+      "Deflated",
+      "Pigment",
+      "Egg_Stage",
+      "Compact_Diffuse",
+      "Sticky_Debris",
+      "Membrane_Ave",
+      "Membrane_SD",
+      "Yolk_Ave",
+      "Yolk_SD",
+      "Larval_Length"
+    )
+  return(sum(necessary_vars %in% names(df)) == 14)
+}
+
+get_missing_vars <- function(df) {
+  necessary_vars <- 
+    c(
+      "Egg_ID",
+      "Date",
+      "Temperature",
+      "Conductivity",
+      "Deflated",
+      "Pigment",
+      "Egg_Stage",
+      "Compact_Diffuse",
+      "Sticky_Debris",
+      "Membrane_Ave",
+      "Membrane_SD",
+      "Yolk_Ave",
+      "Yolk_SD",
+      "Larval_Length"
+    )
+  return(necessary_vars[!(necessary_vars %in% names(df))])
 }

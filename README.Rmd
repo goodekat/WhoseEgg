@@ -13,19 +13,19 @@ Repository to store the code associated with the random forest app for predictin
 - Switch to using an Excel spreadsheet
 - Reorder variables in data set and input options by category (group as: month to conductivity, qualitative egg characteristics, numeric egg characteristics)
 - Change to computing membrane CV, yolk CV, and ratio
+- Add column for egg ID
+- Decided not to do: Add option for input of individual membrane and yolk measurements
 
 ## To do list for app
 
 - Improve on input of data:
   - Change ACGC to invasive carp in data
   - Add download button for prepared data
-  - Add column for egg ID
   - Add checks to app and/or Excel
   - Allow options for multiple qualitative levels
   - Make a few versions of the app
   - Option to leave the rows blank where we fill them in
   - Look into research on data input in apps
-  - Add option for input of individual membrane and yolk measurements
   - Could I create an option to input one predictor at a time with arrow buttons
 - Order the levels in the plot by highest to lowest probabilities
 - Update to work for more than one prediction at a time 

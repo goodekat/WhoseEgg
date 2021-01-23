@@ -1,4 +1,8 @@
 
+##### ------------------------------------------------------------------------
+##### SET UP
+##### ------------------------------------------------------------------------
+
 # Load packages
 library(dplyr)
 library(DT)
@@ -10,107 +14,217 @@ library(shinythemes)
 library(stringr)
 library(tidyr)
 
+# Source the helper functions used by the app
 source("../code/helper-functions.R")
 
+# Load the random forest models (trained on the years of 2014-2016)
 rfs <- readRDS("../data/rfs141516.rds")
 
-# Define UI for miles per gallon app ----
+questions <- c("What is your name?","Can you code in R?","Do you find coding fun?","Last Question:How old are you?")
+
+##### ------------------------------------------------------------------------
+##### APP UI
+##### ------------------------------------------------------------------------
+
 ui <- navbarPage(
   
+  # Format information
   title = "WhoseEgg",
   theme = shinytheme("flatly"),
   
-  tabPanel(
-    title = "Overview",
-    fluidPage(
-      h2("Predicting Fish Taxonomy Based on Egg Characteristics"), 
-      p("Add:"),
-      p("- information on the random forest model"), 
-      p("- how to use the app"),
-      p("- previous papers"), 
-      p("- picture(s) of fish or logo"),
-      p("- etc.")
-    )
-  ),
+  # HOMEPAGE
+  tabPanel(title = "Overview",
+           fluidPage(
+             h2("WhoseEgg Homepage"),
+             p(" "),
+             p("Welcome to the the WhoseEgg app!"),
+             p(" "),
+             p(" "),
+             p("Add:"),
+             p("- information on the random forest model"),
+             p("- how to use the app"),
+             p("- previous papers"),
+             p("- picture(s) of fish or logo"),
+             p("- etc.")
+           )),
   
+  # INPUT EGG CHARACTERISTICS
   tabPanel(
+    
     title = "Input Data",
-    fluidRow(
-      column(
-        h2("Egg Characteristics"),
-        p("The random forest predictions of the taxonomy of the fish eggs are based on various egg characteristics. This page provides various ways to provide these egg characteristics. Either a spreadsheet (.xls, .xlsx, or .csv) file may be provided, or values may be entered manually."),
-        h3("Data Input Option"),
-        selectInput(
-          inputId = "input_opt",
-          label = "Select a manner in which to provide input values for the random forest",
-          choices = c(" ", "Upload Excel file", "Upload csv file", "Manually input values")
-        ),
-        width = 4
+    h2("Input of Egg Characteristics"),
+    
+    ## INSTRUCTIONS
+    sidebarPanel(
+      h3("Instructions"),
+      p("XXX Edit this text..."),
+      p(" "),
+      p(
+        "The random forest predictions of the taxonomy of the fish eggs are
+          based on egg characteristics. This page provides two ways to input 
+          the egg characteristics needed to obtain random forest predictions. 
+          The values may be provided via a spreadsheet (.xls, .xlsx, or .csv) 
+          or entered manually."
       ),
-      column(
-        conditionalPanel(
-          h3("Excel Spreadsheet"),
-          condition = "input.input_opt == 'Upload Excel file'",
-          fileInput("excel", "Select an Excel file to upload")
-        ),
-        conditionalPanel(
-          condition = "input.input_opt == 'Upload csv file'",
-          fileInput("csv", "Select a csv file to upload")
-        ),
-        conditionalPanel(
-          condition = "input.input_opt == 'Manually input values'",
-          tabsetPanel(
-            type = "tabs",
-            tabPanel(
-              "Egg Identification", 
-              textInput("Egg_ID", "Egg ID:")
-            ),
-            tabPanel(
-              "Environment Variables",
+      p(" "),
+      p(
+        "Note that some of the variables used by the random forest a functions
+          of the variables required to be provided on this page and are thus not
+          required to be provided."
+      ),
+      p(" "),
+      p(
+        "See the help page for more information on the egg characteristics 
+          used by the random forest and additional details about correctly 
+          inputting the values."
+      ),
+      h3("Data Input Option"),
+      selectInput(
+        inputId = "input_opt",
+        label = "Select a manner in which to provide input values for the random forest",
+        choices = c("Upload spreadsheet", "Manually input values (V1)", "Manually input values (V2)")
+      ),
+      p("Note: The manual option is best suited for working with a small number of eggs."),
+      width = 3
+    ),
+    
+    ## INPUTS 
+    mainPanel(
+      
+      #### SPREADSHEET INPUTS
+      conditionalPanel(
+        condition = "input.input_opt == 'Upload spreadsheet'",
+        h3("Spreadsheet Input"),
+        p("XXX Add some explanatory text."),
+        fileInput("spreadsheet", "Select a file to upload (.csv, .xlsx, .xls)")
+      ),
+      
+      #### MANUAL INPUTS (Version 1)
+      conditionalPanel(
+        condition = "input.input_opt == 'Manually input values (V1)'",
+        fluidPage(
+          fluidRow(
+            h3("Manual Input of Values"),
+            p("All variables must be specified in order to obtain a random forest prediction. XXX Add more text.")
+          ),
+          fluidRow(
+            h4("Egg Identification"),
+            column(textInput("Egg_ID", "Egg ID (any format acceptable):"), width = 4)
+          ),
+          fluidRow(
+            h4("Environmental Information"),
+            column(
               dateInput("Date", "Date of Collection (YYYY-MM-DD):", format = "yyyy-mm-dd"),
-              textInput("Temperature", "Water Temperature (C):"),
-              textInput("Conductivity", "Conductivity (muS/cm):")
+              width = 4
             ),
-            tabPanel(
-              "Categorical Egg Measurements",
-              column(
-                selectInput("Deflated", "Deflated Membrane:", c("", "Yes", "No")),
-                selectInput("Pigment", "Pigment Presence:", c("", "Yes", "No")),
-                selectInput("Egg_Stage", "Egg Development Stage:", c("", "1", "2", "3", "4", "5", "6", "7", "8", "Broken", "Diffuse")),
-                width = 6
+            column(textInput("Temperature", "Water Temperature (C):"),
+                   width = 4),
+            column(
+              textInput("Conductivity", "Conductivity (\u03BCS/cm):"),
+              width = 4
+            )
+          ),
+          fluidRow(
+            h4("Categorical Egg Measurements"),
+            column(
+              selectInput("Deflated", "Deflated Membrane:", c("", "Yes", "No")),
+              selectInput(
+                "Compact_Diffuse",
+                "Compact or Diffuse Embryo:",
+                c("", "Compact", "Diffuse")
               ),
-              column(
-                selectInput("Compact_Diffuse", "Compact or Diffuse Embryo:", c("", "Compact", "Diffuse")),
-                selectInput("Sticky_Debris", "Debris on Egg:", c("", "Yes", "No")),
-                width = 6
-              )
+              width = 4
             ),
-            tabPanel(
-              "Quantitative Egg Measurements",
-              column(
-                textInput("Membrane_Ave", "Membrane Average (mm):"),
-                textInput("Yolk_Ave", "Embryo Average (mm):"),
-                textInput("Larval_Length", "Late Stage Embryo Midline Length (mm):"),
-                width = 6
-              ),
-              column(
-                textInput("Membrane_SD", "Membrane Standard Deviation (mm):"), 
-                textInput("Yolk_SD", "Embryo Standard Deviation (mm):"),
-                width = 6
-              )
+            column(
+              selectInput("Pigment", "Pigment Presence:", c("", "Yes", "No")),
+              selectInput("Sticky_Debris", "Debris on Egg:", c("", "Yes", "No")),
+              width = 4
+            ),
+            column(selectInput(
+              "Egg_Stage",
+              "Egg Development Stage:",
+              c("", "1", "2", "3", "4", "5", "6", "7", "8", "Broken", "Diffuse")
+            ),
+            width = 4)
+          ),
+          fluidRow(
+            h4("Quantitative Egg Measurements"),
+            column(
+              textInput("Membrane_Ave", "Membrane Average (mm):"),
+              textInput("Membrane_SD", "Membrane Standard Deviation (mm):"),
+              width = 4
+            ),
+            column(
+              textInput("Yolk_Ave", "Embryo Average (mm):"),
+              textInput("Yolk_SD", "Embryo Standard Deviation (mm):"),
+              width = 4
+            ),
+            column(
+              textInput("Larval_Length", "Late Stage Embryo Midline Length (mm):"),
+              width = 4
             )
           )
-        ),
-        width = 8
+        )
+      ),
+      
+      #### MANUAL INPUTS (Version 2)
+      conditionalPanel(
+        condition = "input.input_opt == 'Manually input values (V2)'",
+        fluidPage(
+          fluidRow(
+            h3("Manual Input of Values"),
+            p("All variables must be specified in order to obtain a random forest prediction. XXX Add more text.")
+          ),
+          fluidRow(
+            column(
+              textInput("Egg_ID", "Egg ID (any format acceptable):"), 
+              dateInput("Date", "Date of Collection (YYYY-MM-DD):", format = "yyyy-mm-dd"),
+              textInput("Conductivity", "Conductivity (\u03BCS/cm):"),
+              textInput("Temperature", "Water Temperature (C):"),
+              width = 4
+              ),
+            column(
+              selectInput("Pigment", "Pigment Presence:", c("", "Yes", "No")),
+              selectInput("Deflated", "Deflated Membrane:", c("", "Yes", "No")),
+              selectInput("Sticky_Debris", "Debris on Egg:", c("", "Yes", "No")),
+              selectInput("Compact_Diffuse", "Compact or Diffuse Embryo:", c("", "Compact", "Diffuse")),
+              selectInput("Egg_Stage", "Egg Development Stage:", c("", "1", "2", "3", "4", "5", "6", "7", "8", "Broken", "Diffuse")),
+              width = 4
+            ),
+            column(
+              textInput("Membrane_Ave", "Membrane Average (mm):"),
+              textInput("Membrane_SD", "Membrane Standard Deviation (mm):"),
+              textInput("Yolk_Ave", "Embryo Average (mm):"),
+              textInput("Yolk_SD", "Embryo Standard Deviation (mm):"),
+              textInput("Larval_Length", "Late Stage Embryo Midline Length (mm):"),
+              width = 4
+            )
+          )
+        )
+      ),
+      
+    # TABLES OF INPUTS
+    h3("Input Values"),
+    p("XXX Add text explaining what is contained in the two data tables."),
+    tabsetPanel(
+      type = "tabs",
+
+                # Tab for input data
+                tabPanel(
+                  "Input Data",
+                  div(DT::dataTableOutput("input_table"), style = "font-size: 100%; width: 100%")
+                ),
+
+                # Tab for processed data
+                tabPanel(
+                  "Processed Data for Random Forest",
+                  div(DT::dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
+                )
       )
-    ),
-    conditionalPanel(
-      condition = "input.input_opt != ' '",
-      h3("Predictor variables inputs"),
-      DT::dataTableOutput("input_table")
     )
   ),
   
+  # RANDOM FOREST PREDICTIONS
   tabPanel(
     title = "Predictions",
     column(
@@ -125,51 +239,68 @@ ui <- navbarPage(
     )
   ),
   
+  # HELP PAGE
   tabPanel(
     title = "Help",
     h2("Help Page"),
-    p("Place to put helpful information including a glossary for egg characteristics")
-  ),
-  
-  tabPanel(
-    title = "Questions",
-    p("Random forests with reduced variables? (currently full)")
+    p(
+      "Place to put helpful information including a glossary for egg characteristics"
+    )
   )
   
 )
 
-# Define server logic to plot various variables against mpg ----
+##### ------------------------------------------------------------------------
+##### APP SERVER
+##### ------------------------------------------------------------------------
+
 server <- function(input, output) {
   
-  # Put the specified input variables in a data frame
-  prepareInputs <- reactive({
-    if (input$input_opt == "Upload Excel file") {
-      file <- input$excel
+  # Put the input variables in a data frame
+  input_data <- reactive({
+    if (input$input_opt == "Upload spreadsheet") {
+      file <- input$spreadsheet
+      validate(need(!is.null(file), "Please provide input values"))
       ext <- tools::file_ext(file$datapath)
       req(file)
-      validate(need(ext %in% c("xlsx", "xls"), "Please upload an Excel file"))
-      readxl::read_excel(file$datapath)
-    } else if (input$input_opt == "Upload csv file") {
-      file <- input$csv
-      ext <- tools::file_ext(file$datapath)
-      req(file)
-      validate(need(ext == "csv", "Please upload a csv file"))
-      read.csv(file$datapath)
-    } else if (input$input_opt == "Manually input values") {
+      validate(need(ext %in% c("csv", "xlsx", "xls"), "Please upload either a .csv, .xlsx, or .xls file"))
+      if (ext == "csv") {
+        read.csv(file$datapath)
+      } else{
+        readxl::read_excel(file$datapath)  
+      }
+    } else if (input$input_opt == "Manually input values (V1)") {
+      inputs_to_df(input)
+    } else if (input$input_opt == "Manually input values (V2)") {
       inputs_to_df(input)
     }
   })
   
+  # Process the input data for the random forest 
+  processed_inputs <- reactive({
+    
+    # Check to make sure all necessary inputs have been provided
+    validate(need(
+      check_for_vars(input_data()),
+      paste("Currently missing the following input variables: \n", paste(get_missing_vars(input_data()), collapse = "\n "))
+    ))
+    
+    if (check_for_vars(input_data())) {
+      input_data() %>%
+        compute_variables() %>%
+        adjust_variable_types() %>%
+        adjust_factor_levels() %>%
+        sort_vars()
+    } else {
+      NULL
+    }
+  })
+  
   # Obtain random forest predictions for the given inputs
-  getRFpreds <- reactive({
+  get_rf_preds <- reactive({
     
     # Prepare the inputs for the random forest
-    inputs_clean <-
-      #prepareInputs() %>%
-      example_vars %>%
-      compute_variables() %>%
-      adjust_variable_types() %>%
-      adjust_factor_levels()
+    inputs_clean <- processed_inputs()
     
     # Get the predictions and random forest probabilities
     list(
@@ -185,22 +316,35 @@ server <- function(input, output) {
   
   # Create a table with the input values
   output$input_table <- DT::renderDataTable({
-    # Adjust format of df for viewing
-    datatable(prepareInputs() %>%
-                    mutate_all(.funs = as.character), #%>%
-                  # pivot_longer(names_to = "Variable",
-                  #              values_to = "Input Value",
-                  #              cols = everything()), 
-              options = list(scrollX=TRUE, scrollCollapse=TRUE, 
-                             autoWidth = TRUE,
-                             columnDefs = list(list(width = '1px', targets = "_all"))))
+    datatable(
+      input_data() %>% mutate_all(.funs = as.character),
+      options = list(
+        scrollX = TRUE,
+        scrollCollapse = TRUE,
+        autoWidth = FALSE,
+        columnDefs = list(list(width = '1px', targets = "_all"))
+      )
+    )
+  })
+  
+  # Create a table with the processed input values
+  output$processed_table <- DT::renderDataTable({
+    datatable(
+      processed_inputs(),
+      options = list(
+        scrollX = TRUE,
+        scrollCollapse = TRUE,
+        autoWidth = FALSE,
+        columnDefs = list(list(width = '1px', targets = "_all"))
+      )
+    )
   })
   
   # Create a table with random forest prediction results
   output$pred_table <- renderTable({
     
     # Get the random forest predictions
-    RFpreds <- getRFpreds()
+    RFpreds <- get_rf_preds()
     
     # Put the random forest results in a table
     data.frame(
@@ -225,7 +369,7 @@ server <- function(input, output) {
   output$prob_plot <- renderPlot({
     
     # Get the random forest predictions
-    RFpreds <- getRFpreds()
+    RFpreds <- get_rf_preds()
     
     # Create the plots
     cowplot::plot_grid(
@@ -238,5 +382,9 @@ server <- function(input, output) {
   }, height = 800)
   
 }
+
+##### ------------------------------------------------------------------------
+##### RUN APP
+##### ------------------------------------------------------------------------
 
 shinyApp(ui, server)
