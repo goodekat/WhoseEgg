@@ -20,8 +20,6 @@ source("../code/helper-functions.R")
 # Load the random forest models (trained on the years of 2014-2016)
 rfs <- readRDS("../data/rfs141516.rds")
 
-questions <- c("What is your name?","Can you code in R?","Do you find coding fun?","Last Question:How old are you?")
-
 ##### ------------------------------------------------------------------------
 ##### APP UI
 ##### ------------------------------------------------------------------------
@@ -57,20 +55,11 @@ ui <- navbarPage(
     ## INSTRUCTIONS
     sidebarPanel(
       h3("Instructions"),
-      p("XXX Edit this text..."),
-      p(" "),
-      p(
-        "The random forest predictions of the taxonomy of the fish eggs are
-          based on egg characteristics. This page provides two ways to input 
-          the egg characteristics needed to obtain random forest predictions. 
-          The values may be provided via a spreadsheet (.xls, .xlsx, or .csv) 
-          or entered manually."
-      ),
-      p(" "),
-      p(
-        "Note that some of the variables used by the random forest a functions
-          of the variables required to be provided on this page and are thus not
-          required to be provided."
+      p("XXX Edit this text...The random forest predictions of the taxonomy 
+        of the fish eggs are based on egg characteristics. This page provides 
+        two ways to input the egg characteristics needed to obtain random 
+        forest predictions. The values may be provided via a spreadsheet or 
+        entered manually."
       ),
       p(" "),
       p(
@@ -206,6 +195,9 @@ ui <- navbarPage(
     # TABLES OF INPUTS
     h3("Input Values"),
     p("XXX Add text explaining what is contained in the two data tables."),
+    p("Note that some of the variables used by the random forest a functions
+          of the variables required to be provided on this page and are thus not
+          required to be provided."),
     tabsetPanel(
       type = "tabs",
 
