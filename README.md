@@ -19,6 +19,7 @@ predicting fish species
       - **Add warning about missing observations**
       - **Add checks to app and/or Excel**
       - **Allow options for multiple qualitative levels**
+      - **Update instructional text**
       - Option to leave the rows blank where we fill them in
       - Look into research on data input in apps
       - Return a warning if input variables are outside of training data
