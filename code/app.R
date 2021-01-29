@@ -49,7 +49,7 @@ ui <- navbarPage(
   # INPUT EGG CHARACTERISTICS
   tabPanel(
     
-    title = "Input Data",
+    title = "Egg Characteristics",
     h2("Input of Egg Characteristics"),
     
     ## INSTRUCTIONS
@@ -64,14 +64,14 @@ ui <- navbarPage(
       p(" "),
       p(
         "See the help page for more information on the egg characteristics 
-          used by the random forest and additional details about correctly 
-          inputting the values."
+        used by the random forest and additional details about correctly 
+        inputting the values."
       ),
       h3("Data Input Option"),
       selectInput(
         inputId = "input_opt",
-        label = "Select a manner in which to provide input values for the random forest",
-        choices = c("Upload spreadsheet", "Manually input values (V1)", "Manually input values (V2)")
+        label = "Select a manner in which to provide predictor variables",
+        choices = c("Upload spreadsheet", "Manual input (V1)", "Manual input (V2)")
       ),
       p("Note: The manual option is best suited for working with a small number of eggs."),
       width = 3
@@ -90,10 +90,10 @@ ui <- navbarPage(
       
       #### MANUAL INPUTS (Version 1)
       conditionalPanel(
-        condition = "input.input_opt == 'Manually input values (V1)'",
+        condition = "input.input_opt == 'Manual input (V1)'",
         fluidPage(
           fluidRow(
-            h3("Manual Input of Values"),
+            h3("Manual Input of Predictor Variables"),
             p("All variables must be specified in order to obtain a random forest prediction. XXX Add more text.")
           ),
           fluidRow(
@@ -158,7 +158,7 @@ ui <- navbarPage(
       
       #### MANUAL INPUTS (Version 2)
       conditionalPanel(
-        condition = "input.input_opt == 'Manually input values (V2)'",
+        condition = "input.input_opt == 'Manual input (V2)'",
         fluidPage(
           fluidRow(
             h3("Manual Input of Values"),
@@ -193,7 +193,7 @@ ui <- navbarPage(
       ),
       
     # TABLES OF INPUTS
-    h3("Input Values"),
+    h3("Egg Characteristics"),
     p("XXX Add text explaining what is contained in the two data tables."),
     p("Note that some of the variables used by the random forest a functions
           of the variables required to be provided on this page and are thus not
@@ -261,9 +261,9 @@ server <- function(input, output) {
       } else{
         readxl::read_excel(file$datapath)  
       }
-    } else if (input$input_opt == "Manually input values (V1)") {
+    } else if (input$input_opt == "Manual input (V1)") {
       inputs_to_df(input)
-    } else if (input$input_opt == "Manually input values (V2)") {
+    } else if (input$input_opt == "Manual input (V2)") {
       inputs_to_df(input)
     }
   })
