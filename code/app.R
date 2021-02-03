@@ -8,6 +8,7 @@ library(dplyr)
 library(DT)
 library(forcats)
 library(ggplot2)
+library(purrr)
 library(randomForest)
 library(shiny)
 library(shinythemes)
@@ -19,6 +20,9 @@ source("../code/helper-functions.R")
 
 # Load the random forest models (trained on the years of 2014-2016)
 rfs <- readRDS("../data/rfs_for_app.rds")
+
+# Load data template
+template <- read.csv("../data/template.csv")
 
 ##### ------------------------------------------------------------------------
 ##### APP UI
@@ -49,39 +53,71 @@ ui <- navbarPage(
   # INPUT EGG CHARACTERISTICS
   tabPanel(
     
-    title = "Egg Characteristics",
-    h2("Input of Egg Characteristics"),
+    title = "Data Input",
     
     ## INSTRUCTIONS
     sidebarPanel(
+      h2("Egg Characteristics"),
       h3("Instructions"),
-      p("XXX Edit this text...The random forest predictions of the taxonomy 
-        of the fish eggs are based on egg characteristics."
-      ),
-      p(" "),
-      p(
-        "See the help page for more information on the egg characteristics 
-        used by the random forest and additional details about correctly 
-        inputting the values."
+      p("This page contains the tools for providing the fish egg characteristics
+        used by the random forests to make predictions of the fish taxonomies.",
+        br(),
+        br(),
+        strong("Follow these steps to provide the egg characterstics:"), 
+        br(),
+        br(),
+        "1. Download a spreadsheet template. Note that there are several 
+        template options.",
+        br(),
+        br(),
+        "2. Add observed egg characteristics to the downloaded spreadsheet.",
+        br(),
+        br(),
+        "3. Uplaod the completed spreadsheet. Note that there are various 
+        acceptable spreadsheet files.",
+        br(),
+        br(),
+        "4. Preview the input and processed data to check for correctness.",
+        br(),
+        br(),
+        em("See the help page for additional details on the egg characteristics,
+        which includes defintions, units, and example photos.")
       ),
       width = 3
     ),
     
     ## INPUTS 
     mainPanel(
+      
       ### SPREADSHEET INPUTS
-      h3("Spreadsheet Input"),
-      p("XXX Add some explanatory text."),
-      fileInput("spreadsheet", "Select a file to upload (.csv, .xlsx, .xls)"),
+      fluidRow(
+        column(
+          h3("Spreadsheet Template Download"),
+          p("The spreadsheet template contains columns for an egg ID and 13 
+            egg characteristics. After uploading the completed spreadhsheet, 
+            some additional will be computed. See the 'Processed Data' tab 
+            below for the complete set of 18 random forest predictor variables."),
+          p(em("It is okay to include additional variables, but they will be 
+               excluded prior to processing for the random forest.")),
+          downloadButton("downloadData", "Download Template"),
+          width = 6
+        ),
+        column(
+          h3("Completed Spreadsheet Upload"),
+          p("Use the button below to provide a completed spreadsheet."),
+          p(em("There is no maximum number for the number of observations in 
+               a spreadsheet.")),
+          fileInput("spreadsheet", "Select a file to upload (.csv, .xlsx, .xls)"),
+          width = 6
+        )
+      ),
       
       # TABLES OF INPUTS
       h3("Egg Characteristics"),
-      p("XXX Add text explaining what is contained in the two data tables."),
-      p(
-        "Note that some of the variables used by the random forest a functions
-          of the variables required to be provided on this page and are thus not
-          required to be provided."
-      ),
+      p("The 'Input Data' tab below contains the data uploaded to WhoseEgg. The 
+        'Processed Data' contains the egg ID and the predictor variables that 
+        will be used by the random forest. Some of the predictor variables are
+        computed from the input data."),
       tabsetPanel(
         type = "tabs",
         
@@ -93,7 +129,7 @@ ui <- navbarPage(
         
         # Tab for processed data
         tabPanel(
-          "Processed Data for Random Forest",
+          "Processed Data",
           div(DT::dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
         )
       )
@@ -103,20 +139,29 @@ ui <- navbarPage(
   # RANDOM FOREST PREDICTIONS
   tabPanel(
     title = "Predictions",
-    fluidRow(
-      column(
-        h2("Random Forest Predictions"),
-        DT::dataTableOutput("pred_table"),
-        width = 12
+    sidebarPanel(
+      h2("Random Forest Results"),
+      width = 3
+    ),
+    mainPanel(
+      fluidRow(
+        column(
+          h3("Predictions"),
+          div(DT::dataTableOutput("pred_table"), style = "font-size: 80%; width: 80%"),
+          width = 12
+        )
       )
     ),
-    fluidRow(
-      column(
-        h3("Random forest probabilities for all taxonomic levels"),
-        plotOutput("prob_plot"),
-        width = 12
-      )
-    )
+      tabsetPanel(
+        type = "tabs",
+        
+        # Tab for input data
+        tabPanel(
+          "Random forest probabilities for all taxonomic levels",
+          plotOutput("prob_plot"),
+          width = 12
+        )
+    ) 
   ),
   
   # DOWNLOADS PAGE
@@ -144,6 +189,16 @@ ui <- navbarPage(
 ##### ------------------------------------------------------------------------
 
 server <- function(input, output) {
+  
+  # Template download
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste("WhoseEggtemplate", ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(template, file, row.names = FALSE)
+    }
+  )
   
   # Put the input variables in a data frame
   input_data <- reactive({
@@ -234,34 +289,31 @@ server <- function(input, output) {
     
     # Put the random forest results in a table
     data.frame(
-      'Egg ID' = "to do",
+      'Egg ID' = processed_inputs$Egg_ID,
       "Family" = RFpreds$family_pred,
-      "Family Probability" = RFpreds$family_prob %>% pull(RFpreds$family_pred),
+      "Family Probability" = get_rf_prob(RFpreds, "family"),
+      "Family Pred Int" = "to do",
       "Genus" = RFpreds$genus_pred,
-      "Genus Probability" =  RFpreds$genus_prob %>% pull(RFpreds$genus_pred),
+      "Genus Probability" = get_rf_prob(RFpreds, "genus"),
+      "Genus Pred Int" = "to do",
       "Species" = RFpreds$species_pred,
-      "Species Probability" = RFpreds$species_prob %>% pull(str_replace(RFpreds$species_pred, " ", ".")),
-      'Prediction Interval' = 'to do',
+      "Species Probability" = get_rf_prob(RFpreds, "species"),
+      "Species Pred Int" = "to do",
       check.names = FALSE
     )
     
   })
   
   # Create plots with the random forest probabilities for all taxonomic levels
-  output$prob_plot <- renderPlot({
-    
-    # Get the random forest predictions
-    RFpreds <- get_rf_preds()
-    
-    # Create the plots
-    cowplot::plot_grid(
-      rf_prob_plot(RFpreds$family_prob, "Family"),
-      rf_prob_plot(RFpreds$genus_prob, "Genus"),
-      rf_prob_plot(RFpreds$species_prob, "Species"),
-      ncol = 3
-    )
-    
-  }, height = 300)
+  # output$prob_plot <- renderPlot({
+  #   
+  #   # Get the random forest predictions
+  #   RFpreds <- get_rf_preds()
+  #   
+  #   # Create the plots
+  #   rf_prob_plot(RFpreds)
+  #   
+  # }, height = 400, width = 1200)
   
 }
 

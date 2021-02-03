@@ -22,27 +22,52 @@
 #     #Yolk_CV = 0.2086
 #   )
 # # 
-# example_vars <- readxl::read_excel("data/example_data/one_obs_min_vars.xlsx")
+#example_vars <- readxl::read_excel("data/example_data/one_obs_min_vars.xlsx")
+
+# input_data <- read.csv("data/example_data/ten_obs_all_vars.csv")
+# check_for_vars(input_data)
+# get_missing_vars(input_data)
 # 
-# example_vars <- read.csv("data/example_data/one_obs_min_vars.csv")
-# check_for_vars(example_vars)
-# get_missing_vars(example_vars)
-# 
-# example_vars <- read.csv("data/example_data/one_obs_missing_vars.csv")
-# check_for_vars(example_vars)
-# get_missing_vars(example_vars)
-# 
-# rf_inputs <-
-#   ex_min %>%
+# processed_inputs <-
+#   input_data %>%
 #   compute_variables() %>%
 #   adjust_variable_types() %>%
-#   adjust_factor_levels()
+#   adjust_factor_levels() %>%
+#   sort_vars()
 # 
-# rfs <- readRDS("data/rfs141516.rds")
+# # Prepare the inputs for the random forest
+# inputs_clean <- processed_inputs
 # 
-# predict(rfs$Family_ACGC, rf_inputs)
-# predict(rfs$Genus_ACGC, rf_inputs)
-# predict(rfs$Common_Name_ACGC, rf_inputs)
+# # Get the predictions and random forest probabilities
+# get_rf_preds <-
+#   list(
+#     family_pred  = as.character(predict(rfs$Family_ACGC, inputs_clean)),
+#     genus_pred   = as.character(predict(rfs$Genus_ACGC, inputs_clean)),
+#     species_pred = as.character(predict(rfs$Common_Name_ACGC, inputs_clean)),
+#     family_prob  = data.frame(predict(rfs$Family_ACGC, inputs_clean, type = "prob")),
+#     genus_prob   = data.frame(predict(rfs$Genus_ACGC, inputs_clean, type = "prob")),
+#     species_prob = data.frame(predict(
+#       rfs$Common_Name_ACGC, inputs_clean, type = "prob"
+#     ))
+#   )
+# 
+# # Get the random forest predictions
+# RFpreds <- get_rf_preds
+# 
+# # Put the random forest results in a table
+# data.frame(
+#   'Egg ID' = processed_inputs$Egg_ID,
+#   "Family" = RFpreds$family_pred,
+#   "Family Probability" = get_rf_prob(RFpreds, "family"),
+#   "Family Pred Int" = "to do",
+#   "Genus" = RFpreds$genus_pred,
+#   "Genus Probability" =  get_rf_prob(RFpreds, "genus"),
+#   "Genus Pred Int" = "to do",
+#   "Species" = RFpreds$species_pred,
+#   "Species Probability" = get_rf_prob(RFpreds, "species"),
+#   "Species Pred Int" = "to do",
+#   check.names = FALSE
+# )
 
 # Function for putting input values into a data frame
 inputs_to_df <- function(input) {
@@ -201,19 +226,69 @@ adjust_factor_levels <- function(df) {
   
 }
 
+# Function for extracting the RF probabilities for the maximum level
+get_rf_prob <- function(rf_results, taxa) {
+  n_eggs <- length(rf_results[[paste0(taxa, "_pred")]])
+  map_dbl(
+    .x = 1:n_eggs,
+    .f = function(idx) {
+      rf_results[[paste0(taxa, "_prob")]] %>%
+        slice(idx) %>%
+        pull(stringr::str_replace(rf_results[[paste0(taxa, "_pred")]][[idx]], " ", "\\."))
+    }
+  )
+}
+
 # Function to create bar plot of random forest probabilities
-rf_prob_plot <- function(rf_probs, tax_level) {
-  rf_probs %>%
-    pivot_longer(names_to = "level", values_to = "rf_prob", cols = everything()) %>%
-    ggplot(aes(x = level, y = rf_prob, label = round(rf_prob, 2))) +
+rf_prob_plot <- function(rf_results) {
+  
+  results_joined <- 
+    bind_rows(
+      rf_results$family_prob %>%
+        pivot_longer(
+          names_to = "level",
+          values_to = "prob",
+          cols = everything()
+        ) %>%
+        mutate(taxa = "Family"),
+      rf_results$genus_prob %>%
+        pivot_longer(
+          names_to = "level",
+          values_to = "prob",
+          cols = everything()
+        ) %>%
+        mutate(taxa = "Genus"),
+      rf_results$species_prob %>%
+        pivot_longer(
+          names_to = "level",
+          values_to = "prob",
+          cols = everything()
+        ) %>%
+        mutate(taxa = "Species")
+    ) %>%
+    select(taxa, level, prob) %>%
+    mutate(level = stringr::str_replace(level, "\\.", " "))
+  
+  levels_ordered <- 
+    results_joined %>%
+    arrange(taxa, prob) %>%
+    pull(level) %>%
+    unique()
+  
+  results_joined %>%
+    mutate(level = factor(level, levels = levels_ordered)) %>%
+    ggplot(aes(x = prob, y = level, label = prob)) + 
     geom_col() + 
-    geom_text(nudge_y = 0.05) +
-    ylim(0, 1) + 
+    geom_text(nudge_x = 0.05) +
+    facet_wrap(. ~ taxa, nrow = 1, scales = "free_y") + 
+    xlim(0, 1 + 0.05) +
+    theme_bw() +
     theme(
-      axis.text.x = element_text(angle = 45, hjust = 1),
-      axis.title.x = element_blank()
+      axis.title.y = element_blank(),
+      strip.background = element_rect(fill = "white", color = "white")
     ) + 
-    labs(y = "Random Forest Probability", title = tax_level)
+    labs(x = "Random Forest Probability")
+  
 }
 
 # Function to sort variables
