@@ -9,13 +9,21 @@ predicting fish species
   - Switch all text to egg characteristics to predictor variables
   - Move all random forest code to R script
   - Change ACGC to invasive carp in data
-  - Removed manual input option (temporarily)
+  - Removed manual input option (at least for now)
   - Changed format of prediction page
+  - Order the levels in the plot by highest to lowest probabilities
+  - Update to work for more than one prediction at a time
+  - Add tabs for different plots
+  - Add option to download template
 
 ## To do list for app
 
+  - **Change the way in which the data and predictions are stored (join
+    them in one large data frame, which will be easier to export) and
+    then adjust other code as necessary**
+
   - Egg characteristics page:
-      - **Add option to download template**
+    
       - **Add warning about missing observations**
       - **Add checks to app and/or Excel**
       - **Allow options for multiple qualitative levels**
@@ -26,16 +34,20 @@ predicting fish species
       - Add visualizations of new data compared to training data (to
         determine if their observations fall within reasonable ranges to
         avoid extrapolation)
+
   - Prediction page:
-      - **Order the levels in the plot by highest to lowest
-        probabilities**
-      - **Update to work for more than one prediction at a time**
-      - **Add tabs for different plots**
+    
       - Figure out how to compute prediction intervals
+
   - Download page:
+    
       - **Add ability to download the prepared data and resulting
         predictions**
+
   - Info page:
+    
       - Write text
+
   - Other:
+    
       - Add image during loading of swimming fish

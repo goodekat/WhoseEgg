@@ -1,73 +1,3 @@
-# 
-# example_vars <-
-#   data.frame(
-#     Egg_ID = 1,
-#     #Month = 4,
-#     #Julian_Day = 120,
-#     Date = "2020-01-12",
-#     Temperature = 16,
-#     Conductivity = 435,
-#     Egg_Stage = 1,
-#     Compact_Diffuse = "Compact",
-#     Pigment = "Yes",
-#     Sticky_Debris = "No",
-#     Deflated = "No",
-#     Larval_Length = 0,
-#     Membrane_Ave = 1.393,
-#     Membrane_SD = 0.12109,
-#     #Membrane_CV = 0.08692,
-#     #Yolk_to_Membrane_Ratio = 0.57986,
-#     Yolk_Ave = 0.80777,
-#     Yolk_SD = 0.1685#,
-#     #Yolk_CV = 0.2086
-#   )
-# # 
-#example_vars <- readxl::read_excel("data/example_data/one_obs_min_vars.xlsx")
-
-# input_data <- read.csv("data/example_data/ten_obs_all_vars.csv")
-# check_for_vars(input_data)
-# get_missing_vars(input_data)
-# 
-# processed_inputs <-
-#   input_data %>%
-#   compute_variables() %>%
-#   adjust_variable_types() %>%
-#   adjust_factor_levels() %>%
-#   sort_vars()
-# 
-# # Prepare the inputs for the random forest
-# inputs_clean <- processed_inputs
-# 
-# # Get the predictions and random forest probabilities
-# get_rf_preds <-
-#   list(
-#     family_pred  = as.character(predict(rfs$Family_ACGC, inputs_clean)),
-#     genus_pred   = as.character(predict(rfs$Genus_ACGC, inputs_clean)),
-#     species_pred = as.character(predict(rfs$Common_Name_ACGC, inputs_clean)),
-#     family_prob  = data.frame(predict(rfs$Family_ACGC, inputs_clean, type = "prob")),
-#     genus_prob   = data.frame(predict(rfs$Genus_ACGC, inputs_clean, type = "prob")),
-#     species_prob = data.frame(predict(
-#       rfs$Common_Name_ACGC, inputs_clean, type = "prob"
-#     ))
-#   )
-# 
-# # Get the random forest predictions
-# RFpreds <- get_rf_preds
-# 
-# # Put the random forest results in a table
-# data.frame(
-#   'Egg ID' = processed_inputs$Egg_ID,
-#   "Family" = RFpreds$family_pred,
-#   "Family Probability" = get_rf_prob(RFpreds, "family"),
-#   "Family Pred Int" = "to do",
-#   "Genus" = RFpreds$genus_pred,
-#   "Genus Probability" =  get_rf_prob(RFpreds, "genus"),
-#   "Genus Pred Int" = "to do",
-#   "Species" = RFpreds$species_pred,
-#   "Species Probability" = get_rf_prob(RFpreds, "species"),
-#   "Species Pred Int" = "to do",
-#   check.names = FALSE
-# )
 
 # Function for putting input values into a data frame
 inputs_to_df <- function(input) {
@@ -239,26 +169,66 @@ get_rf_prob <- function(rf_results, taxa) {
   )
 }
 
-# Function to create bar plot of random forest probabilities
-rf_prob_plot <- function(rf_results) {
+# Function to create bar plot summarizing random forest predictions 
+rf_pred_plot <- function(rf_results, idx) {
+  
+  pred_plot_data <-
+    data.frame(
+      "Family" = RFpreds$family_pred,
+      "Genus" = RFpreds$genus_pred,
+      "Species" = RFpreds$species_pred
+    ) %>%
+    pivot_longer(names_to = "taxa",
+                 values_to = "pred",
+                 cols = everything()) %>%
+    count(taxa, pred) %>%
+    arrange(taxa, n) %>%
+    mutate(order = factor(row_number()))
+  
+  pred_plot_data %>%
+    ggplot(aes(x = order, y = n, label = n)) + 
+    geom_bar(stat = "identity", fill = "grey50") +
+    geom_text(aes(y = 0), nudge_y = 0.5) +
+    facet_wrap(. ~ taxa, scales = "free_y") + 
+    coord_flip() + 
+    scale_x_discrete(
+      breaks = pred_plot_data$order,
+      labels = pred_plot_data$pred,
+      expand = c(0,0)
+    ) +
+    theme_bw() + 
+    theme(
+      axis.title.y = element_blank(),
+      strip.background = element_rect(fill = "white", color = "white")
+    ) +
+    labs(
+      y = "Total number of eggs",
+      title = "Taxonomic level predictions from random forests"
+    )
+  
+}
+
+# Function to create plot of random forest probabilities for 
+# and individual egg
+rf_prob_plot <- function(rf_results, idx) {
   
   results_joined <- 
     bind_rows(
-      rf_results$family_prob %>%
+      rf_results$family_prob[idx,] %>%
         pivot_longer(
           names_to = "level",
           values_to = "prob",
           cols = everything()
         ) %>%
         mutate(taxa = "Family"),
-      rf_results$genus_prob %>%
+      rf_results$genus_prob[idx,] %>%
         pivot_longer(
           names_to = "level",
           values_to = "prob",
           cols = everything()
         ) %>%
         mutate(taxa = "Genus"),
-      rf_results$species_prob %>%
+      rf_results$species_prob[idx,] %>%
         pivot_longer(
           names_to = "level",
           values_to = "prob",
@@ -267,27 +237,28 @@ rf_prob_plot <- function(rf_results) {
         mutate(taxa = "Species")
     ) %>%
     select(taxa, level, prob) %>%
-    mutate(level = stringr::str_replace(level, "\\.", " "))
-  
-  levels_ordered <- 
-    results_joined %>%
+    mutate(level = stringr::str_replace(level, "\\.", " ")) %>%
     arrange(taxa, prob) %>%
-    pull(level) %>%
-    unique()
+    mutate(order = factor(row_number()))
   
   results_joined %>%
-    mutate(level = factor(level, levels = levels_ordered)) %>%
-    ggplot(aes(x = prob, y = level, label = prob)) + 
-    geom_col() + 
-    geom_text(nudge_x = 0.05) +
+    ggplot(aes(x = prob, y = order, label = prob)) + 
+    geom_col(fill = "grey50") + 
+    geom_text(aes(x = 0), nudge_x = 0.1) +
     facet_wrap(. ~ taxa, nrow = 1, scales = "free_y") + 
+    scale_y_discrete(
+      breaks = results_joined$order,
+      labels = results_joined$level,
+      expand = c(0,0)
+    ) +
     xlim(0, 1 + 0.05) +
     theme_bw() +
     theme(
       axis.title.y = element_blank(),
       strip.background = element_rect(fill = "white", color = "white")
     ) + 
-    labs(x = "Random Forest Probability")
+    labs(x = "Random Forest Probability", 
+         title = "Random forest probabilities for all taxonomic levels")
   
 }
 
