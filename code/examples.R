@@ -1,29 +1,3 @@
-#
-# example_vars <-
-#   data.frame(
-#     Egg_ID = 1,
-#     #Month = 4,
-#     #Julian_Day = 120,
-#     Date = "2020-01-12",
-#     Temperature = 16,
-#     Conductivity = 435,
-#     Egg_Stage = 1,
-#     Compact_Diffuse = "Compact",
-#     Pigment = "Yes",
-#     Sticky_Debris = "No",
-#     Deflated = "No",
-#     Larval_Length = 0,
-#     Membrane_Ave = 1.393,
-#     Membrane_SD = 0.12109,
-#     #Membrane_CV = 0.08692,
-#     #Yolk_to_Membrane_Ratio = 0.57986,
-#     Yolk_Ave = 0.80777,
-#     Yolk_SD = 0.1685#,
-#     #Yolk_CV = 0.2086
-#   )
-# #
-#example_vars <- readxl::read_excel("data/example_data/one_obs_min_vars.xlsx")
-
 # Source the helper functions used by the app
 source("code/helper-functions.R")
 
@@ -31,10 +5,11 @@ source("code/helper-functions.R")
 rfs <- readRDS("data/rfs_for_app.rds")
 
 # Input data
-input_data <- read.csv("data/example_data/ten_obs_all_vars.csv")
+input_data <- read.csv("data/example_data/ten_obs_extra_vars.csv")
 check_for_vars(input_data)
 get_missing_vars(input_data)
 
+# Process the inputs as needed for the random forest
 processed_inputs <-
   input_data %>%
   compute_variables() %>%
@@ -43,11 +18,10 @@ processed_inputs <-
   sort_vars()
 
 # Prepare the inputs for the random forest
-inputs_clean <- processed_inputs
+inputs_clean <- processed_inputs %>% select(all_of(rf_pred_vars))
 
 # Get the predictions and random forest probabilities
-get_rf_preds <-
-  # Get the predictions and random forest probabilities
+pred_list <-
   list(
     family_pred  = as.character(predict(rfs$Family_ACGC, inputs_clean)),
     genus_pred   = as.character(predict(rfs$Genus_ACGC, inputs_clean)),
@@ -57,20 +31,25 @@ get_rf_preds <-
     species_prob = data.frame(predict(rfs$Common_Name_ACGC, inputs_clean, type = "prob"))
   )
 
-# Get the random forest predictions
-RFpreds <- get_rf_preds
+# Put the predictions in a data frame with the input values
+data_and_preds <- 
+  processed_inputs %>%
+  mutate(
+    Family_Pred = pred_list$family_pred,
+    Family_Prob = get_rf_prob(pred_list, "family"),
+    Genus_Pred   = pred_list$genus_pred,
+    Genus_Prob = get_rf_prob(pred_list, "genus"),
+    Species_Pred = pred_list$species_pred,
+    Species_Prob = get_rf_prob(pred_list, "species")
+  ) %>%
+  bind_cols(
+    pred_list$family_prob %>% rename_all(.funs = function(x) paste0("Family_Prob_", x)),
+    pred_list$genus_prob %>% rename_all(.funs = function(x) paste0("Genus_Prob_", x)),
+    pred_list$species_prob %>% rename_all(.funs = function(x) paste0("Species_Prob_", x))
+  )
 
-# Put the random forest results in a table
-data.frame(
-  'Egg ID' = processed_inputs$Egg_ID,
-  "Family" = RFpreds$family_pred,
-  "Family Probability" = get_rf_prob(RFpreds, "family"),
-  "Family Pred Int" = "to do",
-  "Genus" = RFpreds$genus_pred,
-  "Genus Probability" = get_rf_prob(RFpreds, "genus"),
-  "Genus Pred Int" = "to do",
-  "Species" = RFpreds$species_pred,
-  "Species Probability" = get_rf_prob(RFpreds, "species"),
-  "Species Pred Int" = "to do",
-  check.names = FALSE
-)
+# Create plots summarizing the random forest predictions
+rf_pred_plot(data_and_preds)
+
+# Create plots with the random forest probabilities for all taxonomic levels
+rf_prob_plot(data_and_preds, 1)

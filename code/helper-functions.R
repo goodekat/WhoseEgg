@@ -29,7 +29,6 @@ compute_variables <- function(df) {
     mutate(Date = lubridate::ymd(Date)) %>%
     mutate(Month = lubridate::month(Date), 
            Julian_Day = lubridate::yday(Date)) %>%
-    select(-Date) %>%
     mutate(Membrane_CV = Membrane_SD / Membrane_Ave,
            Yolk_CV = Yolk_SD / Yolk_Ave, 
            Yolk_to_Membrane_Ratio = Yolk_Ave / Membrane_Ave)
@@ -172,11 +171,12 @@ get_rf_prob <- function(rf_results, taxa) {
 # Function to create bar plot summarizing random forest predictions 
 rf_pred_plot <- function(rf_results, idx) {
   
-  pred_plot_data <-
+  # Prepare the data for the plot
+  plot_data <-
     data.frame(
-      "Family" = RFpreds$family_pred,
-      "Genus" = RFpreds$genus_pred,
-      "Species" = RFpreds$species_pred
+      "Family" = rf_results$Family_Pred,
+      "Genus" = rf_results$Genus_Pred,
+      "Species" = rf_results$Species_Pred
     ) %>%
     pivot_longer(names_to = "taxa",
                  values_to = "pred",
@@ -185,15 +185,16 @@ rf_pred_plot <- function(rf_results, idx) {
     arrange(taxa, n) %>%
     mutate(order = factor(row_number()))
   
-  pred_plot_data %>%
+  # Create the plot
+  plot_data %>%
     ggplot(aes(x = order, y = n, label = n)) + 
-    geom_bar(stat = "identity", fill = "grey50") +
+    geom_bar(stat = "identity", fill = "grey75") +
     geom_text(aes(y = 0), nudge_y = 0.5) +
     facet_wrap(. ~ taxa, scales = "free_y") + 
     coord_flip() + 
     scale_x_discrete(
-      breaks = pred_plot_data$order,
-      labels = pred_plot_data$pred,
+      breaks = plot_data$order,
+      labels = plot_data$pred,
       expand = c(0,0)
     ) +
     theme_bw() + 
@@ -203,52 +204,39 @@ rf_pred_plot <- function(rf_results, idx) {
     ) +
     labs(
       y = "Total number of eggs",
-      title = "Taxonomic level predictions from random forests"
+      title = "Frequency of taxonomic level predictions"
     )
   
 }
 
-# Function to create plot of random forest probabilities for 
-# and individual egg
+# Function to create plot of random forest probabilities for an individual egg
 rf_prob_plot <- function(rf_results, idx) {
   
-  results_joined <- 
-    bind_rows(
-      rf_results$family_prob[idx,] %>%
-        pivot_longer(
-          names_to = "level",
-          values_to = "prob",
-          cols = everything()
-        ) %>%
-        mutate(taxa = "Family"),
-      rf_results$genus_prob[idx,] %>%
-        pivot_longer(
-          names_to = "level",
-          values_to = "prob",
-          cols = everything()
-        ) %>%
-        mutate(taxa = "Genus"),
-      rf_results$species_prob[idx,] %>%
-        pivot_longer(
-          names_to = "level",
-          values_to = "prob",
-          cols = everything()
-        ) %>%
-        mutate(taxa = "Species")
+  # Prepare the plot data
+  plot_data <- 
+    rf_results %>% 
+    slice(idx) %>%
+    select(contains("_prob_")) %>% 
+    pivot_longer(
+      names_to = "level",
+      values_to = "prob",
+      cols = everything()
     ) %>%
-    select(taxa, level, prob) %>%
+    separate(level, c("taxa", "nada", "level"), "_") %>%
+    select(-nada) %>%
     mutate(level = stringr::str_replace(level, "\\.", " ")) %>%
     arrange(taxa, prob) %>%
     mutate(order = factor(row_number()))
   
-  results_joined %>%
+  # Create the plots
+  plot_data %>%
     ggplot(aes(x = prob, y = order, label = prob)) + 
-    geom_col(fill = "grey50") + 
+    geom_col(fill = "grey75") + 
     geom_text(aes(x = 0), nudge_x = 0.1) +
     facet_wrap(. ~ taxa, nrow = 1, scales = "free_y") + 
     scale_y_discrete(
-      breaks = results_joined$order,
-      labels = results_joined$level,
+      breaks = plot_data$order,
+      labels = plot_data$level,
       expand = c(0,0)
     ) +
     xlim(0, 1 + 0.05) +
@@ -262,28 +250,34 @@ rf_prob_plot <- function(rf_results, idx) {
   
 }
 
+rf_pred_vars <-
+  c(
+    "Egg_ID",
+    "Month",
+    "Julian_Day",
+    "Temperature",
+    "Conductivity",
+    "Deflated",
+    "Pigment",
+    "Egg_Stage",
+    "Compact_Diffuse",
+    "Sticky_Debris",
+    "Membrane_Ave",
+    "Membrane_SD",
+    "Membrane_CV",
+    "Yolk_Ave",
+    "Yolk_SD",
+    "Yolk_CV",
+    "Yolk_to_Membrane_Ratio",
+    "Larval_Length"
+  )
+
 # Function to sort variables
 sort_vars <- function(df) {
   df %>%
     select(
-      Egg_ID,
-      Month, 
-      Julian_Day,
-      Temperature,
-      Conductivity,
-      Deflated,
-      Pigment,
-      Egg_Stage,
-      Compact_Diffuse,
-      Sticky_Debris,
-      Membrane_Ave,
-      Membrane_SD,
-      Membrane_CV,
-      Yolk_Ave,
-      Yolk_SD,
-      Yolk_CV,
-      Yolk_to_Membrane_Ratio,
-      Larval_Length
+      all_of(rf_pred_vars),
+      everything()
     )
 }
 

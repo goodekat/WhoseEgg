@@ -71,7 +71,7 @@ ui <- navbarPage(
         "2. Add observed egg characteristics to the downloaded spreadsheet.",
         br(),
         br(),
-        "3. Uplaod the completed spreadsheet.",
+        "3. Upload the completed spreadsheet.",
         br(),
         br(),
         "4. Preview the input and processed data to check for correctness.",
@@ -98,16 +98,14 @@ ui <- navbarPage(
             below for the complete set of 18 random forest predictor variables."),
           p(em("It is okay to include additional variables, but they will be 
                excluded prior to processing for the random forest.")),
-          downloadButton("downloadData", "Download Template"),
-          width = 6
-        ),
-        column(
+          downloadButton("downloadTemplate", "Download Template"),
+          br(),
           h3("Spreadsheet Upload"),
           p("Use the button below to provide a completed spreadsheet."),
           p(em("There is no maximum number for the number of observations in 
                a spreadsheet.")),
           fileInput("spreadsheet", "Select a file to upload (.csv, .xlsx, .xls)"),
-          width = 6
+          width = 12
         )
       ),
       
@@ -139,7 +137,29 @@ ui <- navbarPage(
   tabPanel(
     title = "Predictions",
     sidebarPanel(
-      h3("How to use this page"),
+      h3("Instructions"),
+      p(
+        "This page is used to compute and display the random forest predictions
+        for the data provided via the 'Data Input' tab. Visualizations of the 
+        predictions are included for further exploration of the predictions.",
+        br(),
+        br(),
+        strong("Follow these steps to view the random forest predictions:"), 
+        br(),
+        br(),
+        "1. Make sure to provide input data using the 'Data Input' tab and view the
+        processed data to check for correctness.",
+        br(),
+        br(),
+        "2. Click the button below to generate the random forest predictions.",
+        br(),
+        br(),
+        actionButton("getpreds", "Get Predictions"),
+        br(),
+        br(),
+        "3. View the table and visualizations of the predictions that will appear 
+        in the main panel of this page."
+      ),
       width = 3
     ),
     mainPanel(
@@ -175,10 +195,15 @@ ui <- navbarPage(
   # DOWNLOADS PAGE
   tabPanel(
     title = "Downloads",
-    h2("Downloads"),
-    p(
-      "Page for downloading the processed data and predictions"
-    )
+    sidebarPanel(
+      h3("Instructions"),
+      width = 3
+    ),
+    mainPanel(
+      h2("Downloads"),
+      br(),
+      downloadButton("downloadPreds", "Download Predictions")
+      ) 
   ),
   
   # HELP PAGE
@@ -198,8 +223,10 @@ ui <- navbarPage(
 
 server <- function(input, output) {
   
+  ## INPUTS ------------------------------------------------------------------
+  
   # Template download
-  output$downloadData <- downloadHandler(
+  output$downloadTemplate <- downloadHandler(
     filename = function() {
       paste("WhoseEggtemplate", ".csv", sep = "")
     },
@@ -227,13 +254,15 @@ server <- function(input, output) {
   
   # Process the input data for the random forest 
   processed_inputs <- reactive({
-    
     # Check to make sure all necessary inputs have been provided
     validate(need(
       check_for_vars(input_data()),
-      paste("Currently missing the following input variables: \n", paste(get_missing_vars(input_data()), collapse = "\n "))
+      paste(
+        "Currently missing the following input variables: \n", 
+        paste(get_missing_vars(input_data()), collapse = "\n ")
+      )
     ))
-    
+    # Process the inputs as needed for the random forest
     input_data() %>%
       compute_variables() %>%
       adjust_variable_types() %>%
@@ -241,112 +270,124 @@ server <- function(input, output) {
       sort_vars()
   })
   
-  # Obtain random forest predictions for the given inputs
-  get_rf_preds <- reactive({
-    
-    # Prepare the inputs for the random forest
-    inputs_clean <- processed_inputs()
-    
-    # Get the predictions and random forest probabilities
-    list(
-      family_pred  = as.character(predict(rfs$Family_ACGC, inputs_clean)),
-      genus_pred   = as.character(predict(rfs$Genus_ACGC, inputs_clean)),
-      species_pred = as.character(predict(rfs$Common_Name_ACGC, inputs_clean)),
-      family_prob  = data.frame(predict(rfs$Family_ACGC, inputs_clean, type = "prob")),
-      genus_prob   = data.frame(predict(rfs$Genus_ACGC, inputs_clean, type = "prob")),
-      species_prob = data.frame(predict(rfs$Common_Name_ACGC, inputs_clean, type = "prob"))
-    )
-    
-  })
-  
   # Create a table with the input values
   output$input_table <- DT::renderDataTable({
-    datatable(
-      input_data() %>% mutate_all(.funs = as.character),
-      options = list(
-        pageLength = 5,
-        scrollX = TRUE,
-        scrollCollapse = TRUE,
-        autoWidth = FALSE,
-        columnDefs = list(list(width = '1px', targets = "_all"))
+    input_data() %>%
+      mutate_all(.funs = as.character) %>%
+      datatable(
+        options = list(
+          pageLength = 5,
+          scrollX = TRUE,
+          scrollCollapse = TRUE,
+          autoWidth = FALSE,
+          columnDefs = list(list(width = '1px', targets = "_all"))
+        )
       )
-    )
   })
   
   # Create a table with the processed input values
   output$processed_table <- DT::renderDataTable({
-    datatable(
-      processed_inputs(),
-      options = list(
-        pageLength = 5,
-        scrollX = TRUE,
-        scrollCollapse = TRUE,
-        autoWidth = FALSE,
-        columnDefs = list(list(width = '1px', targets = "_all"))
+    processed_inputs() %>%
+      select(all_of(rf_pred_vars)) %>%
+      datatable(
+        options = list(
+          pageLength = 5,
+          scrollX = TRUE,
+          scrollCollapse = TRUE,
+          autoWidth = FALSE,
+          columnDefs = list(list(width = '1px', targets = "_all"))
+        )
       )
-    )
   })
   
-  # Create a table with random forest prediction results
-  output$pred_table <- DT::renderDataTable({
-
-    # Get the random forest predictions
-    RFpreds <- get_rf_preds()
-
-    # Put the random forest results in a table
-    datatable(
-      data.frame(
-        'Egg ID' = processed_inputs()$Egg_ID,
-        "Family" = RFpreds$family_pred,
-        "Family Probability" = get_rf_prob(RFpreds, "family"),
-        "Family Pred Int" = "to do",
-        "Genus" = RFpreds$genus_pred,
-        "Genus Probability" = get_rf_prob(RFpreds, "genus"),
-        "Genus Pred Int" = "to do",
-        "Species" = RFpreds$species_pred,
-        "Species Probability" = get_rf_prob(RFpreds, "species"),
-        "Species Pred Int" = "to do",
-        check.names = FALSE
-      ),
-      options = list(
-        pageLength = 5,
-        scrollX = TRUE,
-        scrollCollapse = TRUE,
-        autoWidth = FALSE,
-        columnDefs = list(list(width = '1px', targets = "_all"))
-      ),
-      selection = 'single'
-    )
-    
+  ## PREDICTIONS -------------------------------------------------------------
+  
+  # Obtain random forest predictions for the given inputs
+  data_and_preds <- reactive({
+    # Prepare the inputs for the random forest
+    inputs_clean <- processed_inputs() %>% select(all_of(rf_pred_vars))
+    # Get the predictions and random forest probabilities
+    pred_list <-
+      list(
+        family_pred  = as.character(predict(rfs$Family_ACGC, inputs_clean)),
+        genus_pred   = as.character(predict(rfs$Genus_ACGC, inputs_clean)),
+        species_pred = as.character(predict(rfs$Common_Name_ACGC, inputs_clean)),
+        family_prob  = data.frame(predict(rfs$Family_ACGC, inputs_clean, type = "prob")),
+        genus_prob   = data.frame(predict(rfs$Genus_ACGC, inputs_clean, type = "prob")),
+        species_prob = data.frame(predict(rfs$Common_Name_ACGC, inputs_clean, type = "prob"))
+      )
+    # Put the predictions in a data frame with the input values
+    processed_inputs() %>%
+      mutate(
+        Family_Pred = pred_list$family_pred,
+        Family_Prob = get_rf_prob(pred_list, "family"),
+        Genus_Pred   = pred_list$genus_pred,
+        Genus_Prob = get_rf_prob(pred_list, "genus"),
+        Species_Pred = pred_list$species_pred,
+        Species_Prob = get_rf_prob(pred_list, "species")
+      ) %>%
+      bind_cols(
+        pred_list$family_prob %>% rename_all(.funs = function(x) paste0("Family_Prob_", x)),
+        pred_list$genus_prob %>% rename_all(.funs = function(x) paste0("Genus_Prob_", x)),
+        pred_list$species_prob %>% rename_all(.funs = function(x) paste0("Species_Prob_", x))
+      )
   })
   
-  # Create plots summarizing the random forest predictions
-  output$pred_plot <- renderPlot({
+  # Display predictions after button is clicked
+  observeEvent(input$getpreds, { 
+    # Create a table with random forest prediction results
+    output$pred_table <- DT::renderDataTable({
+      # Put the random forest results in a table
+      data_and_preds() %>%
+        select(
+          Egg_ID,
+          Family_Pred,
+          Family_Prob,
+          Genus_Pred,
+          Genus_Prob,
+          Species_Pred,
+          Species_Prob
+        ) %>%
+        datatable(
+          options = list(
+            pageLength = 5,
+            scrollX = TRUE,
+            scrollCollapse = TRUE,
+            autoWidth = FALSE,
+            columnDefs = list(list(width = '1px', targets = "_all"))
+          ),
+          selection = 'single'
+        )
+    })
     
-    # Get the random forest predictions
-    RFpreds <- get_rf_preds()
+    # Create plots summarizing the random forest predictions
+    output$pred_plot <- renderPlot({
+      rf_pred_plot(data_and_preds())
+    })
     
-    # Create the plots
-    rf_pred_plot(RFpreds)
-    
+    # Create plots with the random forest probabilities for all taxonomic levels
+    output$prob_plot <- renderPlot({
+      # Check to make sure all necessary inputs have been provided
+      validate(need(
+        !is.null(input$pred_table_rows_selected),
+        "Please select a row in the table of predictions to view plots."
+      ))
+      # Create the plots
+      rf_prob_plot(data_and_preds(), input$pred_table_rows_selected)
+    })
   })
   
-  # Create plots with the random forest probabilities for all taxonomic levels
-  output$prob_plot <- renderPlot({
-
-    # Check to make sure all necessary inputs have been provided
-    validate(need(
-      !is.null(input$pred_table_rows_selected),
-      "Please select a row in the table of predictions to view plots."
-    ))
-    
-    # Get the random forest predictions
-    RFpreds <- get_rf_preds()
-
-    # Create the plots
-    rf_prob_plot(RFpreds, input$pred_table_rows_selected)
-
-  })
+  ## DOWNLOADS ---------------------------------------------------------------
+  
+  # Data frame with prediction download
+  output$downloadPreds <- downloadHandler(
+    filename = function() {
+      paste("WhoseEggPredictions", ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(data_and_preds(), file, row.names = FALSE)
+    }
+  )
 
 }
 
