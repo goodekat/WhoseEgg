@@ -1,26 +1,26 @@
 
 # Function for putting input values into a data frame
-inputs_to_df <- function(input) {
-  data.frame(
-    # Location variables
-    "Egg_ID" = input$Egg_ID,
-    "Date" = input$Date,
-    "Temperature" = input$Temperature,
-    "Conductivity" = input$Conductivity,
-    # Categorical egg measurements
-    "Deflated" = input$Deflated,
-    "Pigment" = input$Pigment,
-    "Egg_Stage" = input$Egg_Stage,
-    "Compact_Diffuse" = input$Compact_Diffuse,
-    "Sticky_Debris" = input$Sticky_Debris,
-    # Quantitative egg measurements
-    "Membrane_Ave" = input$Membrane_Ave,
-    "Membrane_SD" = input$Membrane_SD,
-    "Yolk_Ave" = input$Yolk_Ave,
-    "Yolk_SD" = input$Yolk_SD,
-    "Larval_Length" = input$Larval_Length
-  )
-}
+# inputs_to_df <- function(input) {
+#   data.frame(
+#     # Location variables
+#     "Egg_ID" = input$Egg_ID,
+#     "Date" = input$Date,
+#     "Temperature" = input$Temperature,
+#     "Conductivity" = input$Conductivity,
+#     # Categorical egg measurements
+#     "Deflated" = input$Deflated,
+#     "Pigment" = input$Pigment,
+#     "Egg_Stage" = input$Egg_Stage,
+#     "Compact_Diffuse" = input$Compact_Diffuse,
+#     "Sticky_Debris" = input$Sticky_Debris,
+#     # Quantitative egg measurements
+#     "Membrane_Ave" = input$Membrane_Ave,
+#     "Membrane_SD" = input$Membrane_SD,
+#     "Yolk_Ave" = input$Yolk_Ave,
+#     "Yolk_SD" = input$Yolk_SD,
+#     "Larval_Length" = input$Larval_Length
+#   )
+# }
 
 # Function for computing variables based on given input values
 compute_variables <- function(df) {
