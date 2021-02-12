@@ -10,16 +10,16 @@ predicting fish species
 
   - Egg characteristics page:
     
-      - **Add warning about missing observations**
       - **Prepare Excel template**:
           - **Include data validation**
           - **Add tab with units and such**
           - **Add drop down options for categorical variables**
           - **Change to inputs of year, month, and day**
-      - **Allow options for multiple qualitative levels**
-      - **Update instructional text**
+      - **Add warning about missing observations**
       - **Return a warning if input variables are outside of training
         data**
+      - **Allow options for multiple qualitative levels**
+      - **Update instructional text**
       - Add visualizations of new data compared to training data (to
         determine if their observations fall within reasonable ranges to
         avoid extrapolation)

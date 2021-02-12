@@ -1,37 +1,14 @@
 
-# Function for putting input values into a data frame
-# inputs_to_df <- function(input) {
-#   data.frame(
-#     # Location variables
-#     "Egg_ID" = input$Egg_ID,
-#     "Date" = input$Date,
-#     "Temperature" = input$Temperature,
-#     "Conductivity" = input$Conductivity,
-#     # Categorical egg measurements
-#     "Deflated" = input$Deflated,
-#     "Pigment" = input$Pigment,
-#     "Egg_Stage" = input$Egg_Stage,
-#     "Compact_Diffuse" = input$Compact_Diffuse,
-#     "Sticky_Debris" = input$Sticky_Debris,
-#     # Quantitative egg measurements
-#     "Membrane_Ave" = input$Membrane_Ave,
-#     "Membrane_SD" = input$Membrane_SD,
-#     "Yolk_Ave" = input$Yolk_Ave,
-#     "Yolk_SD" = input$Yolk_SD,
-#     "Larval_Length" = input$Larval_Length
-#   )
-# }
-
 # Function for computing variables based on given input values
 compute_variables <- function(df) {
   df %>% 
-    # Compute month and Julian day
-    mutate(Date = lubridate::ymd(Date)) %>%
-    mutate(Month = lubridate::month(Date), 
-           Julian_Day = lubridate::yday(Date)) %>%
-    mutate(Membrane_CV = Membrane_SD / Membrane_Ave,
+    # Compute Julian day
+    mutate(Date = lubridate::make_date(Year, Month, Day)) %>%
+    mutate(Julian_Day = lubridate::yday(Date),
+           Membrane_CV = Membrane_SD / Membrane_Ave,
            Yolk_CV = Yolk_SD / Yolk_Ave, 
-           Yolk_to_Membrane_Ratio = Yolk_Ave / Membrane_Ave)
+           Yolk_to_Membrane_Ratio = Yolk_Ave / Membrane_Ave) %>%
+    select(-Date)
 }
 
 # Function for specifying the variable types
@@ -276,7 +253,26 @@ rf_pred_vars <-
 sort_vars <- function(df) {
   df %>%
     select(
-      all_of(rf_pred_vars),
+      "Egg_ID",
+      "Year",
+      "Month",
+      "Day",
+      "Julian_Day",
+      "Temperature",
+      "Conductivity",
+      "Deflated",
+      "Pigment",
+      "Egg_Stage",
+      "Compact_Diffuse",
+      "Sticky_Debris",
+      "Membrane_Ave",
+      "Membrane_SD",
+      "Membrane_CV",
+      "Yolk_Ave",
+      "Yolk_SD",
+      "Yolk_CV",
+      "Yolk_to_Membrane_Ratio",
+      "Larval_Length",
       everything()
     )
 }
@@ -285,7 +281,9 @@ check_for_vars <- function(df) {
   necessary_vars <- 
     c(
       "Egg_ID",
-      "Date",
+      "Year",
+      "Month",
+      "Day",
       "Temperature",
       "Conductivity",
       "Deflated",
@@ -299,14 +297,16 @@ check_for_vars <- function(df) {
       "Yolk_SD",
       "Larval_Length"
     )
-  return(sum(necessary_vars %in% names(df)) == 14)
+  return(sum(necessary_vars %in% names(df)) == 16)
 }
 
 get_missing_vars <- function(df) {
   necessary_vars <- 
     c(
       "Egg_ID",
-      "Date",
+      "Year",
+      "Month",
+      "Day",
       "Temperature",
       "Conductivity",
       "Deflated",

@@ -1,2 +1,2 @@
-﻿Egg_ID,Date,Temperature,Conductivity,Deflated,Compact_Diffuse,Sticky_Debris,Membrane_Ave,Membrane_SD,Yolk_Ave,Yolk_SD,Larval_Length
-1,7/27/14,24.7,522,N,D,N,1.42716625,0.043584913,1.42716625,0.043584913,0
+﻿Egg_ID,Year,Month,Day,Temperature,Conductivity,Deflated,Compact_Diffuse,Sticky_Debris,Membrane_Ave,Membrane_SD,Yolk_Ave,Yolk_SD,Larval_Length
+1,2014,27,7,24.7,522,N,D,N,1.42716625,0.043584913,1.42716625,0.043584913,0

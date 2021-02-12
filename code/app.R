@@ -21,9 +21,6 @@ source("../code/helper-functions.R")
 # Load the random forest models (trained on the years of 2014-2016)
 rfs <- readRDS("../data/rfs_for_app.rds")
 
-# Load data template
-template <- read.csv("../data/template.csv")
-
 ##### ------------------------------------------------------------------------
 ##### APP UI
 ##### ------------------------------------------------------------------------
@@ -228,10 +225,10 @@ server <- function(input, output) {
   # Template download
   output$downloadTemplate <- downloadHandler(
     filename = function() {
-      paste("WhoseEggtemplate", ".csv", sep = "")
+      paste("WhoseEggtemplate", ".xlsx", sep = "")
     },
     content = function(file) {
-      write.csv(template, file, row.names = FALSE)
+      file.copy("../data/template.xlsx", file)
     }
   )
   
