@@ -10,26 +10,39 @@ Repository to store the code associated with the random forest app for predictin
 ## Changes made
 
 - Prepared Excel template:
+  - Included data validation
+  - Added tab with units and such
+  - Added drop down options for categorical variables
+  - Changed to inputs of year, month, and day
+- Added warning about missing observations
     
 
 ## To do list for app
 
-- Egg characteristics page:
-  - **Add warning about missing observations**
-  - **Return a warning if input variables are outside of training data**
+- Today:
+  - **Add comments saying that blank space will be filled in with predictions**
   - **Allow options for multiple qualitative levels in R (but not in template)**
+  - **Return a warning if input variables are outside of training data**
+  - **Clean up "check" code**
+
+- Overview page: 
+  - Write text providing an overview of how to use the app
+  - Add picture of fish
+  - Create and add video showing how to use the app
+
+- Egg characteristics page:
   - **Update instructional text**
   - Add visualizations of new data compared to training data (to determine if their observations fall within reasonable ranges to avoid extrapolation)
   - Look into research on data input in apps
   
 - Prediction page:
-  - **Add comments saying that blank space will be filled in with predictions**
   - Figure out how to compute prediction intervals
   
 - Download page:
 
-- Info page:
-  - Write text
+- Help page
+  - Write variable definitions
+  - Add figures from Carlos
   
 - Other:
   - **Start writing the manuscript**

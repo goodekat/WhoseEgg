@@ -6,19 +6,33 @@ predicting fish species
 
 ## Changes made
 
+  - Prepared Excel template:
+      - Included data validation
+      - Added tab with units and such
+      - Added drop down options for categorical variables
+      - Changed to inputs of year, month, and day
+  - Added warning about missing observations
+
 ## To do list for app
+
+  - Today:
+    
+      - **Add comments saying that blank space will be filled in with
+        predictions**
+      - **Allow options for multiple qualitative levels in R (but not in
+        template)**
+      - **Return a warning if input variables are outside of training
+        data**
+      - **Clean up “check” code**
+
+  - Overview page:
+    
+      - Write text providing an overview of how to use the app
+      - Add picture of fish
+      - Create and add video showing how to use the app
 
   - Egg characteristics page:
     
-      - **Prepare Excel template**:
-          - **Include data validation**
-          - **Add tab with units and such**
-          - **Add drop down options for categorical variables**
-          - **Change to inputs of year, month, and day**
-      - **Add warning about missing observations**
-      - **Return a warning if input variables are outside of training
-        data**
-      - **Allow options for multiple qualitative levels**
       - **Update instructional text**
       - Add visualizations of new data compared to training data (to
         determine if their observations fall within reasonable ranges to
@@ -27,15 +41,14 @@ predicting fish species
 
   - Prediction page:
     
-      - **Add comments saying that blank space will be filled in with
-        predictions**
       - Figure out how to compute prediction intervals
 
   - Download page:
 
-  - Info page:
+  - Help page
     
-      - Write text
+      - Write variable definitions
+      - Add figures from Carlos
 
   - Other:
     

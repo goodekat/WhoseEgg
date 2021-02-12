@@ -32,6 +32,17 @@ adjust_variable_types <- function(df) {
       ),
       .funs = as.numeric
     ) %>%
+    # Replace blank cells with NA
+    mutate_at(
+      .vars = c(
+        "Egg_Stage",
+        "Compact_Diffuse",
+        "Pigment",
+        "Sticky_Debris",
+        "Deflated"
+      ),
+      .funs = function(x) ifelse(x == "", NA, x)
+    ) %>%
     # Factor variables
     mutate_at(
       .vars = c(

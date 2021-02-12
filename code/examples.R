@@ -6,7 +6,9 @@ rfs <- readRDS("data/rfs_for_app.rds")
 
 # Input data
 #input_data <- read.csv("data/example_data/ten_obs_extra_vars.csv")
-input_data <- readxl::read_xlsx("data/example_data/one_obs_all_vars.xlsx")
+input_data <- readxl::read_xlsx("data/example_data/one_obs_min_vars.xlsx")
+#input_data <- readxl::read_xlsx("data/example_data/ten_obs_missing_vals.xlsx")
+#input_data <- read.csv("data/example_data/ten_obs_missing_vals.csv")
 check_for_vars(input_data)
 get_missing_vars(input_data)
 
