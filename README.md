@@ -19,6 +19,8 @@ predicting fish species
   - Allowed options for multiple qualitative levels in R (but not in
     template)
   - Returned a warning if input factors have incorrect levels
+  - Return a warning if input variables are outside of training data
+  - Added error is missing an egg id
 
 ## To do list for app
 
@@ -30,8 +32,6 @@ predicting fish species
 
   - Egg characteristics page:
     
-      - **Return a warning if input variables are outside of training
-        data**
       - **Update instructional text**
       - Add visualizations of new data compared to training data (to
         determine if their observations fall within reasonable ranges to

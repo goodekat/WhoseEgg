@@ -1,4 +1,6 @@
 
+eggdata <- read.csv("../data/eggdata_for_app.csv")
+
 # Function for computing variables based on given input values
 compute_variables <- function(df) {
   df %>% 
@@ -342,6 +344,10 @@ check_for_vars <- function(df) {
   return(sum(necessary_vars %in% names(df)) == 16)
 }
 
+check_for_egg_ids <- function(df) {
+  return(sum(is.na(df$Egg_ID)) == 0)
+}
+
 # Function for checking for the correct factor levels
 check_fct_levels <- function(df) {
   
@@ -349,6 +355,8 @@ check_fct_levels <- function(df) {
   es_levels = c("1", "2", "3", "4", "5", "6", "7", "8", "BROKEN", "D")
   cd_levels = c("C", "D", "c", "d", "Compact", "Diffuse", "Compact", "Diffuse")
   yn_levels = c("N", "Y", "n", "y", "No", "Yes", "no", "yes")
+  mn_levels = 1:12
+  dy_levels = 1:365
   
   # Identify the wrong levels
   es_wrong = !(unique(na.omit(df$Egg_Stage)) %in% es_levels)
@@ -356,9 +364,39 @@ check_fct_levels <- function(df) {
   pg_wrong = !(unique(na.omit(df$Pigment)) %in% yn_levels)
   sd_wrong = !(unique(na.omit(df$Sticky_Debris)) %in% yn_levels)
   df_wrong = !(unique(na.omit(df$Deflated)) %in% yn_levels)
+  mn_wrong = !(unique(na.omit(df$Month)) %in% mn_levels)
+  dy_wrong = !(unique(na.omit(df$Day)) %in% dy_levels)
   
   # Return TRUE if all levels are correct/acceptable
-  sum(c(es_wrong, cd_wrong, pg_wrong, sd_wrong, df_wrong)) == 0
+  sum(c(es_wrong, cd_wrong, pg_wrong, sd_wrong, df_wrong, mn_wrong, dy_wrong)) == 0
+  
+}
+
+# Function for checking for the correct factor levels
+check_var_ranges <- function(df) {
+  
+  checks <- c(
+    # Identify any values below the observed min
+    min(df$Conductivity, na.rm = TRUE) < min(eggdata$Conductivity, na.rm = TRUE),
+    min(df$Temperature, na.rm = TRUE) < min(eggdata$Temperature, na.rm = TRUE),
+    min(df$Membrane_Ave, na.rm = TRUE) < min(eggdata$Membrane_Ave, na.rm = TRUE),
+    min(df$Membrane_SD, na.rm = TRUE) < min(eggdata$Membrane_SD, na.rm = TRUE),
+    min(df$Yolk_Ave, na.rm = TRUE) < min(eggdata$Yolk_Ave, na.rm = TRUE),
+    min(df$Yolk_SD, na.rm = TRUE) < min(eggdata$Yolk_SD, na.rm = TRUE),
+    min(df$Larval_Length, na.rm = TRUE) < min(eggdata$Larval_Length, na.rm = TRUE),
+    
+    # Identify any values above the observed max
+    max(df$Conductivity, na.rm = TRUE) > max(eggdata$Conductivity, na.rm = TRUE),
+    max(df$Temperature, na.rm = TRUE) > max(eggdata$Temperature, na.rm = TRUE),
+    max(df$Membrane_Ave, na.rm = TRUE) > max(eggdata$Membrane_Ave, na.rm = TRUE),
+    max(df$Membrane_SD, na.rm = TRUE) > max(eggdata$Membrane_SD, na.rm = TRUE),
+    max(df$Yolk_Ave, na.rm = TRUE) > max(eggdata$Yolk_Ave, na.rm = TRUE),
+    max(df$Yolk_SD, na.rm = TRUE) > max(eggdata$Yolk_SD, na.rm = TRUE),
+    max(df$Larval_Length, na.rm = TRUE) > max(eggdata$Larval_Length, na.rm = TRUE)
+  )
+  
+  # Return TRUE if all variables fall within the training data ranges
+  return(sum(checks) == 0)
   
 }
 
@@ -391,6 +429,9 @@ get_wrong_fct_levels <- function(df) {
   es_levels = c("1", "2", "3", "4", "5", "6", "7", "8", "BROKEN", "D")
   cd_levels = c("C", "D", "c", "d", "Compact", "Diffuse", "Compact", "Diffuse")
   yn_levels = c("N", "Y", "n", "y", "No", "Yes", "no", "yes")
+  yr_levels = 1000:9999
+  mn_levels = 1:12
+  dy_levels = 1:31
   
   # Get the unique levels from each factor (excluding NAs)
   es_levels_obs = na.omit(unique(df$Egg_Stage))
@@ -398,6 +439,9 @@ get_wrong_fct_levels <- function(df) {
   pg_levels_obs = na.omit(unique(unique(df$Pigment)))
   sd_levels_obs = na.omit(unique(unique(df$Sticky_Debris)))
   df_levels_obs = na.omit(unique(unique(df$Deflated)))
+  yr_levels_obs = na.omit(unique(unique(df$Year)))
+  mn_levels_obs = na.omit(unique(unique(df$Month)))
+  dy_levels_obs = na.omit(unique(unique(df$Day)))
   
   # Identify the wrong levels
   es_wrong = !(es_levels_obs %in% es_levels)
@@ -405,6 +449,9 @@ get_wrong_fct_levels <- function(df) {
   pg_wrong = !(pg_levels_obs %in% yn_levels)
   sd_wrong = !(sd_levels_obs %in% yn_levels)
   df_wrong = !(df_levels_obs %in% yn_levels)
+  yr_wrong = !(yr_levels_obs %in% yr_levels)
+  mn_wrong = !(mn_levels_obs %in% mn_levels)
+  dy_wrong = !(dy_levels_obs %in% dy_levels)
   
   # Create a vector with the factors and their wrong levels
   wrong_levels <-
@@ -413,10 +460,51 @@ get_wrong_fct_levels <- function(df) {
       ifelse(TRUE %in% cd_wrong, paste("Compact_Diffuse:", cd_levels_obs[cd_wrong]), NA),
       ifelse(TRUE %in% pg_wrong, paste("Pigment:", pg_levels_obs[pg_wrong]), NA),
       ifelse(TRUE %in% sd_wrong, paste("Sticky_Debris:", sd_levels_obs[sd_wrong]), NA),
-      ifelse(TRUE %in% df_wrong, paste("Deflated:", df_levels_obs[df_wrong]), NA)
+      ifelse(TRUE %in% df_wrong, paste("Deflated:", df_levels_obs[df_wrong]), NA),
+      ifelse(TRUE %in% yr_wrong, paste("Year:", yr_levels_obs[yr_wrong]), NA),
+      ifelse(TRUE %in% mn_wrong, paste("Month:", mn_levels_obs[mn_wrong]), NA),
+      ifelse(TRUE %in% dy_wrong, paste("Day:", dy_levels_obs[dy_wrong]), NA)
     )
   
   # Return the factors with wrong levels and the corresponding wrong levels
   return(wrong_levels[!is.na(wrong_levels)])
+  
+}
+
+get_outside_var_ranges <- function(df) {
+  
+  # Determine which variables have values outside of training data ranges
+  cond_check = df$Conductivity < min(eggdata$Conductivity) | df$Conductivity > max(eggdata$Conductivity)
+  temp_check = df$Temperature < min(eggdata$Temperature) | df$Temperature > max(eggdata$Temperature)
+  meav_check = df$Membrane_Ave < min(eggdata$Membrane_Ave) | df$Membrane_Ave > max(eggdata$Membrane_Ave)
+  mesd_check = df$Membrane_SD < min(eggdata$Membrane_SD) | df$Membrane_SD > max(eggdata$Membrane_SD)
+  ykav_check = df$Yolk_Ave < min(eggdata$Yolk_Ave) | df$Yolk_Ave > max(eggdata$Yolk_Ave)
+  yksd_check = df$Yolk_SD < min(eggdata$Yolk_SD) | df$Yolk_SD > max(eggdata$Yolk_SD)
+  lvln_check = df$Larval_Length < min(eggdata$Larval_Length) | df$Larval_Length > max(eggdata$Larval_Length)
+  
+  # Identify the wrong levels
+  cond_range = paste0("Conductivity (", min(eggdata$Conductivity), " to ", max(eggdata$Conductivity), " microS/cm):")
+  temp_range = paste0("Temperature (", min(eggdata$Temperature), " to ", max(eggdata$Temperature), " C):")
+  meav_range = paste0("Membrane_Ave (", min(eggdata$Membrane_Ave), " to ", max(eggdata$Membrane_Ave), " mm):")
+  mesd_range = paste0("Membrane_SD (", min(eggdata$Membrane_SD), " to ", max(eggdata$Membrane_SD), " mm):")
+  ykav_range = paste0("Yolk_Ave (", min(eggdata$Yolk_Ave), " to ", max(eggdata$Yolk_Ave), " mm):")
+  yksd_range = paste0("Yolk_SD (", min(eggdata$Yolk_SD), " to ", max(eggdata$Yolk_SD), " mm):")
+  lvln_range = paste0("Larval_Length (", min(eggdata$Larval_Length), " to ", max(eggdata$Larval_Length), " mm):")
+  
+  
+  # Create a vector with the factors and their wrong levels
+  messages <-
+    c(
+      ifelse(TRUE %in% cond_check, paste(cond_range, "Egg IDs of", df$Egg_ID[cond_check], collapse = ","), NA),
+      ifelse(TRUE %in% temp_check, paste(temp_range, "Egg IDs of", df$Egg_ID[temp_check], collapse = ","), NA),
+      ifelse(TRUE %in% meav_check, paste(meav_range, "Egg IDs of", df$Egg_ID[meav_check], collapse = ","), NA),
+      ifelse(TRUE %in% mesd_check, paste(mesd_range, "Egg IDs of", df$Egg_ID[mesd_check], collapse = ","), NA),
+      ifelse(TRUE %in% ykav_check, paste(ykav_range, "Egg IDs of", df$Egg_ID[ykav_check], collapse = ","), NA),
+      ifelse(TRUE %in% yksd_check, paste(yksd_range, "Egg IDs of", df$Egg_ID[yksd_check], collapse = ","), NA),
+      ifelse(TRUE %in% lvln_check, paste(lvln_range, "Egg IDs of", df$Egg_ID[lvln_check], collapse = ","), NA)
+    )
+  
+  # Return the factors with wrong levels and the corresponding wrong levels
+  return(messages[!is.na(messages)])
   
 }

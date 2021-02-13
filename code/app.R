@@ -109,25 +109,34 @@ ui <- navbarPage(
         will be used by the random forest. Some of the predictor variables are
         computed from the input data."),
       conditionalPanel(
-        condition = "!is.na(output.warning_missing_vals)", 
-        span(textOutput("warning_missing_vals"), style = "color:purple")
-      ), 
-      conditionalPanel(
-        condition = "!is.na(output.error_file_type_v1)", 
-        span(textOutput("error_file_type_v1"), style = "color:darkorange")
+        condition = "!is.na(output.need_data)", 
+        span(textOutput("need_data"), style = "color:#f39c13")
       ),
       conditionalPanel(
-        condition = "!is.na(output.need_data)", 
-        span(textOutput("need_data"), style = "color:darkorange")
+        condition = "!is.na(output.error_file_type_v1)", 
+        span(textOutput("error_file_type_v1"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_missing_egg_id_v1)", 
+        span(textOutput("error_missing_egg_id_v1"), style = "color:#f39c13")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_missing_vars_v1)", 
-        span(textOutput("error_missing_vars_v1"), style = "color:darkorange")
+        span(textOutput("error_missing_vars_v1"), style = "color:#f39c13")
       ),
       conditionalPanel(
         condition = "!is.na(error_wrong_fct_levels_v1)", 
-        span(textOutput("error_wrong_fct_levels_v1"), style = "color:darkorange")
+        span(textOutput("error_wrong_fct_levels_v1"), style = "color:#f39c13")
       ),
+      conditionalPanel(
+        condition = "!is.na(output.warning_missing_vals_v1)", 
+        span(textOutput("warning_missing_vals_v1"), style = "color:#3498db")
+      ), 
+      conditionalPanel(
+        condition = "!is.na(output.warning_vars_outside_ranges_v1)", 
+        span(textOutput("warning_vars_outside_ranges_v1"), style = "color:#3498db")
+      ), 
+      br(),
       tabsetPanel(
         type = "tabs",
         # Tab for input data
@@ -188,16 +197,28 @@ ui <- navbarPage(
       h2("Results from Random Forests"),
       conditionalPanel(
         condition = "!is.na(output.error_file_type_v2)", 
-        span(textOutput("error_file_type_v2"), style = "color:darkorange")
+        span(textOutput("error_file_type_v2"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_missing_egg_id_v2)", 
+        span(textOutput("error_missing_egg_id_v2"), style = "color:#f39c13")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_missing_vars_v2)", 
-        span(textOutput("error_missing_vars_v2"), style = "color:darkorange")
+        span(textOutput("error_missing_vars_v2"), style = "color:#f39c13")
       ),
       conditionalPanel(
         condition = "!is.na(error_wrong_fct_levels_v2)", 
-        span(textOutput("error_wrong_fct_levels_v2"), style = "color:darkorange")
+        span(textOutput("error_wrong_fct_levels_v2"), style = "color:#f39c13")
       ),
+      conditionalPanel(
+        condition = "!is.na(output.warning_missing_vals_v2)", 
+        span(textOutput("warning_missing_vals_v2"), style = "color:#3498db")
+      ), 
+      conditionalPanel(
+        condition = "!is.na(output.warning_vars_outside_ranges_v2)", 
+        span(textOutput("warning_vars_outside_ranges_v2"), style = "color:#3498db")
+      ), 
       fluidRow(
         column(
           h3("Table of Predictions"),
@@ -297,6 +318,7 @@ server <- function(input, output) {
       # Check for correct data entry
       validate(need(check_for_vars(input_data()), message = FALSE))
       validate(need(check_fct_levels(input_data()), message = FALSE))
+      validate(need(check_for_egg_ids(input_data()), message = FALSE))
       # Process the inputs as needed for the random forest
       input_data() %>%
         compute_variables() %>%
@@ -415,7 +437,10 @@ server <- function(input, output) {
       output$prob_plot <- renderPlot({
         # Check to make sure all necessary inputs have been provided
         validate(need(
-          !is.null(input$pred_table_rows_selected) | !check_for_vars(input_data()) | !check_fct_levels(input_data()),
+          !is.null(input$pred_table_rows_selected) |
+            !check_for_vars(input_data()) |
+            !check_fct_levels(input_data()) | 
+            !check_for_egg_ids(input_data()), 
           "Please select a row in the table of predictions to view plots."
         ))
         #Create the plots
@@ -443,31 +468,42 @@ server <- function(input, output) {
   # Provide a message where prediction table will be
   output$message_pred_table <- reactive({
     if (input$getpreds == 0 | is.null(input$spreadsheet)) {
-      "A table with predictions will appear here after inputs are provided via 
+      "A table with predictions will appear here after inputs are provided via
       the 'Data Input' page and the 'Get Predictions' button is clicked."
-    } else if (is.null(input_data()) | !check_for_vars(input_data()) | !check_fct_levels(input_data())) {
-      "A table with predictions will appear here after inputs are provided via 
+    } else if (is.null(input_data()) |
+               !check_for_vars(input_data()) |
+               !check_fct_levels(input_data()) | 
+               !check_for_egg_ids(input_data())) {
+      "A table with predictions will appear here after inputs are provided via
       the 'Data Input' page and the 'Get Predictions' button is clicked."
-    } else { NA }
+    } else {
+      NA
+    }
   })
   outputOptions(output, "message_pred_table", suspendWhenHidden = FALSE)
   
   # Provide a message where prediction visualizations will be
   output$message_pred_plots <- reactive({
-    if (input$getpreds == 0 | is.null(input$spreadsheet) | !check_fct_levels(input_data())) {
-      "Visualizations of predictions will appear below after inputs are provided via 
+    if (input$getpreds == 0 |
+        is.null(input$spreadsheet) |
+        !check_fct_levels(input_data())) {
+      "Visualizations of predictions will appear below after inputs are provided via
       the 'Data Input' page and the 'Get Predictions' button is clicked."
-    } else if (is.null(input_data()) | !check_for_vars(input_data())) {
-      "Visualizations of predictions will appear below after inputs are provided via 
+    } else if (is.null(input_data()) |
+               !check_for_vars(input_data()) | 
+               !check_for_egg_ids(input_data())) {
+      "Visualizations of predictions will appear below after inputs are provided via
       the 'Data Input' page and the 'Get Predictions' button is clicked."
-    } else { NA }
+    } else {
+      NA
+    }
   })
   outputOptions(output, "message_pred_plots", suspendWhenHidden = FALSE)
 
   ## WARNINGS ----------------------------------------------------------------
   
   # Check for missing values
-  output$warning_missing_vals <- reactive({
+  warning_missing_vals <- reactive({
     if (!is.null(input_data())) {
       if (sum(is.na(processed_inputs())) > 0) {
         "Warning: Missing values detected in the processed data. 
@@ -476,7 +512,30 @@ server <- function(input, output) {
       } else NA
     }
   })
-  outputOptions(output, "warning_missing_vals", suspendWhenHidden = FALSE)
+  output$warning_missing_vals_v1 <- warning_missing_vals
+  output$warning_missing_vals_v2 <- warning_missing_vals 
+  outputOptions(output, "warning_missing_vals_v1", suspendWhenHidden = FALSE)
+  outputOptions(output, "warning_missing_vals_v2", suspendWhenHidden = FALSE)
+  
+  # Check to make sure all necessary inputs have been provided
+  warning_vars_outside_ranges <- reactive({
+    if (!is.null(input_data())) {
+      if (!check_var_ranges(processed_inputs())) {
+        paste(
+          "Warning: Some continuous variables outside of ranges in training data.
+          This will lead to model extrapolation and possibly poor predictions.
+          Egg IDs with values outside of ranges: ",
+          paste(get_outside_var_ranges(input_data()), collapse = ", ")
+        )
+      } else {
+        NA
+      }
+    }
+  })
+  output$warning_vars_outside_ranges_v1 <- warning_vars_outside_ranges
+  output$warning_vars_outside_ranges_v2 <- warning_vars_outside_ranges
+  outputOptions(output, "warning_vars_outside_ranges_v1", suspendWhenHidden = FALSE)
+  outputOptions(output, "warning_vars_outside_ranges_v2", suspendWhenHidden = FALSE)
   
   ## ERRORS ------------------------------------------------------------------
   
@@ -490,6 +549,19 @@ server <- function(input, output) {
   output$error_file_type_v2 <- error_file_type
   outputOptions(output, "error_file_type_v1", suspendWhenHidden = FALSE)
   outputOptions(output, "error_file_type_v2", suspendWhenHidden = FALSE)
+  
+  # Check all egg ids provided
+  error_missing_egg_id <- reactive({
+    if (!is.null(input_data())) {
+      if (!check_for_egg_ids(input_data())) {
+        "Egg_ID missing: Must provide all Egg IDs"
+      } else { NA }
+    }
+  })
+  output$error_missing_egg_id_v1 <- error_missing_egg_id
+  output$error_missing_egg_id_v2 <- error_missing_egg_id
+  outputOptions(output, "error_missing_egg_id_v1", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_missing_egg_id_v2", suspendWhenHidden = FALSE)
   
   # Check to make sure all necessary inputs have been provided
   error_missing_vars <- reactive({
@@ -522,7 +594,7 @@ server <- function(input, output) {
   output$error_wrong_fct_levels_v2 <- error_wrong_fct_levels
   outputOptions(output, "error_wrong_fct_levels_v1", suspendWhenHidden = FALSE)
   outputOptions(output, "error_wrong_fct_levels_v2", suspendWhenHidden = FALSE)
- 
+  
   ## DOWNLOADS ---------------------------------------------------------------
   
   # Data frame with prediction download
