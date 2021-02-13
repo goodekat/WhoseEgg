@@ -1,7 +1,5 @@
 
-##### ------------------------------------------------------------------------
-##### SET UP
-##### ------------------------------------------------------------------------
+##### SET UP #####
 
 # Load packages
 library(dplyr)
@@ -21,17 +19,15 @@ source("../code/helper-functions.R")
 # Load the random forest models (trained on the years of 2014-2016)
 rfs <- readRDS("../data/rfs_for_app.rds")
 
-##### ------------------------------------------------------------------------
-##### APP UI
-##### ------------------------------------------------------------------------
+##### APP UI #####
 
 ui <- navbarPage(
   
-  # Format information
+  ## FORMAT INFO
   title = "WhoseEgg",
   theme = shinytheme("flatly"),
   
-  # HOMEPAGE
+  ## HOMEPAGE
   tabPanel(title = "Overview",
            fluidPage(
              h2("WhoseEgg Homepage"),
@@ -47,7 +43,7 @@ ui <- navbarPage(
              p("- etc.")
            )),
   
-  # INPUT EGG CHARACTERISTICS
+  ## INPUT EGG CHARACTERISTICS
   tabPanel(
     
     title = "Data Input",
@@ -113,20 +109,24 @@ ui <- navbarPage(
         will be used by the random forest. Some of the predictor variables are
         computed from the input data."),
       conditionalPanel(
-        condition = "!is.na(output.missing)", 
-        span(textOutput("missing"), style="color:orange")
+        condition = "!is.na(output.warning_missing_vals)", 
+        span(textOutput("warning_missing_vals"), style = "color:purple")
       ), 
       conditionalPanel(
-        condition = "!is.na(output.file_type)", 
-        span(textOutput("file_type"), style = "color:orange")
+        condition = "!is.na(output.error_file_type_v1)", 
+        span(textOutput("error_file_type_v1"), style = "color:darkorange")
       ),
       conditionalPanel(
         condition = "!is.na(output.need_data)", 
-        span(textOutput("need_data"), style = "color:orange")
+        span(textOutput("need_data"), style = "color:darkorange")
       ),
       conditionalPanel(
-        condition = "!is.na(output.missing_vars)", 
-        span(textOutput("missing_vars_v1"), style = "color:orange")
+        condition = "!is.na(output.error_missing_vars_v1)", 
+        span(textOutput("error_missing_vars_v1"), style = "color:darkorange")
+      ),
+      conditionalPanel(
+        condition = "!is.na(error_wrong_fct_levels_v1)", 
+        span(textOutput("error_wrong_fct_levels_v1"), style = "color:darkorange")
       ),
       tabsetPanel(
         type = "tabs",
@@ -134,8 +134,8 @@ ui <- navbarPage(
         tabPanel(
           "Input Data",
           conditionalPanel(
-            condition = "!is.na(output.provide_data_tab1)", 
-            span(textOutput("provide_data_tab1"), style = "color:grey")
+            condition = "!is.na(output.message_provide_data_v1)", 
+            span(textOutput("message_provide_data_v1"), style = "color:grey")
           ),
           div(DT::dataTableOutput("input_table"), style = "font-size: 100%; width: 100%")
         ),
@@ -143,8 +143,8 @@ ui <- navbarPage(
         tabPanel(
           "Processed Data",
           conditionalPanel(
-            condition = "!is.na(output.provide_data_tab2)", 
-            span(textOutput("provide_data_tab2"), style = "color:grey")
+            condition = "!is.na(output.message_provide_data_v2)", 
+            span(textOutput("message_provide_data_v2"), style = "color:grey")
           ),
           div(DT::dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
         )
@@ -177,31 +177,48 @@ ui <- navbarPage(
         br(),
         br(),
         "3. View the table and visualizations of the predictions that will appear 
-        in the main panel of this page."
+        in the main panel of this page.",
+        br(),
+        br(),
+        em("Note: If a new spreadsheet is provided after predictions have been computed once, the predictions will be automatically updated.")
       ),
       width = 3
     ),
     mainPanel(
       h2("Results from Random Forests"),
       conditionalPanel(
-        condition = "!is.na(output.file_type)", 
-        span(textOutput("file_type_v2"), style = "color:orange")
+        condition = "!is.na(output.error_file_type_v2)", 
+        span(textOutput("error_file_type_v2"), style = "color:darkorange")
       ),
       conditionalPanel(
-        condition = "!is.na(output.missing_vars_v2)", 
-        span(textOutput("missing_vars_v2"), style = "color:orange")
+        condition = "!is.na(output.error_missing_vars_v2)", 
+        span(textOutput("error_missing_vars_v2"), style = "color:darkorange")
+      ),
+      conditionalPanel(
+        condition = "!is.na(error_wrong_fct_levels_v2)", 
+        span(textOutput("error_wrong_fct_levels_v2"), style = "color:darkorange")
       ),
       fluidRow(
         column(
           h3("Table of Predictions"),
+          br(),
+          conditionalPanel(
+            condition = "!is.na(output.message_pred_table)", 
+            span(textOutput("message_pred_table"), style = "color:grey")
+          ),
           div(DT::dataTableOutput("pred_table"), style = "font-size: 100%; width: 100%"),
           width = 12
         )
       ),
       h3("Visualizations of Predictions"),
+      br(),
+      conditionalPanel(
+        condition = "!is.na(output.message_pred_plots)", 
+        span(textOutput("message_pred_plots"), style = "color:grey")
+      ),
+      br(),
       tabsetPanel(
         type = "tabs",
-        
         # Tab for summary visualizations
         tabPanel(
           "Summary of predictions",
@@ -244,9 +261,7 @@ ui <- navbarPage(
   
 )
 
-##### ------------------------------------------------------------------------
-##### APP SERVER
-##### ------------------------------------------------------------------------
+##### APP SERVER #####
 
 server <- function(input, output) {
   
@@ -262,16 +277,6 @@ server <- function(input, output) {
     }
   )
   
-  # Messages when no spreadsheet provided
-  output$provide_data_tab1 <- reactive({
-    if (is.null(input$spreadsheet)) "Please provide input values" else NA
-  })
-  output$provide_data_tab2 <- reactive({
-    if (is.null(input$spreadsheet)) "Please provide input values" else NA
-  })
-  outputOptions(output, "provide_data_tab1", suspendWhenHidden = FALSE)
-  outputOptions(output, "provide_data_tab2", suspendWhenHidden = FALSE)
-  
   # Put the input variables in a data frame
   input_data <- reactive({
     file <- input$spreadsheet
@@ -285,48 +290,13 @@ server <- function(input, output) {
       NULL
     }
   })
-
-  # Check to make sure all necessary inputs have been provided
-  output$file_type <- reactive({
-    if (is.null(input_data())) {
-      "Please provide a .csv, .xlsx, or .xls file."
-    } else { NA }
-  })
-  output$file_type_v2 <- reactive({
-    if (is.null(input_data())) {
-      "Please provide a .csv, .xlsx, or .xls file."
-    } else { NA }
-  })
-  outputOptions(output, "file_type", suspendWhenHidden = FALSE)
-  outputOptions(output, "file_type_v2", suspendWhenHidden = FALSE)
-  
-  # Check to make sure all necessary inputs have been provided
-  output$missing_vars_v1 <- reactive({
-    if (!is.null(input_data())) {
-      if (!check_for_vars(input_data())) {
-        paste(
-          "Currently missing the following input variables: \n", 
-          paste(get_missing_vars(input_data()), collapse = ", ")
-        )
-      } else { NA }
-    }
-  })
-  output$missing_vars_v2 <- reactive({
-    if (!is.null(input_data())) {
-      if (!check_for_vars(input_data())) {
-        paste(
-          "Currently missing the following input variables: \n", 
-          paste(get_missing_vars(input_data()), collapse = ", ")
-        )
-      } else { NA }
-    }
-  })
-  outputOptions(output, "missing_vars_v1", suspendWhenHidden = FALSE)
-  outputOptions(output, "missing_vars_v2", suspendWhenHidden = FALSE)
   
   # Process the input data for the random forest 
   processed_inputs <- reactive({
     if (!is.null(input_data())) {
+      # Check for correct data entry
+      validate(need(check_for_vars(input_data()), message = FALSE))
+      validate(need(check_fct_levels(input_data()), message = FALSE))
       # Process the inputs as needed for the random forest
       input_data() %>%
         compute_variables() %>%
@@ -335,18 +305,6 @@ server <- function(input, output) {
         sort_vars()
     }
   })
-  
-  # Check for missing values
-  output$missing <- reactive({
-    if (!is.null(input_data())) {
-      if (sum(is.na(processed_inputs())) > 0) {
-        "Warning: Missing values detected in the processed data. 
-        Random forests cannot return predictions for observations with missing values.
-        These observations will be excluded."
-      } else NA
-    }
-  })
-  outputOptions(output, "missing", suspendWhenHidden = FALSE)
   
   # Create a table with the input values
   output$input_table <- DT::renderDataTable({
@@ -457,16 +415,114 @@ server <- function(input, output) {
       output$prob_plot <- renderPlot({
         # Check to make sure all necessary inputs have been provided
         validate(need(
-          !is.null(input$pred_table_rows_selected),
+          !is.null(input$pred_table_rows_selected) | !check_for_vars(input_data()) | !check_fct_levels(input_data()),
           "Please select a row in the table of predictions to view plots."
         ))
-        # Create the plots
+        #Create the plots
         rf_prob_plot(na.omit(data_and_preds()), input$pred_table_rows_selected)
       })
     }
     
   })
   
+  ## MESSAGES ----------------------------------------------------------------
+  
+  # Messages when no spreadsheet provided
+  message_provide_data <- reactive({
+    if (is.null(input$spreadsheet)) {
+      "Please provide input values"
+    } else if (is.null(input_data())) {
+      "Please provide input values"
+    } else NA
+  })
+  output$message_provide_data_v1 <- message_provide_data
+  output$message_provide_data_v2 <- message_provide_data
+  outputOptions(output, "message_provide_data_v1", suspendWhenHidden = FALSE)
+  outputOptions(output, "message_provide_data_v2", suspendWhenHidden = FALSE)
+  
+  # Provide a message where prediction table will be
+  output$message_pred_table <- reactive({
+    if (input$getpreds == 0 | is.null(input$spreadsheet)) {
+      "A table with predictions will appear here after inputs are provided via 
+      the 'Data Input' page and the 'Get Predictions' button is clicked."
+    } else if (is.null(input_data()) | !check_for_vars(input_data()) | !check_fct_levels(input_data())) {
+      "A table with predictions will appear here after inputs are provided via 
+      the 'Data Input' page and the 'Get Predictions' button is clicked."
+    } else { NA }
+  })
+  outputOptions(output, "message_pred_table", suspendWhenHidden = FALSE)
+  
+  # Provide a message where prediction visualizations will be
+  output$message_pred_plots <- reactive({
+    if (input$getpreds == 0 | is.null(input$spreadsheet) | !check_fct_levels(input_data())) {
+      "Visualizations of predictions will appear below after inputs are provided via 
+      the 'Data Input' page and the 'Get Predictions' button is clicked."
+    } else if (is.null(input_data()) | !check_for_vars(input_data())) {
+      "Visualizations of predictions will appear below after inputs are provided via 
+      the 'Data Input' page and the 'Get Predictions' button is clicked."
+    } else { NA }
+  })
+  outputOptions(output, "message_pred_plots", suspendWhenHidden = FALSE)
+
+  ## WARNINGS ----------------------------------------------------------------
+  
+  # Check for missing values
+  output$warning_missing_vals <- reactive({
+    if (!is.null(input_data())) {
+      if (sum(is.na(processed_inputs())) > 0) {
+        "Warning: Missing values detected in the processed data. 
+        Random forests cannot return predictions for observations with missing values.
+        These observations will be excluded on the 'Predictions' page."
+      } else NA
+    }
+  })
+  outputOptions(output, "warning_missing_vals", suspendWhenHidden = FALSE)
+  
+  ## ERRORS ------------------------------------------------------------------
+  
+  # Check that an appropriate file type was provided
+  error_file_type <- reactive({
+    if (is.null(input_data())) {
+      "Error: Please provide a .csv, .xlsx, or .xls file."
+    } else { NA }
+  })
+  output$error_file_type_v1 <- error_file_type
+  output$error_file_type_v2 <- error_file_type
+  outputOptions(output, "error_file_type_v1", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_file_type_v2", suspendWhenHidden = FALSE)
+  
+  # Check to make sure all necessary inputs have been provided
+  error_missing_vars <- reactive({
+    if (!is.null(input_data())) {
+      if (!check_for_vars(input_data())) {
+        paste(
+          "Error: Currently missing the following input variables: \n", 
+          paste(get_missing_vars(input_data()), collapse = ", ")
+        )
+      } else { NA }
+    }
+  })
+  output$error_missing_vars_v1 <- error_missing_vars
+  output$error_missing_vars_v2 <- error_missing_vars
+  outputOptions(output, "error_missing_vars_v1", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_missing_vars_v2", suspendWhenHidden = FALSE)
+  
+  # Check to make sure all necessary inputs have been provided
+  error_wrong_fct_levels <- reactive({
+    if (!is.null(input_data())) {
+      if (!check_fct_levels(input_data())) {
+        paste(
+          "Error: Categorical variable levels found in data that are not permitted: \n", 
+          paste(get_wrong_fct_levels(input_data()), collapse = ", ")
+        )
+      } else { NA }
+    }
+  })
+  output$error_wrong_fct_levels_v1 <- error_wrong_fct_levels
+  output$error_wrong_fct_levels_v2 <- error_wrong_fct_levels
+  outputOptions(output, "error_wrong_fct_levels_v1", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_wrong_fct_levels_v2", suspendWhenHidden = FALSE)
+ 
   ## DOWNLOADS ---------------------------------------------------------------
   
   # Data frame with prediction download
@@ -478,11 +534,9 @@ server <- function(input, output) {
       write.csv(data_and_preds(), file, row.names = FALSE)
     }
   )
-
+  
 }
 
-##### ------------------------------------------------------------------------
-##### RUN APP
-##### ------------------------------------------------------------------------
+##### RUN APP #####
 
 shinyApp(ui, server)

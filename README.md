@@ -12,18 +12,15 @@ predicting fish species
       - Added drop down options for categorical variables
       - Changed to inputs of year, month, and day
   - Added warning about missing observations
+  - Updated warnings about missing variables and wrong file type
+  - Added comments saying that blank space will be filled in with
+    predictions
+  - Cleaned up “check” code
+  - Allowed options for multiple qualitative levels in R (but not in
+    template)
+  - Returned a warning if input factors have incorrect levels
 
 ## To do list for app
-
-  - Today:
-    
-      - **Add comments saying that blank space will be filled in with
-        predictions**
-      - **Allow options for multiple qualitative levels in R (but not in
-        template)**
-      - **Return a warning if input variables are outside of training
-        data**
-      - **Clean up “check” code**
 
   - Overview page:
     
@@ -33,6 +30,8 @@ predicting fish species
 
   - Egg characteristics page:
     
+      - **Return a warning if input variables are outside of training
+        data**
       - **Update instructional text**
       - Add visualizations of new data compared to training data (to
         determine if their observations fall within reasonable ranges to
@@ -54,3 +53,4 @@ predicting fish species
     
       - **Start writing the manuscript**
       - Add image during loading of swimming fish
+      - Organize helper functions

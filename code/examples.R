@@ -6,11 +6,34 @@ rfs <- readRDS("data/rfs_for_app.rds")
 
 # Input data
 #input_data <- read.csv("data/example_data/ten_obs_extra_vars.csv")
-input_data <- readxl::read_xlsx("data/example_data/one_obs_min_vars.xlsx")
-#input_data <- readxl::read_xlsx("data/example_data/ten_obs_missing_vals.xlsx")
+#input_data <- readxl::read_xlsx("data/example_data/one_obs_min_vars.xlsx")
+#input_data <- readxl::read_xlsx("data/example_data/ten_obs_wrong_level.xlsx")
+#input_data <- read.csv("data/example_data/one_obs_missing_vars.csv")
+input_data <- readxl::read_xlsx("data/example_data/ten_obs_missing_vals.xlsx")
 #input_data <- read.csv("data/example_data/ten_obs_missing_vals.csv")
 check_for_vars(input_data)
 get_missing_vars(input_data)
+check_fct_levels(input_data)
+get_wrong_fct_levels(input_data)
+
+
+# Function for checking for the correct factor levels
+check_var_ranges <- function(df) {
+  
+  # # Create vectors of required factor levels
+  # 
+  # # Identify the wrong levels
+  # es_wrong = !(unique(df$Egg_Stage) %in% es_levels)
+  # cd_wrong = !(unique(df$Compact_Diffuse) %in% cd_levels)
+  # pg_wrong = !(unique(df$Pigment) %in% yn_levels)
+  # sd_wrong = !(unique(df$Sticky_Debris) %in% yn_levels)
+  # df_wrong = !(unique(df$Deflated) %in% yn_levels)
+  # 
+  # # Return TRUE if all levels are correct/acceptable
+  # sum(c(es_wrong, cd_wrong, pg_wrong, sd_wrong, df_wrong)) == 0
+  
+}
+
 
 # Process the inputs as needed for the random forest
 processed_inputs <-

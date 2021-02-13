@@ -60,83 +60,114 @@ adjust_variable_types <- function(df) {
 # morphometric variables as needed
 adjust_factor_levels <- function(df) {
   
-  # Create factors with levels
+  # Create vectors of required factor levels
   es_levels = c("1", "2", "3", "4", "5", "6", "7", "8", "BROKEN", "D")
   cd_levels = c("C", "D")
   yn_levels = c("N", "Y")
   
-  # Check if the levels are correct and change if not (stop if a
-  # level that is not in the training data is found)
+  # Adjust levels as appropriate for each factor
   
   # Egg stage
   if ("Broken" %in% levels(df$Egg_Stage)) {
     df <- df %>% mutate(Egg_Stage = fct_recode(Egg_Stage, "BROKEN" = "Broken"))
   }
+  if ("broken" %in% levels(df$Egg_Stage)) {
+    df <- df %>% mutate(Egg_Stage = fct_recode(Egg_Stage, "BROKEN" = "broken"))
+  }
   if ("Diffuse" %in% levels(df$Egg_Stage)) {
     df <- df %>% mutate(Egg_Stage = fct_recode(Egg_Stage, "D" = "Diffuse"))
   }
-  if (sum(levels(df$Egg_Stage) != es_levels) > 0) {
-    if (!(sum(levels(df$Egg_Stage) %in% es_levels))) {
-      stop ("Level in Egg_Stage that is not in training data.")
-    }
-    df$Egg_Stage <- factor(df$Egg_Stage,levels = es_levels)
+  if ("diffuse" %in% levels(df$Egg_Stage)) {
+    df <- df %>% mutate(Egg_Stage = fct_recode(Egg_Stage, "D" = "diffuse"))
   }
+  if ("d" %in% levels(df$Egg_Stage)) {
+    df <- df %>% mutate(Egg_Stage = fct_recode(Egg_Stage, "D" = "d"))
+  }
+  df$Egg_Stage <- factor(df$Egg_Stage,levels = es_levels)
   
   # Compact diffuse
   if ("Compact" %in% levels(df$Compact_Diffuse)) {
     df <- df %>% mutate(Compact_Diffuse = fct_recode(Compact_Diffuse, "C" = "Compact"))
   }
+  if ("compact" %in% levels(df$Compact_Diffuse)) {
+    df <- df %>% mutate(Compact_Diffuse = fct_recode(Compact_Diffuse, "C" = "compact"))
+  }
+  if ("c" %in% levels(df$Compact_Diffuse)) {
+    df <- df %>% mutate(Compact_Diffuse = fct_recode(Compact_Diffuse, "C" = "c"))
+  }
   if ("Diffuse" %in% levels(df$Compact_Diffuse)) {
     df <- df %>% mutate(Compact_Diffuse = fct_recode(Compact_Diffuse, "D" = "Diffuse"))
   }
-  if (sum(levels(df$Compact_Diffuse) != cd_levels) > 0) {
-    if (!(sum(levels(df$Compact_Diffuse) %in% cd_levels))) {
-      stop ("Level in Compact_Diffuse that is not in training data.")
-    }
-    df$Compact_Diffuse <- factor(df$Compact_Diffuse, levels = cd_levels)
+  if ("diffuse" %in% levels(df$Compact_Diffuse)) {
+    df <- df %>% mutate(Compact_Diffuse = fct_recode(Compact_Diffuse, "D" = "diffuse"))
   }
+  if ("d" %in% levels(df$Compact_Diffuse)) {
+    df <- df %>% mutate(Compact_Diffuse = fct_recode(Compact_Diffuse, "D" = "d"))
+  }
+  df$Compact_Diffuse <- factor(df$Compact_Diffuse, levels = cd_levels)
   
   # Pigment
   if ("Yes" %in% levels(df$Pigment)) {
     df <- df %>% mutate(Pigment = fct_recode(Pigment, "Y" = "Yes"))
   }
+  if ("yes" %in% levels(df$Pigment)) {
+    df <- df %>% mutate(Pigment = fct_recode(Pigment, "Y" = "yes"))
+  }
+  if ("y" %in% levels(df$Pigment)) {
+    df <- df %>% mutate(Pigment = fct_recode(Pigment, "Y" = "y"))
+  }
   if ("No" %in% levels(df$Pigment)) {
     df <- df %>% mutate(Pigment = fct_recode(Pigment, "N" = "No"))
   }
-  if (sum(levels(df$Pigment) != yn_levels) > 0) {
-    if (!(sum(levels(df$Pigment) %in% yn_levels))) {
-      stop ("Level in Pigment that is not in training data.")
-    }
-    df$Pigment <- factor(df$Pigment, levels = yn_levels)
+  if ("no" %in% levels(df$Pigment)) {
+    df <- df %>% mutate(Pigment = fct_recode(Pigment, "N" = "np"))
   }
+  if ("n" %in% levels(df$Pigment)) {
+    df <- df %>% mutate(Pigment = fct_recode(Pigment, "N" = "n"))
+  }
+  df$Pigment <- factor(df$Pigment, levels = yn_levels)
   
   # Sticky debris
   if ("Yes" %in% levels(df$Sticky_Debris)) {
     df <- df %>% mutate(Sticky_Debris = fct_recode(Sticky_Debris, "Y" = "Yes"))
   }
+  if ("yes" %in% levels(df$Sticky_Debris)) {
+    df <- df %>% mutate(Sticky_Debris = fct_recode(Sticky_Debris, "Y" = "yes"))
+  }
+  if ("y" %in% levels(df$Sticky_Debris)) {
+    df <- df %>% mutate(Sticky_Debris = fct_recode(Sticky_Debris, "Y" = "y"))
+  }
   if ("No" %in% levels(df$Sticky_Debris)) {
     df <- df %>% mutate(Sticky_Debris = fct_recode(Sticky_Debris, "N" = "No"))
   }
-  if (sum(levels(df$Sticky_Debris) != yn_levels) > 0) {
-    if (!(sum(levels(df$Sticky_Debris) %in% yn_levels))) {
-      stop ("Level in Sticky_Debris that is not in training data.")
-    }
-    df$Sticky_Debris <- factor(df$Sticky_Debris, levels = yn_levels)
+  if ("no" %in% levels(df$Sticky_Debris)) {
+    df <- df %>% mutate(Sticky_Debris = fct_recode(Sticky_Debris, "N" = "no"))
   }
+  if ("n" %in% levels(df$Sticky_Debris)) {
+    df <- df %>% mutate(Sticky_Debris = fct_recode(Sticky_Debris, "N" = "n"))
+  }
+  df$Sticky_Debris <- factor(df$Sticky_Debris, levels = yn_levels)
   
   # Deflated
   if ("Yes" %in% levels(df$Deflated)) {
     df <- df %>% mutate(Deflated = fct_recode(Deflated, "Y" = "Yes"))
   }
+  if ("yes" %in% levels(df$Deflated)) {
+    df <- df %>% mutate(Deflated = fct_recode(Deflated, "Y" = "yes"))
+  }
+  if ("y" %in% levels(df$Deflated)) {
+    df <- df %>% mutate(Deflated = fct_recode(Deflated, "Y" = "y"))
+  }
   if ("No" %in% levels(df$Deflated)) {
     df <- df %>% mutate(Deflated = fct_recode(Deflated, "N" = "No"))
   }
-  if (sum(levels(df$Deflated) != yn_levels) > 0) {
-    if (!(sum(levels(df$Deflated) %in% yn_levels))) {
-      stop ("Level in Deflated that is not in training data.")
-    }
-    df$Deflated <- factor(df$Deflated, levels = yn_levels)
+  if ("no" %in% levels(df$Deflated)) {
+    df <- df %>% mutate(Deflated = fct_recode(Deflated, "N" = "no"))
   }
+  if ("n" %in% levels(df$Deflated)) {
+    df <- df %>% mutate(Deflated = fct_recode(Deflated, "N" = "n"))
+  }
+  df$Deflated <- factor(df$Deflated, levels = yn_levels)
   
   # Return the data frame
   return(df) 
@@ -311,6 +342,26 @@ check_for_vars <- function(df) {
   return(sum(necessary_vars %in% names(df)) == 16)
 }
 
+# Function for checking for the correct factor levels
+check_fct_levels <- function(df) {
+  
+  # Create vectors of required factor levels
+  es_levels = c("1", "2", "3", "4", "5", "6", "7", "8", "BROKEN", "D")
+  cd_levels = c("C", "D", "c", "d", "Compact", "Diffuse", "Compact", "Diffuse")
+  yn_levels = c("N", "Y", "n", "y", "No", "Yes", "no", "yes")
+  
+  # Identify the wrong levels
+  es_wrong = !(unique(na.omit(df$Egg_Stage)) %in% es_levels)
+  cd_wrong = !(unique(na.omit(df$Compact_Diffuse)) %in% cd_levels)
+  pg_wrong = !(unique(na.omit(df$Pigment)) %in% yn_levels)
+  sd_wrong = !(unique(na.omit(df$Sticky_Debris)) %in% yn_levels)
+  df_wrong = !(unique(na.omit(df$Deflated)) %in% yn_levels)
+  
+  # Return TRUE if all levels are correct/acceptable
+  sum(c(es_wrong, cd_wrong, pg_wrong, sd_wrong, df_wrong)) == 0
+  
+}
+
 get_missing_vars <- function(df) {
   necessary_vars <- 
     c(
@@ -332,4 +383,40 @@ get_missing_vars <- function(df) {
       "Larval_Length"
     )
   return(necessary_vars[!(necessary_vars %in% names(df))])
+}
+
+get_wrong_fct_levels <- function(df) {
+  
+  # Create vectors of required factor levels
+  es_levels = c("1", "2", "3", "4", "5", "6", "7", "8", "BROKEN", "D")
+  cd_levels = c("C", "D", "c", "d", "Compact", "Diffuse", "Compact", "Diffuse")
+  yn_levels = c("N", "Y", "n", "y", "No", "Yes", "no", "yes")
+  
+  # Get the unique levels from each factor (excluding NAs)
+  es_levels_obs = na.omit(unique(df$Egg_Stage))
+  cd_levels_obs = na.omit(unique(unique(df$Compact_Diffuse)))
+  pg_levels_obs = na.omit(unique(unique(df$Pigment)))
+  sd_levels_obs = na.omit(unique(unique(df$Sticky_Debris)))
+  df_levels_obs = na.omit(unique(unique(df$Deflated)))
+  
+  # Identify the wrong levels
+  es_wrong = !(es_levels_obs %in% es_levels)
+  cd_wrong = !(cd_levels_obs %in% cd_levels)
+  pg_wrong = !(pg_levels_obs %in% yn_levels)
+  sd_wrong = !(sd_levels_obs %in% yn_levels)
+  df_wrong = !(df_levels_obs %in% yn_levels)
+  
+  # Create a vector with the factors and their wrong levels
+  wrong_levels <-
+    c(
+      ifelse(TRUE %in% es_wrong, paste("Egg_Stage:", es_levels_obs[es_wrong]), NA),
+      ifelse(TRUE %in% cd_wrong, paste("Compact_Diffuse:", cd_levels_obs[cd_wrong]), NA),
+      ifelse(TRUE %in% pg_wrong, paste("Pigment:", pg_levels_obs[pg_wrong]), NA),
+      ifelse(TRUE %in% sd_wrong, paste("Sticky_Debris:", sd_levels_obs[sd_wrong]), NA),
+      ifelse(TRUE %in% df_wrong, paste("Deflated:", df_levels_obs[df_wrong]), NA)
+    )
+  
+  # Return the factors with wrong levels and the corresponding wrong levels
+  return(wrong_levels[!is.na(wrong_levels)])
+  
 }
