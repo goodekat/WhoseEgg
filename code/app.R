@@ -30,7 +30,7 @@ ui <- navbarPage(
   ## HOMEPAGE
   tabPanel(title = "Overview",
            fluidPage(
-               img(src="5-eggs-in-a-row.png",width="800px"),
+               img(src="eggs-in-a-row.png",width="800px"),
                br(),
                column(
                  h2("Welcome to the WhoseEgg App"),
@@ -46,7 +46,7 @@ ui <- navbarPage(
                  Additional details about the steps are provided on the tab
                  corresponding to the step. See the help page for details about 
                  the egg characteristics."),
-                 img(src="steps.png",width="800px"),
+                 img(src="flow-chart.png", width = "800px"),
                  br(),
                  h3("References"),
                  p("Camacho, C.A., Sullivan, C.J., Weber, M.J. and Pierce, C.L. (2019), 
