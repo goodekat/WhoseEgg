@@ -33,7 +33,7 @@ ui <- navbarPage(
                img(src="5-eggs-in-a-row.png",width="800px"),
                br(),
                column(
-                 h2("Welcome to WhoseEgg App"),
+                 h2("Welcome to the WhoseEgg App"),
                  p("WhoseEgg is a Shiny app for predicting the taxonomy of fish eggs 
                  to identiy invasive carp eggs. The predictions are based on a 
                  collection of characteristics and provided via the use of random 
