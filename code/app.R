@@ -30,17 +30,32 @@ ui <- navbarPage(
   ## HOMEPAGE
   tabPanel(title = "Overview",
            fluidPage(
-             h2("WhoseEgg Homepage"),
-             p(" "),
-             p("Welcome to the the WhoseEgg app!"),
-             p(" "),
-             p(" "),
-             p("Add:"),
-             p("- information on the random forest model"),
-             p("- how to use the app"),
-             p("- previous papers"),
-             p("- picture(s) of fish or logo"),
-             p("- etc.")
+               img(src="5-eggs-in-a-row.png",width="800px"),
+               br(),
+               column(
+                 h2("Welcome to WhoseEgg App"),
+                 p("WhoseEgg is a Shiny app for predicting the taxonomy of fish eggs 
+                 to identiy invasive carp eggs. The predictions are based on a 
+                 collection of characteristics and provided via the use of random 
+                 forest models. The models are based on Camacho et al. (2019),
+                 who successfully use random forests to identify invasive carp, and
+                 Goode et al. (2021), who validate the models from Camacho et al. (2019)."),
+                 h3("How to use the app"),
+                 p("In order to obtain predictions for a set of eggs, follow the 
+                 three step process outlined in the flow chart below.
+                 Additional details about the steps are provided on the tab
+                 corresponding to the step. See the help page for details about 
+                 the egg characteristics."),
+                 img(src="steps.png",width="800px"),
+                 br(),
+                 h3("References"),
+                 p("Camacho, C.A., Sullivan, C.J., Weber, M.J. and Pierce, C.L. (2019), 
+                   Morphological Identification of Bighead Carp, Silver Carp, and Grass
+                   Carp Eggs Using Random Forests Machine Learning Classification. North 
+                   Am J Fish Manage, 39: 1373-1384. https://doi.org/10.1002/nafm.10380"),
+                 p("Goode, K.J., Weber, M.J., Matthews, A., and Pierce, C.L. (2021), XXX"),
+                 width = 8
+               ),
            )),
   
   ## INPUT EGG CHARACTERISTICS
@@ -484,14 +499,13 @@ server <- function(input, output) {
   
   # Provide a message where prediction visualizations will be
   output$message_pred_plots <- reactive({
-    if (input$getpreds == 0 |
-        is.null(input$spreadsheet) |
-        !check_fct_levels(input_data())) {
+    if (input$getpreds == 0 | is.null(input$spreadsheet)) {
       "Visualizations of predictions will appear below after inputs are provided via
       the 'Data Input' page and the 'Get Predictions' button is clicked."
     } else if (is.null(input_data()) |
                !check_for_vars(input_data()) | 
-               !check_for_egg_ids(input_data())) {
+               !check_for_egg_ids(input_data()) |
+               !check_fct_levels(input_data())) {
       "Visualizations of predictions will appear below after inputs are provided via
       the 'Data Input' page and the 'Get Predictions' button is clicked."
     } else {
