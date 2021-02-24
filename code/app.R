@@ -282,6 +282,7 @@ ui <- navbarPage(
     ),
     mainPanel(
       h2("Downloads"),
+      "Add text here describing what will be included in the downloaded spreadsheet."
       fluidRow(
         column(
           h3("Table of Predictions"),
@@ -576,6 +577,16 @@ server <- function(input, output) {
   })
   outputOptions(output, "message_download_table", suspendWhenHidden = FALSE)
   
+  # Data frame with prediction download
+  output$downloadPreds <- downloadHandler(
+    filename = function() {
+      paste("WhoseEggPredictions", ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(data_and_preds(), file, row.names = FALSE)
+    }
+  )
+  
   ## WARNINGS ----------------------------------------------------------------
   
   # Check for missing values
@@ -670,18 +681,6 @@ server <- function(input, output) {
   output$error_wrong_fct_levels_v2 <- error_wrong_fct_levels
   outputOptions(output, "error_wrong_fct_levels_v1", suspendWhenHidden = FALSE)
   outputOptions(output, "error_wrong_fct_levels_v2", suspendWhenHidden = FALSE)
-  
-  ## DOWNLOADS ---------------------------------------------------------------
-  
-  # Data frame with prediction download
-  output$downloadPreds <- downloadHandler(
-    filename = function() {
-      paste("WhoseEggPredictions", ".csv", sep = "")
-    },
-    content = function(file) {
-      write.csv(data_and_preds(), file, row.names = FALSE)
-    }
-  )
   
 }
 
