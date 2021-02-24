@@ -282,7 +282,7 @@ ui <- navbarPage(
     ),
     mainPanel(
       h2("Downloads"),
-      "Add text here describing what will be included in the downloaded spreadsheet."
+      "Add text here describing what will be included in the downloaded spreadsheet.",
       fluidRow(
         column(
           h3("Table of Predictions"),
