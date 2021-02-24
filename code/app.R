@@ -6,6 +6,7 @@ library(dplyr)
 library(DT)
 library(forcats)
 library(ggplot2)
+library(markdown)
 library(purrr)
 library(randomForest)
 library(shiny)
@@ -35,17 +36,17 @@ ui <- navbarPage(
                column(
                  h2("Welcome to the WhoseEgg App"),
                  p("WhoseEgg is a Shiny app for predicting the taxonomy of fish eggs 
-                 to identiy invasive carp eggs. The predictions are based on a 
-                 collection of characteristics and provided via the use of random 
-                 forest models. The models are based on Camacho et al. (2019),
-                 who successfully use random forests to identify invasive carp, and
-                 Goode et al. (2021), who validate the models from Camacho et al. (2019)."),
+                 to identiy invasive carp eggs based on characteristics of the eggs. 
+                 The predictions provided via random forest models. The models are based
+                 on Camacho et al. (2019), who successfully use random forests to identify
+                 invasive carp, and Goode et al. (2021), who validate the models from
+                 Camacho et al. (2019)."),
                  h3("How to use the app"),
                  p("In order to obtain predictions for a set of eggs, follow the 
                  three step process outlined in the flow chart below.
-                 Additional details about the steps are provided on the tab
-                 corresponding to the step. See the help page for details about 
-                 the egg characteristics."),
+                 Additional details about the steps are provided on the app page
+                 corresponding to the step. See the help page for additional details about 
+                 the egg characteristics and random forest models."),
                  img(src="flow-chart.png", width = "800px"),
                  br(),
                  h3("References"),
@@ -67,7 +68,7 @@ ui <- navbarPage(
     sidebarPanel(
       h3("Instructions"),
       p("This page contains the tools for providing the fish egg characteristics
-        used by the random forests to make predictions of the fish taxonomies.",
+        that will be used by the random forests to predict the fish taxonomies.",
         br(),
         br(),
         strong("Follow these steps to provide the egg characterstics:"), 
@@ -76,53 +77,27 @@ ui <- navbarPage(
         "1. Download a spreadsheet template.",
         br(),
         br(),
-        "2. Add observed egg characteristics to the downloaded spreadsheet.",
+        downloadButton("downloadTemplate", "Download Template"),
         br(),
         br(),
-        "3. Upload the completed spreadsheet.",
+        "2. Add observed egg characteristics to the downloaded spreadsheet
+        following the specifications in the main panel.",
         br(),
         br(),
-        "4. Preview the input and processed data to check for correctness.",
+        "3. Upload a completed spreadsheet (saved as .csv, 
+        .xlsx, or .xls).",
         br(),
-        br(),
-        em("See the help page for additional details on the egg characteristics,
-        which includes defintions, units, and example photos.")
+        fileInput("spreadsheet", ""),
+        "4. Preview the input and processed data displayed in the main 
+        panel to check for correctness."
       ),
       width = 3
     ),
     
     ## INPUTS 
     mainPanel(
-      
       h2("Input of Egg Characteristics"),
-      
-      ### SPREADSHEET INPUTS
-      fluidRow(
-        column(
-          h3("Template Download"),
-          p("The spreadsheet template contains columns for an egg ID and 13 
-            egg characteristics. After uploading the completed spreadhsheet, 
-            some additional will be computed. See the 'Processed Data' tab 
-            below for the complete set of 18 random forest predictor variables."),
-          p(em("It is okay to include additional variables, but they will be 
-               excluded prior to processing for the random forest.")),
-          downloadButton("downloadTemplate", "Download Template"),
-          br(),
-          h3("Spreadsheet Upload"),
-          p("Use the button below to provide a completed spreadsheet."),
-          p(em("There is no maximum number for the number of observations in 
-               a spreadsheet.")),
-          fileInput("spreadsheet", "Select a file to upload (.csv, .xlsx, .xls)"),
-          width = 12
-        )
-      ),
-      
-      # TABLES OF INPUTS
-      h3("Egg Characteristics"),
-      p("The 'Input Data' tab below contains the data uploaded to WhoseEgg. The 
-        'Processed Data' contains the egg ID and the predictor variables that 
-        will be used by the random forest. Some of the predictor variables are
-        computed from the input data."),
+      includeMarkdown("../text/input-data.md"),
       conditionalPanel(
         condition = "!is.na(output.need_data)", 
         span(textOutput("need_data"), style = "color:#f39c13")
@@ -183,14 +158,14 @@ ui <- navbarPage(
       h3("Instructions"),
       p(
         "This page is used to compute and display the random forest predictions
-        for the data provided via the 'Data Input' tab. Visualizations of the 
+        for the egg data provided via the 'Data Input' tab. Visualizations of the 
         predictions are included for further exploration of the predictions.",
         br(),
         br(),
         strong("Follow these steps to view the random forest predictions:"), 
         br(),
         br(),
-        "1. Make sure to provide input data using the 'Data Input' tab and view the
+        "1. Provide egg data using the 'Data Input' tab and view the
         processed data to check for correctness.",
         br(),
         br(),
@@ -204,7 +179,8 @@ ui <- navbarPage(
         in the main panel of this page.",
         br(),
         br(),
-        em("Note: If a new spreadsheet is provided after predictions have been computed once, the predictions will be automatically updated.")
+        em("Note: If a new spreadsheet is provided after predictions have been
+           computed once, the predictions will be automatically updated.")
       ),
       width = 3
     ),
@@ -277,12 +253,47 @@ ui <- navbarPage(
     title = "Downloads",
     sidebarPanel(
       h3("Instructions"),
+      p(
+        "This page is used to download a spreadsheet containing
+        the input egg data and the computed random forest taxonomy 
+        prediction.",
+        br(),
+        br(),
+        strong("Follow these steps to download egg data and predictions:"), 
+        br(),
+        br(),
+        "1. Provide egg data using the 'Data Input' tab and compute random
+        forest predictions using the 'Predictions' tab.",
+        br(),
+        br(),
+        "2. Click the button below to preview a table with the egg data and
+        predictions joined.",
+        br(),
+        br(),
+        actionButton("preview", "Preview Data"),
+        br(),
+        br(),
+        "3. Click the button below to download the prepared spreadsheet.",
+        br(),
+        br(),
+        downloadButton("downloadPreds", "Download Predictions")
+      ),
       width = 3
     ),
     mainPanel(
       h2("Downloads"),
-      br(),
-      downloadButton("downloadPreds", "Download Predictions")
+      fluidRow(
+        column(
+          h3("Table of Predictions"),
+          br(),
+          conditionalPanel(
+            condition = "!is.na(output.message_downoad_table)",
+            span(textOutput("message_download_table"), style = "color:grey")
+          ),
+          div(DT::dataTableOutput("download_table"), style = "font-size: 100%; width: 100%"),
+          width = 12
+          )
+        )
       ) 
   ),
   
@@ -290,9 +301,20 @@ ui <- navbarPage(
   tabPanel(
     title = "Help",
     h2("Help Page"),
-    p(
-      "Place to put helpful information including a glossary for egg characteristics"
-    )
+    tabsetPanel(
+      type = "tabs",
+      # Tab for variable definitions
+      tabPanel(
+        "Variable Definitions",
+        includeMarkdown("../text/glossary.md"),
+        width = 12
+      ),
+      # Tab details on the random forests
+      tabPanel(
+        "Random Forest Details",
+        width = 12
+      )
+    ) 
   )
   
 )
@@ -465,6 +487,29 @@ server <- function(input, output) {
     
   })
   
+  ## DOWNLOADS ---------------------------------------------------------------
+  
+  # Display predictions after button is clicked
+  observeEvent(input$preview, { 
+    if (!is.null(input_data())) {
+      # Create a table with random forest prediction results
+      output$download_table <- DT::renderDataTable({
+        # Put the random forest results in a table
+        data_and_preds() %>%
+          datatable(
+            options = list(
+              pageLength = 5,
+              scrollX = TRUE,
+              scrollCollapse = TRUE,
+              autoWidth = FALSE,
+              columnDefs = list(list(width = '1px', targets = "_all"))
+            ),
+            selection = 'single'
+          )
+      })
+    }
+    })
+      
   ## MESSAGES ----------------------------------------------------------------
   
   # Messages when no spreadsheet provided
@@ -514,6 +559,23 @@ server <- function(input, output) {
   })
   outputOptions(output, "message_pred_plots", suspendWhenHidden = FALSE)
 
+  # Provide a message where download table will be
+  output$message_download_table <- reactive({
+    if (input$preview == 0 | is.null(input$spreadsheet)) {
+      "A table with the data for downloading will appear here after inputs are 
+      provided via the 'Data Input' page and the 'Preview Data' button is clicked."
+    } else if (is.null(input_data()) |
+               !check_for_vars(input_data()) |
+               !check_fct_levels(input_data()) | 
+               !check_for_egg_ids(input_data())) {
+      "A table with the data for downloading will appear here after inputs are 
+      provided via the 'Data Input' page and the 'Preview Data' button is clicked."
+    } else {
+      NA
+    }
+  })
+  outputOptions(output, "message_download_table", suspendWhenHidden = FALSE)
+  
   ## WARNINGS ----------------------------------------------------------------
   
   # Check for missing values
