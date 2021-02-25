@@ -9,11 +9,13 @@ predicting fish species
 ## To do list for app
 
   - Overview page:
-      - Create and add video showing how to use the app
       - Add a link to Carlos’s paper (actual paper or ISU digital
         repository)
       - Clarify opening sentence and include upper Mississippi river
         basin
+      - Add text about where the data is collected and to be careful
+        using it in other locations
+      - Create and add video showing how to use the app
   - Data input page:
       - Add visualizations of new data compared to training data
       - Look into research on data input in apps
