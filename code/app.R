@@ -37,9 +37,9 @@ ui <- navbarPage(
                  h2("Welcome to the WhoseEgg App"),
                  p("WhoseEgg is a Shiny app for predicting the taxonomy of fish eggs 
                  to identiy invasive carp eggs based on characteristics of the eggs. 
-                 The predictions provided via random forest models. The models are based
+                 The predictions are provided via random forest models. The models are based
                  on Camacho et al. (2019), who successfully use random forests to identify
-                 invasive carp, and Goode et al. (2021), who validate the models from
+                 invasive carp, and Goode et al. (XXX), who validate the models from
                  Camacho et al. (2019)."),
                  h3("How to use the app"),
                  p("In order to obtain predictions for a set of eggs, follow the 
