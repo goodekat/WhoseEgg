@@ -12,6 +12,7 @@ Repository to store the code associated with the random forest app for predictin
 ## To do list for app
 
 - Overview page: 
+  - Add comments about funding
   - Add a link to Carlos’s paper (actual paper or ISU digital repository)
   - Clarify opening sentence and include upper Mississippi river basin
   - Add text about where the data is collected and to be careful using it in other locations

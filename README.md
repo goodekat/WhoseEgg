@@ -9,6 +9,7 @@ predicting fish species
 ## To do list for app
 
   - Overview page:
+      - Add comments about funding
       - Add a link to Carlos’s paper (actual paper or ISU digital
         repository)
       - Clarify opening sentence and include upper Mississippi river
