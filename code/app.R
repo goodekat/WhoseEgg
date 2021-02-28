@@ -91,6 +91,7 @@ ui <- navbarPage(
                        style = "font-size:14px;")
                    )
                  ),
+                 hr(),
                  p(em("Funding for WhoseEgg was provided by U.S. Fish and Wildlife Service - P/F03 
                  through the FWMA-Fish and Wildlife Management Assistance (Grant #F20AP11535-00).")),
                  p(em("Data privacy statement: Data uploaded to WhoseEgg will not be saved by
@@ -137,69 +138,74 @@ ui <- navbarPage(
     ## INPUTS 
     mainPanel(
       h3(strong("Input of Egg Characteristics")),
-      #includeMarkdown("../text/input-data.md"),
-      h4(strong("Spreadsheet Specifications")),
-      p("The egg characteristic data must be formatted appropriately to correctly 
-      obtain predictions. Follow the guidelines in the panels below.",
-      style = "font-size:14px;"),
-      img(src = "data-specifications.png", width = "800px"),
-      br(),
-      br(),
-      h4(strong("Egg Characteristics")),
-      p("Once the egg characteristic spreadsheet is uploaded, additional variables 
-      will be computed based on the input values to be used by the random forests. 
-      See the *'Input Data'* tab below for the data in the uploaded spreadsheet 
-      and the *'Processed Data'* tab for the set of predictor variables to be used
-      by the random forest.", style = "font-size:14px;"),
-      conditionalPanel(
-        condition = "!is.na(output.need_data)", 
-        span(textOutput("need_data"), style = "color:#f39c13")
-      ),
-      conditionalPanel(
-        condition = "!is.na(output.error_file_type_v1)", 
-        span(textOutput("error_file_type_v1"), style = "color:#f39c13")
-      ),
-      conditionalPanel(
-        condition = "!is.na(output.error_missing_egg_id_v1)", 
-        span(textOutput("error_missing_egg_id_v1"), style = "color:#f39c13")
-      ),
-      conditionalPanel(
-        condition = "!is.na(output.error_missing_vars_v1)", 
-        span(textOutput("error_missing_vars_v1"), style = "color:#f39c13")
-      ),
-      conditionalPanel(
-        condition = "!is.na(error_wrong_fct_levels_v1)", 
-        span(textOutput("error_wrong_fct_levels_v1"), style = "color:#f39c13")
-      ),
-      conditionalPanel(
-        condition = "!is.na(output.warning_missing_vals_v1)", 
-        span(textOutput("warning_missing_vals_v1"), style = "color:#3498db")
-      ), 
-      conditionalPanel(
-        condition = "!is.na(output.warning_vars_outside_ranges_v1)", 
-        span(textOutput("warning_vars_outside_ranges_v1"), style = "color:#3498db")
-      ), 
-      tabsetPanel(
-        type = "tabs",
-        # Tab for input data
-        tabPanel(
-          "Input Data",
+      fluidRow(
+        column(
+          width = 12,
+          h4("Spreadsheet Specifications"),
+          p("The egg characteristic data must be formatted appropriately to correctly 
+          obtain predictions. Follow the guidelines in the panels below.",
+          style = "font-size:14px;"),
+          #includeMarkdown("../text/specifications.Rmd"),
+          img(src = "data-specifications.png", width = "800px"),
+          br(),
+          br(),
+          h4("Egg Characteristics"),
+          p("Once the egg characteristic spreadsheet is uploaded, additional variables 
+          will be computed based on the input values to be used by the random forests. 
+          See the *'Input Data'* tab below for the data in the uploaded spreadsheet 
+          and the *'Processed Data'* tab for the set of predictor variables to be used
+          by the random forest.", style = "font-size:14px;"),
           conditionalPanel(
-            condition = "!is.na(output.message_provide_data_v1)", 
-            span(textOutput("message_provide_data_v1"), style = "color:grey")
+            condition = "!is.na(output.need_data)", 
+            span(textOutput("need_data"), style = "color:#f39c13")
           ),
-          div(DT::dataTableOutput("input_table"), style = "font-size: 100%; width: 100%")
-        ),
-        # Tab for processed data
-        tabPanel(
-          "Processed Data",
           conditionalPanel(
-            condition = "!is.na(output.message_provide_data_v2)", 
-            span(textOutput("message_provide_data_v2"), style = "color:grey")
+            condition = "!is.na(output.error_file_type_v1)", 
+            span(textOutput("error_file_type_v1"), style = "color:#f39c13")
           ),
-          div(DT::dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
+          conditionalPanel(
+            condition = "!is.na(output.error_missing_egg_id_v1)", 
+            span(textOutput("error_missing_egg_id_v1"), style = "color:#f39c13")
+          ),
+          conditionalPanel(
+            condition = "!is.na(output.error_missing_vars_v1)", 
+            span(textOutput("error_missing_vars_v1"), style = "color:#f39c13")
+          ),
+          conditionalPanel(
+            condition = "!is.na(error_wrong_fct_levels_v1)", 
+            span(textOutput("error_wrong_fct_levels_v1"), style = "color:#f39c13")
+          ),
+          conditionalPanel(
+            condition = "!is.na(output.warning_missing_vals_v1)", 
+            span(textOutput("warning_missing_vals_v1"), style = "color:#3498db")
+          ), 
+          conditionalPanel(
+            condition = "!is.na(output.warning_vars_outside_ranges_v1)", 
+            span(textOutput("warning_vars_outside_ranges_v1"), style = "color:#3498db")
+          ), 
+          tabsetPanel(
+            type = "tabs",
+            # Tab for input data
+            tabPanel(
+              "Input Data",
+              conditionalPanel(
+                condition = "!is.na(output.message_provide_data_v1)", 
+                span(textOutput("message_provide_data_v1"), style = "color:grey")
+              ),
+              div(DT::dataTableOutput("input_table"), style = "font-size: 100%; width: 100%")
+            ),
+            # Tab for processed data
+            tabPanel(
+              "Processed Data",
+              conditionalPanel(
+                condition = "!is.na(output.message_provide_data_v2)", 
+                span(textOutput("message_provide_data_v2"), style = "color:grey")
+              ),
+              div(DT::dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
+            )
+          ),
         )
-      ),
+      )
     )
   ),
   
