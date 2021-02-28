@@ -210,7 +210,7 @@ rf_pred_plot <- function(rf_results, idx) {
   plot_data %>%
     ggplot(aes(x = order, y = n, label = n)) + 
     geom_bar(stat = "identity", fill = "grey75") +
-    geom_text(aes(y = 0), nudge_y = 0.5) +
+    geom_text(aes(y = n + 0.5), nudge_y = 0.5) +
     facet_wrap(. ~ taxa, scales = "free_y") + 
     coord_flip() + 
     scale_x_discrete(
@@ -218,7 +218,7 @@ rf_pred_plot <- function(rf_results, idx) {
       labels = plot_data$pred,
       expand = c(0,0)
     ) +
-    theme_bw() + 
+    theme_bw(base_size = 14) + 
     theme(
       axis.title.y = element_blank(),
       strip.background = element_rect(fill = "white", color = "white")
@@ -260,8 +260,8 @@ rf_prob_plot <- function(rf_results, idx) {
       labels = plot_data$level,
       expand = c(0,0)
     ) +
-    scale_x_continuous(breaks = seq(from = 0, to = 1, by = 0.2), limits = c(0, 1.1)) +
-    theme_bw() +
+    scale_x_continuous(breaks = seq(from = 0, to = 1, by = 0.2), limits = c(0, 1.2)) +
+    theme_bw(base_size = 14) +
     theme(
       axis.title.y = element_blank(),
       strip.background = element_rect(fill = "white", color = "white")

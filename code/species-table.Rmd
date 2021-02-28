@@ -1,0 +1,42 @@
+---
+title: "Untitled"
+author: "Katherine Goode"
+date: "2/27/2021"
+output:
+  html_document: default
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+```{r}
+# Load library
+library(dplyr)
+
+# Load the egg data
+eggdata <- read.csv("../data/eggdata_for_app.csv")
+
+# Make table
+eggdata %>% 
+  count(Family_ACGC, Genus_ACGC, Common_Name_ACGC) %>% 
+  rename(
+    "Family" = "Family_ACGC",
+    "Genus" = "Genus_ACGC",
+    "Common Name" = "Common_Name_ACGC",
+    "Number of Eggs in Training Data" = "n"
+  ) %>%
+  knitr::kable(align = "lllc") %>%
+  kableExtra::column_spec(
+    column = 1:4, 
+    width = "3cm"
+  ) %>%
+  kableExtra::collapse_rows(
+    columns = 1:3, 
+    valign = "top"
+  )
+```
+
+<br>
+<br>
+

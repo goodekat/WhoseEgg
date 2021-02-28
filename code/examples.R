@@ -5,7 +5,7 @@ source("code/helper-functions.R")
 rfs <- readRDS("data/rfs_for_app.rds")
 
 # Load the egg data
-eggdata <- read.csv("../data/eggdata_for_app.csv")
+eggdata <- read.csv("data/eggdata_for_app.csv")
 
 # Input data
 #input_data <- read.csv("data/example_data/ten_obs_extra_vars.csv")
@@ -13,6 +13,7 @@ eggdata <- read.csv("../data/eggdata_for_app.csv")
 #input_data <- readxl::read_xlsx("data/example_data/ten_obs_wrong_level.xlsx")
 #input_data <- read.csv("data/example_data/one_obs_missing_vars.csv")
 input_data <- readxl::read_xlsx("data/example_data/ten_obs_missing_vals.xlsx")
+input_data <- readxl::read_xlsx("data/example_data/ten_obs_missing_in_extra_vars.xlsx")
 #input_data <- read.csv("data/example_data/ten_obs_missing_vals.csv")
 #input_data <- readxl::read_xlsx("data/example_data/ten_obs_obs_outside_ranges.xlsx")
 #input_data <- readxl::read_xlsx("data/example_data/ten_obs_ranges_and_missing.xlsx")

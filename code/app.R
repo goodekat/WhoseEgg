@@ -10,6 +10,7 @@ library(markdown)
 library(purrr)
 library(randomForest)
 library(shiny)
+library(shinyhelper)
 library(shinythemes)
 library(stringr)
 library(tidyr)
@@ -29,44 +30,83 @@ ui <- navbarPage(
   theme = shinytheme("flatly"),
   
   ## HOMEPAGE
-  tabPanel(title = "Overview",
+  tabPanel(title = div("Overview", style = "font-size:16px;"),
            fluidPage(
-               img(src="eggs-in-a-row.png",width="800px"),
                br(),
+               column(width = 1),
                column(
-                 h2("Welcome to the WhoseEgg App"),
-                 p("WhoseEgg is a Shiny app for predicting the taxonomy of fish eggs 
-                 to identiy invasive carp eggs based on characteristics of the eggs. 
-                 The predictions are provided via random forest models. The models are based
-                 on Camacho et al. (2019), who successfully use random forests to identify
-                 invasive carp, and Goode et al. (XXX), who validate the models from
-                 Camacho et al. (2019)."),
-                 h3("How to use the app"),
-                 p("In order to obtain predictions for a set of eggs, follow the 
-                 three step process outlined in the flow chart below.
-                 Additional details about the steps are provided on the app page
-                 corresponding to the step. See the help page for additional details about 
-                 the egg characteristics and random forest models."),
-                 img(src="flow-chart.png", width = "800px"),
-                 br(),
-                 h3("References"),
-                 p("Camacho, C.A., Sullivan, C.J., Weber, M.J. and Pierce, C.L. (2019), 
-                   Morphological Identification of Bighead Carp, Silver Carp, and Grass
-                   Carp Eggs Using Random Forests Machine Learning Classification. North 
-                   Am J Fish Manage, 39: 1373-1384. https://doi.org/10.1002/nafm.10380"),
-                 p("Goode, K.J., Weber, M.J., Matthews, A., and Pierce, C.L. (2021), XXX"),
-                 width = 8
+                 width = 9,
+                 img(src = "eggs-in-a-row.png", width = "900px"),
+                 h3(strong("Welcome to the WhoseEgg App")),
+                 span(
+                 p("WhoseEgg is a Shiny app to predict the identification of fish eggs for 
+                 detecting invasive carp (Bighead, Grass, and Silver Carp) in the Upper
+                 Mississippi River basin. Users are able to provide fish egg characteristics 
+                 to the app, and the predicted family, genus, and species taxonomy levels 
+                 will be returned. The predictions are made using random forest models that
+                 are based on the models developed in",
+                 a(href = 'https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1002/nafm.10380',
+                 "Camacho et al. (2019)"), "and validated in Goode et al. (XXX).", 
+                 p("See the tabs below for information on how to use the app and conditions 
+                 needed for the random forests used by WhoseEgg to produce trustworthy 
+                 predictions. See the help page for information about the random forest models 
+                 and definitions of the egg characteristics used by the models.")),
+                 style = "font-size:14px;"
+                 ),
+                   tabsetPanel(
+                     type = "tabs",
+                     # Tab for input data
+                     tabPanel(
+                       h5("How to use the app"),
+                       br(),
+                       p("Follow the steps below to obtain predictions. Additional instructions
+                       are inlcuded on the page corresponding to a step.", 
+                        style = "font-size:14px;"),
+                       img(src = "flow-chart.png", width = "800px"),
+                       br(),
+                       br()
+                      ),
+                     tabPanel(
+                       h5("Conditions for Using the App"),
+                       br(),
+                       img(src = "conditions.png", width = "900px"),
+                       br(),
+                       br()
+                     ),
+                     tabPanel(
+                       h5("References"),
+                       br(),
+                       p("Camacho, C.A., Sullivan, C.J., Weber, M.J. and Pierce, C.L. (2019), 
+                       Morphological Identification of Bighead Carp, Silver Carp, and Grass
+                       Carp Eggs Using Random Forests Machine Learning Classification. North 
+                       Am J Fish Manage, 39: 1373-1384.", 
+                       a(href = 'https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1002/nafm.10380',
+                         "https://doi.org/10.1002/nafm.10380."),
+                       "Manuscript version of article available in the Iowa State University
+                       Digital Repository at",
+                       a(href = "https://lib.dr.iastate.edu/nrem_pubs/327/", 
+                         "https://lib.dr.iastate.edu/nrem_pubs/327/."),
+                       style = "font-size:14px;"),
+                       p("Goode, K.J., Weber, M.J., Matthews, A., and Pierce, C.L. (2021), XXX",
+                       style = "font-size:14px;")
+                   )
+                 ),
+                 p(em("Funding for WhoseEgg was provided by U.S. Fish and Wildlife Service - P/F03 
+                 through the FWMA-Fish and Wildlife Management Assistance (Grant #F20AP11535-00).")),
+                 p(em("Data privacy statement: Data uploaded to WhoseEgg will not be saved by
+                      WhoseEgg or distributed."))
                ),
            )),
   
   ## INPUT EGG CHARACTERISTICS
   tabPanel(
     
-    title = "Data Input",
+    title = div("Data Input", style = "font-size:16px;"),
     
     ## INSTRUCTIONS
     sidebarPanel(
       h3("Instructions"),
+      span(
       p("This page contains the tools for providing the fish egg characteristics
         that will be used by the random forests to predict the fish taxonomies.",
         br(),
@@ -90,14 +130,27 @@ ui <- navbarPage(
         fileInput("spreadsheet", ""),
         "4. Preview the input and processed data displayed in the main 
         panel to check for correctness."
-      ),
+      ), style = "font-size:14px;"),
       width = 3
     ),
     
     ## INPUTS 
     mainPanel(
-      h2("Input of Egg Characteristics"),
-      includeMarkdown("../text/input-data.md"),
+      h3(strong("Input of Egg Characteristics")),
+      #includeMarkdown("../text/input-data.md"),
+      h4(strong("Spreadsheet Specifications")),
+      p("The egg characteristic data must be formatted appropriately to correctly 
+      obtain predictions. Follow the guidelines in the panels below.",
+      style = "font-size:14px;"),
+      img(src = "data-specifications.png", width = "800px"),
+      br(),
+      br(),
+      h4(strong("Egg Characteristics")),
+      p("Once the egg characteristic spreadsheet is uploaded, additional variables 
+      will be computed based on the input values to be used by the random forests. 
+      See the *'Input Data'* tab below for the data in the uploaded spreadsheet 
+      and the *'Processed Data'* tab for the set of predictor variables to be used
+      by the random forest.", style = "font-size:14px;"),
       conditionalPanel(
         condition = "!is.na(output.need_data)", 
         span(textOutput("need_data"), style = "color:#f39c13")
@@ -126,7 +179,6 @@ ui <- navbarPage(
         condition = "!is.na(output.warning_vars_outside_ranges_v1)", 
         span(textOutput("warning_vars_outside_ranges_v1"), style = "color:#3498db")
       ), 
-      br(),
       tabsetPanel(
         type = "tabs",
         # Tab for input data
@@ -153,9 +205,10 @@ ui <- navbarPage(
   
   # RANDOM FOREST PREDICTIONS
   tabPanel(
-    title = "Predictions",
+    title = div("Predictions", style = "font-size:16px;"),
     sidebarPanel(
       h3("Instructions"),
+      span(
       p(
         "This page is used to compute and display the random forest predictions
         for the egg data provided via the 'Data Input' tab. Visualizations of the 
@@ -181,11 +234,11 @@ ui <- navbarPage(
         br(),
         em("Note: If a new spreadsheet is provided after predictions have been
            computed once, the predictions will be automatically updated.")
-      ),
+      ), style = "font-size:14px;"),
       width = 3
     ),
     mainPanel(
-      h2("Results from Random Forests"),
+      h3(strong("Results from Random Forests")),
       conditionalPanel(
         condition = "!is.na(output.error_file_type_v2)", 
         span(textOutput("error_file_type_v2"), style = "color:#f39c13")
@@ -212,7 +265,9 @@ ui <- navbarPage(
       ), 
       fluidRow(
         column(
-          h3("Table of Predictions"),
+          h4("Table of Predictions"),
+          "XXX Add text here explaining the prediction table",
+          br(),
           br(),
           conditionalPanel(
             condition = "!is.na(output.message_pred_table)", 
@@ -222,7 +277,9 @@ ui <- navbarPage(
           width = 12
         )
       ),
-      h3("Visualizations of Predictions"),
+      h4("Visualizations of Predictions"),
+      "XXX Add text here explaining the visualizations",
+      br(),
       br(),
       conditionalPanel(
         condition = "!is.na(output.message_pred_plots)", 
@@ -250,9 +307,10 @@ ui <- navbarPage(
   
   # DOWNLOADS PAGE
   tabPanel(
-    title = "Downloads",
+    title = div("Downloads", style = "font-size:16px;"),
     sidebarPanel(
       h3("Instructions"),
+      span(
       p(
         "This page is used to download a spreadsheet containing
         the input egg data and the computed random forest taxonomy 
@@ -277,15 +335,17 @@ ui <- navbarPage(
         br(),
         br(),
         downloadButton("downloadPreds", "Download Predictions")
-      ),
+      ), style = "font-size:14px;"),
       width = 3
     ),
     mainPanel(
-      h2("Downloads"),
-      "Add text here describing what will be included in the downloaded spreadsheet.",
+      h3(strong("Download Data with Predictions")),
       fluidRow(
         column(
-          h3("Table of Predictions"),
+          h4("Table of Predictions"),
+          "XXX Add text here describing what is shown in the table below and what 
+          will be included in the downloaded spreadsheet.",
+          br(),
           br(),
           conditionalPanel(
             condition = "!is.na(output.message_downoad_table)",
@@ -300,22 +360,26 @@ ui <- navbarPage(
   
   # HELP PAGE
   tabPanel(
-    title = "Help",
-    h2("Help Page"),
-    tabsetPanel(
-      type = "tabs",
-      # Tab for variable definitions
-      tabPanel(
-        "Variable Definitions",
-        includeMarkdown("../text/glossary.md"),
-        width = 12
-      ),
-      # Tab details on the random forests
-      tabPanel(
-        "Random Forest Details",
-        width = 12
-      )
-    ) 
+    title = div("Help", style = "font-size:16px;"),
+    column(width = 1),
+    column(
+      width = 9,
+      h3(strong("Help Page")),
+      tabsetPanel(
+        type = "tabs",
+        # Tab for variable definitions
+        tabPanel(
+          "Variable Definitions",
+          includeMarkdown("../text/glossary.md"),
+          width = 12
+        ),
+        # Tab details on the random forests
+        tabPanel(
+          "Random Forest Details",
+          width = 12
+        )
+      ) 
+    )
   )
   
 )
@@ -592,7 +656,7 @@ server <- function(input, output) {
   # Check for missing values
   warning_missing_vals <- reactive({
     if (!is.null(input_data())) {
-      if (sum(is.na(processed_inputs())) > 0) {
+      if (sum(is.na(processed_inputs() %>% select(all_of(rf_pred_vars)))) > 0) {
         "Warning: Missing values detected in the processed data. 
         Random forests cannot return predictions for observations with missing values.
         These observations will be excluded on the 'Predictions' page."
