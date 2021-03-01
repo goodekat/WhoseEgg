@@ -145,7 +145,7 @@ ui <- navbarPage(
           p("The egg characteristic data must be formatted appropriately to correctly 
           obtain predictions. Follow the guidelines in the panels below.",
           style = "font-size:14px;"),
-          #includeMarkdown("../text/specifications.Rmd"),
+          #includeHTML("../text/specifications.html"),
           img(src = "data-specifications.png", width = "800px"),
           br(),
           br(),
@@ -376,7 +376,9 @@ ui <- navbarPage(
         # Tab for variable definitions
         tabPanel(
           "Variable Definitions",
-          includeMarkdown("../text/glossary.md"),
+          br(),
+          #includeHTML("../text/glossary.html"),
+          includeMarkdown("../text/glossary.Rmd"),
           width = 12
         ),
         # Tab details on the random forests
