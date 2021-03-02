@@ -1,0 +1,11 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+- Select a cell with a variable name to see required formats, units, or accepted levels
+
+- Cells of categorical variables contains drop down options  
+
+- Errors or warnings will appear if a values is not formatted correctly  

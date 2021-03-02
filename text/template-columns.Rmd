@@ -1,0 +1,11 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+- Fill in all variables (egg_ID and 13 egg characteristics)
+
+- See the help page for detailed definitions of the egg characteristics (includes example photos)
+
+- There is no maximum to the number of observations that may be included but at least one egg observations is required

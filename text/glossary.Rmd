@@ -4,12 +4,6 @@ output:
     theme: flatly
 ---
 
-### Identifier
-
-**Egg_ID** 
-
-Identifier associated with a fish egg (any format is fine)
-
 ### Environmental Variables
 
 **Day**
@@ -18,7 +12,7 @@ Day of the month when the fish egg was collected (formatted as an integer betwee
 
 **Conductivity**
 
-Conductivity of the water where the egg was collected
+Conductivity (microS/cm) of the water where the egg was collected
 
 **Month**
 

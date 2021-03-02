@@ -1,0 +1,9 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+- It is okay to include additional variables in the uploaded spreadsheet
+
+- Additional variables will be excluded from the processed data used for prediction but included in final downloadable spreadsheet
