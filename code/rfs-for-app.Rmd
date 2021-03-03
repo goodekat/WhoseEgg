@@ -70,6 +70,7 @@ eggdata_for_app <-
       "carp-egg-rf-validation/master/results/eggdata141516.csv"
     )
   ) %>% 
+  mutate()
   # Convert necessary variables to factors
   mutate_at(
     .vars = c(

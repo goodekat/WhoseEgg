@@ -39,19 +39,8 @@ ui <- navbarPage(
                  img(src = "eggs-in-a-row.png", width = "900px"),
                  h3(strong("Welcome to the WhoseEgg App")),
                  span(
-                 p("WhoseEgg is a Shiny app to predict the identification of fish eggs for 
-                 detecting invasive carp (Bighead, Grass, and Silver Carp) in the Upper
-                 Mississippi River basin. Users are able to provide fish egg characteristics 
-                 to the app, and the predicted family, genus, and species taxonomy levels 
-                 will be returned. The predictions are made using random forest models that
-                 are based on the models developed in",
-                 a(href = 'https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1002/nafm.10380',
-                 "Camacho et al. (2019)"), "and validated in Goode et al. (XXX).", 
-                 p("See the tabs below for information on how to use the app and conditions 
-                 needed for the random forests used by WhoseEgg to produce trustworthy 
-                 predictions. See the help page for information about the random forest models 
-                 and definitions of the egg characteristics used by the models.")),
-                 style = "font-size:15px;"
+                   includeMarkdown("../text/header-overview.Rmd"),
+                  style = "font-size:14px;"
                  ),
                    tabsetPanel(
                      type = "tabs",
@@ -67,18 +56,37 @@ ui <- navbarPage(
                        br()
                       ),
                      tabPanel(
-                       h5("Conditions for Using the App"),
+                       h5("Locations in Training Data"),
                        br(),
-                       img(src = "conditions.png", width = "900px"),
+                       img(src = "locations.png", width = "900px"),
+                       br(),
+                       br()
+                     ),
+                     tabPanel(
+                       h5("Species in Training Data"),
+                       br(),
+                       img(src = "species.png", width = "900px"),
+                       br(),
+                       br()
+                     ),
+                     tabPanel(
+                       h5("Eggs from New Locations"),
+                       br(),
+                       p("For eggs collected in locations different than those where eggs
+                         were collected for training the models or regions where additional 
+                         species are known to be present, XXX need to finish writing XXX", 
+                       style = "font-size:14px;"),
                        br(),
                        br()
                      )
                  ),
                  hr(),
-                 p(em("Funding for WhoseEgg was provided by U.S. Fish and Wildlife Service - P/F03 
-                 through the FWMA-Fish and Wildlife Management Assistance (Grant #F20AP11535-00).")),
-                 p(em("Data privacy statement: Data uploaded to WhoseEgg will not be saved by
-                      WhoseEgg or distributed."))
+                 span(
+                    p(em("Funding for WhoseEgg was provided by the U.S. Fish and Wildlife Service 
+                    through Grant #F20AP11535-00.")),
+                    p(em("Data privacy statement: Data uploaded to WhoseEgg will not be saved by
+                    WhoseEgg or distributed.")),
+                 style = "font-size:14px;")
                ),
            )),
   
@@ -431,39 +439,53 @@ ui <- navbarPage(
         includeMarkdown("../text/header-help.Rmd"),
         style = "font-size:14px;"
       ),
-      hr(),
       tabsetPanel(
         type = "tabs",
         # Tab for variable definitions
         tabPanel(
           "Environmental Variables",
           br(),
-          includeMarkdown("../text/vars-env.Rmd"),
+          includeMarkdown("../text/help-vars-env.Rmd"),
           width = 12
         ),
         # Tab for input table specifications
         tabPanel(
           "Morphological Variables",
           br(),
-          span(includeMarkdown("../text/vars-morph.Rmd"), style = "font-size:14px;"),
+          span(includeMarkdown("../text/help-vars-morph.Rmd"), style = "font-size:14px;"),
           width = 12
         ),
         # Tab details on the random forests
         tabPanel(
           "Random Forest Details",
+          span(
+            includeMarkdown("../text/help-random-forest.Rmd"),
+            style = "font-size:14px;"
+          ),
           width = 12
         ),
         tabPanel(
           "Contact",
-          width = 12
-        ),
-        tabPanel(
-          "References",
-          br(),
-          span(includeMarkdown("../text/references.Rmd"), style = "font-size:14px;"),
+          span(includeMarkdown("../text/help-contact.Rmd"), style = "font-size:14px;"),
           width = 12
         )
       ) 
+    )
+  ),
+  
+  # REFERENCES
+  tabPanel(
+    title = div("References", style = "font-size:14px;"),
+    column(width = 1),
+    column(
+      width = 9,
+      img(src = "larval-ac.png", width = "900px"),
+      br(),
+      br(),
+      span(
+        includeMarkdown("../text/references.Rmd"),
+        style = "font-size:14px;"
+      )
     )
   )
   
@@ -811,7 +833,7 @@ server <- function(input, output) {
   
   # Check that it is possible to compute dates
   error_na_in_dates <- reactive({
-    if (!is.null(input_data())) {
+    if (!is.null(input_data()) & "Day" %in% names(input_data())) {
       if (!check_dates(input_data())) {
         paste(
           "Error: Not possible to compute Julian day for the following egg IDs: \n", 

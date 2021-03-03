@@ -9,7 +9,7 @@ compute_variables <- function(df) {
     mutate(Julian_Day = lubridate::yday(Date),
            Membrane_CV = Membrane_SD / Membrane_Ave,
            Yolk_CV = Yolk_SD / Yolk_Ave, 
-           Yolk_to_Membrane_Ratio = Yolk_Ave / Membrane_Ave) %>%
+           Yolk_to_Membrane_Ratio = 1 - (Yolk_Ave / Membrane_Ave)) %>%
     select(-Date)
 }
 

@@ -17,8 +17,11 @@ Repository to store the code associated with the random forest app for predictin
 ## To do list for app
 
 - Overview page:
+  - **Allow option for inputting Julian day**
   - Create and add video showing how to use the app
-
+  - Add a new tab for "what if I have data from different locations"?
+  - Convert text in tabs to html or R code
+  
 <br>
 
 - Data input page:
