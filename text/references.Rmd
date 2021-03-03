@@ -1,0 +1,11 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+Camacho, C.A., Sullivan, C.J., Weber, M.J. and Pierce, C.L. (2019), Morphological Identification of Bighead Carp, Silver Carp, and Grass Carp Eggs Using Random Forests Machine Learning Classification. North Am J Fish Manage, 39: 1373-1384. [https://afspubs.onlinelibrary.wiley.com/doi/10.1002/nafm.10380](https://afspubs.onlinelibrary.wiley.com/doi/10.1002/nafm.10380). Preprint available at [https://lib.dr.iastate.edu/nrem_pubs/327/](https://lib.dr.iastate.edu/nrem_pubs/327/).
+
+Goode, K.J., Weber, M.J., Matthews, A., and Pierce, C.L. (2021), XXX
+                       
+Kelso, W. E., and D. A. Rutherford. 1996. Collection, preservation, and identification of fish eggs and larvae. Pages 255–302 in B. R. Murphy and D. W. Willis, editors. Fisheries techniques. American Fisheries Society, Bethesda, Maryland.

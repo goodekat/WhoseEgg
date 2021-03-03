@@ -72,24 +72,7 @@ ui <- navbarPage(
                        img(src = "conditions.png", width = "900px"),
                        br(),
                        br()
-                     ),
-                     tabPanel(
-                       h5("References"),
-                       br(),
-                       p("Camacho, C.A., Sullivan, C.J., Weber, M.J. and Pierce, C.L. (2019), 
-                       Morphological Identification of Bighead Carp, Silver Carp, and Grass
-                       Carp Eggs Using Random Forests Machine Learning Classification. North 
-                       Am J Fish Manage, 39: 1373-1384.", 
-                       a(href = 'https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1002/nafm.10380',
-                         "https://doi.org/10.1002/nafm.10380."),
-                       "Manuscript version of article available in the Iowa State University
-                       Digital Repository at",
-                       a(href = "https://lib.dr.iastate.edu/nrem_pubs/327/", 
-                         "https://lib.dr.iastate.edu/nrem_pubs/327/."),
-                       style = "font-size:14px;"),
-                       p("Goode, K.J., Weber, M.J., Matthews, A., and Pierce, C.L. (2021), XXX",
-                       style = "font-size:14px;")
-                   )
+                     )
                  ),
                  hr(),
                  p(em("Funding for WhoseEgg was provided by U.S. Fish and Wildlife Service - P/F03 
@@ -444,8 +427,11 @@ ui <- navbarPage(
     column(
       width = 9,
       h3(strong("Help Page")),
-      p("See the tabs below for additional information to assist with the 
-        use of WhoseEgg.", style = "font-size:14px;"),
+      span(
+        includeMarkdown("../text/header-help.Rmd"),
+        style = "font-size:14px;"
+      ),
+      hr(),
       tabsetPanel(
         type = "tabs",
         # Tab for variable definitions
@@ -469,6 +455,12 @@ ui <- navbarPage(
         ),
         tabPanel(
           "Contact",
+          width = 12
+        ),
+        tabPanel(
+          "References",
+          br(),
+          span(includeMarkdown("../text/references.Rmd"), style = "font-size:14px;"),
           width = 12
         )
       ) 
@@ -820,7 +812,7 @@ server <- function(input, output) {
   # Check that it is possible to compute dates
   error_na_in_dates <- reactive({
     if (!is.null(input_data())) {
-      if (!check_day_in_month(input_data())) {
+      if (!check_dates(input_data())) {
         paste(
           "Error: Not possible to compute Julian day for the following egg IDs: \n", 
           paste(get_na_dates(input_data()), collapse = ", ")

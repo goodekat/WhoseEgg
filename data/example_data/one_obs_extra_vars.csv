@@ -1,2 +1,0 @@
-﻿Egg_ID,Dataset,Site,River,Year,Month,Day,Julian_Day,Temperature,Conductivity,Larval_Length,Membrane_Ave,Membrane_SD,Membrane_CV,Yolk_to_Membrane_Ratio,Yolk_Ave,Yolk_SD,Yolk_CV,Egg_Stage,Compact_Diffuse,Pigment,Sticky_Debris,Deflated
-1,original,UPI,UMR,2014,7,14,209,24.7,522,0,1.42716625,0.043584913,0.030539479,1,1.42716625,0.043584913,0.030539479,D,D,Y,N,N

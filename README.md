@@ -10,6 +10,7 @@ predicting fish species
   - Added an error in R if day entered does not agree with month
   - Tried \<br\> instead of \\n for printing list in an error – didn’t
     work
+  - Added figures from Carlos
 
 ## To do list for app
 
@@ -42,7 +43,6 @@ predicting fish species
   - Help page
       - **Write variable definitions (include short definitions and
         additional details for more complicated variables)**
-      - **Add figures from Carlos**
       - **Have tab with information on random forest**
 
 <br>

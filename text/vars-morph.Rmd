@@ -6,17 +6,19 @@ output:
 
 #### **Average of Membrane Diameters**
 
-**Definition**:
+**Definition**: The average of four diameter measurements (mm) taken from the membrane with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
 
 **Spreadsheet Variable Name**: Membrane_Ave
 
-**Format**:
+**Format**: Positive continuous variable
 
 **Required Upload or Computed After Upload**: Required upload
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**:
+**Additional Information**: Training data averages of membrane diameters range between 0.728	mm and 5.492 mm
+
+The images below show an examples of four equally spaced membrane diameter measurements.
 
 <img src="../code/www/membrane-diameter.png" height="200">
 
@@ -24,17 +26,19 @@ output:
 
 #### **Average of Yolk Diameters**
 
-**Definition**:
+**Definition**: The average of four yolk measurements (mm) taken from the membrane with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
 
 **Spreadsheet Variable Name**: Yolk_Ave
 
-**Format**:
+**Format**: Positive continuous variable
 
 **Required Upload or Computed After Upload**: Required upload
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**:
+**Additional Information**: Training data averages of yolk diameters range between 0.434	mm and 4.371 mm
+
+The images below show an examples of four equally spaced yolk diameter measurements.
 
 <img src="../code/www/yolk-diameter.png" height="200">
 
@@ -42,17 +46,17 @@ output:
 
 #### **Coefficient of Variation of Membrane Diameters**
 
-**Definition**:
+**Definition**: The coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the membrane with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
 
 **Spreadsheet Variable Name**: Membrane_CV
 
-**Format**:
+**Format**: Positive continuous variable
 
 **Required Upload or Computed After Upload**: Computed after upload
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**:
+**Additional Information**: Training data coefficients of variation of membrane diameters range between 0.001 mm and 0.520 mm
 
 <hr/>
 
