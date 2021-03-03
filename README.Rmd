@@ -9,6 +9,10 @@ Repository to store the code associated with the random forest app for predictin
 
 ## Changes made
 
+- Added a comment in app describing how to turn “helpers” off
+- Added an error in R if day entered does not agree with month
+- Tried \<br> instead of \\n for printing list in an error -- didn't work
+
 ## To do list for app
 
 - Overview page:
@@ -17,9 +21,7 @@ Repository to store the code associated with the random forest app for predictin
 <br>
 
 - Data input page:
-  - **Add a comment in app describing how to turn “helpers” off**
-  - **Add an error in R if day entered does not agree with month**
-  - **For lists in the errors – try printing as a table/data frame – or try <br> instead of \n**
+  - **Print lists in the errors with row breaks**
   - Add visualizations of new data compared to training data
   - Look into research on data input in apps
   - Try using Google forms for input options – could even embed it in the app

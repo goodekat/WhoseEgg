@@ -142,6 +142,38 @@ ui <- navbarPage(
         includeMarkdown("../text/header-inputs.Rmd"),
         style = "font-size:14px;"
       ),
+      conditionalPanel(
+        condition = "!is.na(output.need_data)", 
+        span(textOutput("need_data"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_file_type_v1)", 
+        span(textOutput("error_file_type_v1"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_missing_egg_id_v1)", 
+        span(textOutput("error_missing_egg_id_v1"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_missing_vars_v1)", 
+        span(textOutput("error_missing_vars_v1"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(error_wrong_fct_levels_v1)", 
+        span(textOutput("error_wrong_fct_levels_v1"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_na_in_dates_v1)", 
+        span(textOutput("error_na_in_dates_v1"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.warning_missing_vals_v1)", 
+        span(textOutput("warning_missing_vals_v1"), style = "color:#3498db")
+      ), 
+      conditionalPanel(
+        condition = "!is.na(output.warning_vars_outside_ranges_v1)", 
+        span(textOutput("warning_vars_outside_ranges_v1"), style = "color:#3498db")
+      ),
       hr(),
       fluidRow(
         column(
@@ -156,34 +188,6 @@ ui <- navbarPage(
           ),
           hr(),
           h4("Egg Characteristics"),
-          conditionalPanel(
-            condition = "!is.na(output.need_data)", 
-            span(textOutput("need_data"), style = "color:#f39c13")
-          ),
-          conditionalPanel(
-            condition = "!is.na(output.error_file_type_v1)", 
-            span(textOutput("error_file_type_v1"), style = "color:#f39c13")
-          ),
-          conditionalPanel(
-            condition = "!is.na(output.error_missing_egg_id_v1)", 
-            span(textOutput("error_missing_egg_id_v1"), style = "color:#f39c13")
-          ),
-          conditionalPanel(
-            condition = "!is.na(output.error_missing_vars_v1)", 
-            span(textOutput("error_missing_vars_v1"), style = "color:#f39c13")
-          ),
-          conditionalPanel(
-            condition = "!is.na(error_wrong_fct_levels_v1)", 
-            span(textOutput("error_wrong_fct_levels_v1"), style = "color:#f39c13")
-          ),
-          conditionalPanel(
-            condition = "!is.na(output.warning_missing_vals_v1)", 
-            span(textOutput("warning_missing_vals_v1"), style = "color:#3498db")
-          ), 
-          conditionalPanel(
-            condition = "!is.na(output.warning_vars_outside_ranges_v1)", 
-            span(textOutput("warning_vars_outside_ranges_v1"), style = "color:#3498db")
-          ), 
           tabsetPanel(
             type = "tabs",
             # Tab for input data
@@ -267,13 +271,17 @@ ui <- navbarPage(
         span(textOutput("error_wrong_fct_levels_v2"), style = "color:#f39c13")
       ),
       conditionalPanel(
+        condition = "!is.na(output.error_na_in_dates_v2)", 
+        span(textOutput("error_na_in_dates_v2"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
         condition = "!is.na(output.warning_missing_vals_v2)", 
         span(textOutput("warning_missing_vals_v2"), style = "color:#3498db")
       ), 
       conditionalPanel(
         condition = "!is.na(output.warning_vars_outside_ranges_v2)", 
         span(textOutput("warning_vars_outside_ranges_v2"), style = "color:#3498db")
-      ), 
+      ),
       hr(),
       fluidRow(
         column(
@@ -383,6 +391,34 @@ ui <- navbarPage(
         includeMarkdown("../text/header-downloads.Rmd"),
         style = "font-size:14px;"
       ),
+      conditionalPanel(
+        condition = "!is.na(output.warning_vars_outside_ranges_v3)", 
+        span(textOutput("warning_vars_outside_ranges_v3"), style = "color:#3498db")
+      ),
+      conditionalPanel(
+        condition = "!is.na(error_wrong_fct_levels_v3)", 
+        span(textOutput("error_wrong_fct_levels_v3"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_missing_vars_v3)", 
+        span(textOutput("error_missing_vars_v3"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_missing_egg_id_v3)", 
+        span(textOutput("error_missing_egg_id_v3"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_na_in_dates_v3)", 
+        span(textOutput("error_na_in_dates_v3"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_file_type_v3)", 
+        span(textOutput("error_file_type_v3"), style = "color:#f39c13")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.warning_missing_vals_v3)", 
+        span(textOutput("warning_missing_vals_v3"), style = "color:#3498db")
+      ),
       hr(),
       fluidRow(
         column(
@@ -409,21 +445,21 @@ ui <- navbarPage(
       width = 9,
       h3(strong("Help Page")),
       p("See the tabs below for additional information to assist with the 
-        use of WhoseEgg.", style = "font-size:15px;"),
-      hr(),
+        use of WhoseEgg.", style = "font-size:14px;"),
       tabsetPanel(
         type = "tabs",
         # Tab for variable definitions
         tabPanel(
-          "Variable Definitions",
+          "Environmental Variables",
           br(),
-          includeMarkdown("../text/glossary.Rmd"),
+          includeMarkdown("../text/vars-env.Rmd"),
           width = 12
         ),
         # Tab for input table specifications
         tabPanel(
-          "Input Data",
+          "Morphological Variables",
           br(),
+          span(includeMarkdown("../text/vars-morph.Rmd"), style = "font-size:14px;"),
           width = 12
         ),
         # Tab details on the random forests
@@ -481,11 +517,13 @@ server <- function(input, output) {
       validate(need(check_fct_levels(input_data()), message = FALSE))
       validate(need(check_for_egg_ids(input_data()), message = FALSE))
       # Process the inputs as needed for the random forest
-      input_data() %>%
+      processed <- 
+        input_data() %>%
         compute_variables() %>%
         adjust_variable_types() %>%
         adjust_factor_levels() %>%
         sort_vars()
+      processed
     }
   })
   
@@ -713,43 +751,6 @@ server <- function(input, output) {
     }
   )
   
-  ## WARNINGS ----------------------------------------------------------------
-  
-  # Check for missing values
-  warning_missing_vals <- reactive({
-    if (!is.null(input_data())) {
-      if (sum(is.na(processed_inputs() %>% select(all_of(rf_pred_vars)))) > 0) {
-        "Warning: Missing values detected in the processed data. 
-        Random forests cannot return predictions for observations with missing values.
-        These observations will be excluded on the 'Predictions' page."
-      } else NA
-    }
-  })
-  output$warning_missing_vals_v1 <- warning_missing_vals
-  output$warning_missing_vals_v2 <- warning_missing_vals 
-  outputOptions(output, "warning_missing_vals_v1", suspendWhenHidden = FALSE)
-  outputOptions(output, "warning_missing_vals_v2", suspendWhenHidden = FALSE)
-  
-  # Check to make sure all necessary inputs have been provided
-  warning_vars_outside_ranges <- reactive({
-    if (!is.null(input_data())) {
-      if (!check_var_ranges(processed_inputs())) {
-        paste(
-          "Warning: Some continuous variables outside of ranges in training data.
-          This will lead to model extrapolation and possibly poor predictions.
-          Egg IDs with values outside of ranges: ",
-          paste(get_outside_var_ranges(input_data()), collapse = ", ")
-        )
-      } else {
-        NA
-      }
-    }
-  })
-  output$warning_vars_outside_ranges_v1 <- warning_vars_outside_ranges
-  output$warning_vars_outside_ranges_v2 <- warning_vars_outside_ranges
-  outputOptions(output, "warning_vars_outside_ranges_v1", suspendWhenHidden = FALSE)
-  outputOptions(output, "warning_vars_outside_ranges_v2", suspendWhenHidden = FALSE)
-  
   ## ERRORS ------------------------------------------------------------------
   
   # Check that an appropriate file type was provided
@@ -760,21 +761,25 @@ server <- function(input, output) {
   })
   output$error_file_type_v1 <- error_file_type
   output$error_file_type_v2 <- error_file_type
+  output$error_file_type_v3 <- error_file_type
   outputOptions(output, "error_file_type_v1", suspendWhenHidden = FALSE)
   outputOptions(output, "error_file_type_v2", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_file_type_v3", suspendWhenHidden = FALSE)
   
   # Check all egg ids provided
   error_missing_egg_id <- reactive({
     if (!is.null(input_data())) {
       if (!check_for_egg_ids(input_data())) {
-        "Egg_ID missing: Must provide all Egg IDs"
+        "Error: Must provide all Egg IDs"
       } else { NA }
     }
   })
   output$error_missing_egg_id_v1 <- error_missing_egg_id
   output$error_missing_egg_id_v2 <- error_missing_egg_id
+  output$error_missing_egg_id_v3 <- error_missing_egg_id
   outputOptions(output, "error_missing_egg_id_v1", suspendWhenHidden = FALSE)
   outputOptions(output, "error_missing_egg_id_v2", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_missing_egg_id_v3", suspendWhenHidden = FALSE)
   
   # Check to make sure all necessary inputs have been provided
   error_missing_vars <- reactive({
@@ -789,8 +794,10 @@ server <- function(input, output) {
   })
   output$error_missing_vars_v1 <- error_missing_vars
   output$error_missing_vars_v2 <- error_missing_vars
+  output$error_missing_vars_v3 <- error_missing_vars
   outputOptions(output, "error_missing_vars_v1", suspendWhenHidden = FALSE)
   outputOptions(output, "error_missing_vars_v2", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_missing_vars_v3", suspendWhenHidden = FALSE)
   
   # Check to make sure all necessary inputs have been provided
   error_wrong_fct_levels <- reactive({
@@ -805,8 +812,69 @@ server <- function(input, output) {
   })
   output$error_wrong_fct_levels_v1 <- error_wrong_fct_levels
   output$error_wrong_fct_levels_v2 <- error_wrong_fct_levels
+  output$error_wrong_fct_levels_v3 <- error_wrong_fct_levels
   outputOptions(output, "error_wrong_fct_levels_v1", suspendWhenHidden = FALSE)
   outputOptions(output, "error_wrong_fct_levels_v2", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_wrong_fct_levels_v3", suspendWhenHidden = FALSE)
+  
+  # Check that it is possible to compute dates
+  error_na_in_dates <- reactive({
+    if (!is.null(input_data())) {
+      if (!check_day_in_month(input_data())) {
+        paste(
+          "Error: Not possible to compute Julian day for the following egg IDs: \n", 
+          paste(get_na_dates(input_data()), collapse = ", ")
+        )
+      } else { NA }
+    }
+  })
+  output$error_na_in_dates_v1 <- error_na_in_dates
+  output$error_na_in_dates_v2 <- error_na_in_dates
+  output$error_na_in_dates_v3 <- error_na_in_dates
+  outputOptions(output, "error_na_in_dates_v1", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_na_in_dates_v2", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_na_in_dates_v3", suspendWhenHidden = FALSE)
+  
+  ## WARNINGS ----------------------------------------------------------------
+  
+  # Check for missing values
+  warning_missing_vals <- reactive({
+    if (!is.null(input_data())) {
+      if (sum(is.na(processed_inputs() %>% select(all_of(rf_pred_vars)))) > 0) {
+        "Warning: Missing values detected in the processed data. 
+        Random forests cannot return predictions for observations with missing values.
+        These observations will be excluded on the 'Predictions' page."
+      } else NA
+    }
+  })
+  output$warning_missing_vals_v1 <- warning_missing_vals
+  output$warning_missing_vals_v2 <- warning_missing_vals
+  output$warning_missing_vals_v3 <- warning_missing_vals
+  outputOptions(output, "warning_missing_vals_v1", suspendWhenHidden = FALSE)
+  outputOptions(output, "warning_missing_vals_v2", suspendWhenHidden = FALSE)
+  outputOptions(output, "warning_missing_vals_v3", suspendWhenHidden = FALSE)
+  
+  # Check for variables that will lead to extrapolation
+  warning_vars_outside_ranges <- reactive({
+    if (!is.null(input_data())) {
+      if (!check_var_ranges(processed_inputs())) {
+        paste(
+          "Warning: Some variables outside of ranges in training data.
+          This will lead to model extrapolation and possibly poor predictions.
+          Egg IDs with values outside of ranges: ",
+          paste(get_outside_var_ranges(processed_inputs()), collapse = ", ")
+        )
+      } else {
+        NA
+      }
+    }
+  })
+  output$warning_vars_outside_ranges_v1 <- warning_vars_outside_ranges
+  output$warning_vars_outside_ranges_v2 <- warning_vars_outside_ranges
+  output$warning_vars_outside_ranges_v3 <- warning_vars_outside_ranges
+  outputOptions(output, "warning_vars_outside_ranges_v1", suspendWhenHidden = FALSE)
+  outputOptions(output, "warning_vars_outside_ranges_v2", suspendWhenHidden = FALSE)
+  outputOptions(output, "warning_vars_outside_ranges_v3", suspendWhenHidden = FALSE)
   
 }
 

@@ -392,7 +392,12 @@ check_var_ranges <- function(df) {
     max(df$Membrane_SD, na.rm = TRUE) > max(eggdata$Membrane_SD, na.rm = TRUE),
     max(df$Yolk_Ave, na.rm = TRUE) > max(eggdata$Yolk_Ave, na.rm = TRUE),
     max(df$Yolk_SD, na.rm = TRUE) > max(eggdata$Yolk_SD, na.rm = TRUE),
-    max(df$Larval_Length, na.rm = TRUE) > max(eggdata$Larval_Length, na.rm = TRUE)
+    max(df$Larval_Length, na.rm = TRUE) > max(eggdata$Larval_Length, na.rm = TRUE),
+    
+    # Identify any months or Julian days not in training data
+    !(unique(na.omit(df$Month)) %in% unique(eggdata$Month)),
+    !(unique(na.omit(df$Julian_Day)) %in% unique(eggdata$Julian_Day))
+    
   )
   
   # Return TRUE if all variables fall within the training data ranges
@@ -481,8 +486,10 @@ get_outside_var_ranges <- function(df) {
   ykav_check = df$Yolk_Ave < min(eggdata$Yolk_Ave) | df$Yolk_Ave > max(eggdata$Yolk_Ave)
   yksd_check = df$Yolk_SD < min(eggdata$Yolk_SD) | df$Yolk_SD > max(eggdata$Yolk_SD)
   lvln_check = df$Larval_Length < min(eggdata$Larval_Length) | df$Larval_Length > max(eggdata$Larval_Length)
+  mnth_check = !(df$Month %in% unique(eggdata$Month))
+  judy_check = !(df$Julian_Day %in% unique(eggdata$Julian_Day))
   
-  # Identify the wrong levels
+  # Specify the ranges of training data variables
   cond_range = paste0("Conductivity (", min(eggdata$Conductivity), " to ", max(eggdata$Conductivity), " microS/cm):")
   temp_range = paste0("Temperature (", min(eggdata$Temperature), " to ", max(eggdata$Temperature), " C):")
   meav_range = paste0("Membrane_Ave (", min(eggdata$Membrane_Ave), " to ", max(eggdata$Membrane_Ave), " mm):")
@@ -490,9 +497,10 @@ get_outside_var_ranges <- function(df) {
   ykav_range = paste0("Yolk_Ave (", min(eggdata$Yolk_Ave), " to ", max(eggdata$Yolk_Ave), " mm):")
   yksd_range = paste0("Yolk_SD (", min(eggdata$Yolk_SD), " to ", max(eggdata$Yolk_SD), " mm):")
   lvln_range = paste0("Larval_Length (", min(eggdata$Larval_Length), " to ", max(eggdata$Larval_Length), " mm):")
+  mnth_range = paste0("Month (", min(eggdata$Month), " to ", max(eggdata$Month), "):")
+  judy_range = paste0("Julian_Day (", min(eggdata$Julian_Day), " to ", max(eggdata$Julian_Day), "):")
   
-  
-  # Create a vector with the factors and their wrong levels
+  # Create a vector with the variables and their wrong levels
   messages <-
     c(
       ifelse(TRUE %in% cond_check, paste(cond_range, "Egg IDs of", df$Egg_ID[cond_check], collapse = ","), NA),
@@ -501,10 +509,36 @@ get_outside_var_ranges <- function(df) {
       ifelse(TRUE %in% mesd_check, paste(mesd_range, "Egg IDs of", df$Egg_ID[mesd_check], collapse = ","), NA),
       ifelse(TRUE %in% ykav_check, paste(ykav_range, "Egg IDs of", df$Egg_ID[ykav_check], collapse = ","), NA),
       ifelse(TRUE %in% yksd_check, paste(yksd_range, "Egg IDs of", df$Egg_ID[yksd_check], collapse = ","), NA),
-      ifelse(TRUE %in% lvln_check, paste(lvln_range, "Egg IDs of", df$Egg_ID[lvln_check], collapse = ","), NA)
+      ifelse(TRUE %in% lvln_check, paste(lvln_range, "Egg IDs of", df$Egg_ID[lvln_check], collapse = ","), NA),
+      ifelse(TRUE %in% mnth_check, paste(mnth_range, "Egg IDs of", df$Egg_ID[mnth_check], collapse = ","), NA),
+      ifelse(TRUE %in% judy_check, paste(judy_range, "Egg IDs of", df$Egg_ID[judy_check], collapse = ","), NA)
     )
   
   # Return the factors with wrong levels and the corresponding wrong levels
   return(messages[!is.na(messages)])
+  
+}
+
+check_dates <- function(df) {
+  
+  # Determine if any NAs are computed when applying lubridate
+  date_computed_nas <- 
+    df %>% 
+    mutate(Date = lubridate::make_date(Year, Month, Day)) %>%
+    select(Date) %>% 
+    is.na()
+  
+  # Return TRUE if all levels are correct/acceptable
+  return(sum(date_computed_nas == 0))
+  
+}
+
+get_na_dates <- function(df){
+  
+  # Return Egg IDs where Date becomes NA
+  df %>% 
+    mutate(Date = lubridate::make_date(Year, Month, Day)) %>%
+    filter(is.na(Date)) %>%
+    pull(Egg_ID)
   
 }

@@ -12,8 +12,9 @@ eggdata <- read.csv("data/eggdata_for_app.csv")
 #input_data <- readxl::read_xlsx("data/example_data/one_obs_min_vars.xlsx")
 #input_data <- readxl::read_xlsx("data/example_data/ten_obs_wrong_level.xlsx")
 #input_data <- read.csv("data/example_data/one_obs_missing_vars.csv")
-input_data <- readxl::read_xlsx("data/example_data/ten_obs_missing_vals.xlsx")
-input_data <- readxl::read_xlsx("data/example_data/ten_obs_missing_in_extra_vars.xlsx")
+#input_data <- readxl::read_xlsx("data/example_data/ten_obs_missing_vals.xlsx")
+#input_data <- readxl::read_xlsx("data/example_data/ten_obs_min_vars_julian_day_outside.xlsx")
+input_data <- read.csv("data/example_data/ten_obs_wrong_day_in_month.csv")
 #input_data <- read.csv("data/example_data/ten_obs_missing_vals.csv")
 #input_data <- readxl::read_xlsx("data/example_data/ten_obs_obs_outside_ranges.xlsx")
 #input_data <- readxl::read_xlsx("data/example_data/ten_obs_ranges_and_missing.xlsx")
@@ -21,8 +22,8 @@ check_for_vars(input_data)
 get_missing_vars(input_data)
 check_fct_levels(input_data)
 get_wrong_fct_levels(input_data)
-check_var_ranges(input_data)
-get_outside_var_ranges(input_data)
+check_day_in_month(input_data)
+get_na_dates(input_data)
 
 # Process the inputs as needed for the random forest
 processed_inputs <-
@@ -31,6 +32,9 @@ processed_inputs <-
   adjust_variable_types() %>%
   adjust_factor_levels() %>%
   sort_vars()
+
+check_var_ranges(processed_inputs)
+get_outside_var_ranges(processed_inputs)
 
 # Prepare the inputs for the random forest
 inputs_clean <- processed_inputs %>% select(all_of(rf_pred_vars))

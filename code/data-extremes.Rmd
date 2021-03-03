@@ -21,6 +21,12 @@ eggdata <- read.csv("../data/eggdata_for_app.csv")
 ```
 
 ```{r}
+unique(eggdata$Month)
+sort(unique(eggdata$Julian_Day))
+```
+
+
+```{r}
 unique(eggdata$Deflated)
 unique(eggdata$Pigment)
 unique(eggdata$Egg_Stage)
