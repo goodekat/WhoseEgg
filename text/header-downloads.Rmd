@@ -1,0 +1,7 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+The **Download Preview Table** below contains the data that will be included in the spreadsheet when downloaded. The variables include all initial variables uploaded to WhoseEgg, variables computed to generate random forest predictions, the random forest predictions, and the random forest probabilities for all taxonomic levels.

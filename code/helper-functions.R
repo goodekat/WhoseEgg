@@ -218,13 +218,13 @@ rf_pred_plot <- function(rf_results, idx) {
       labels = plot_data$pred,
       expand = c(0,0)
     ) +
-    theme_bw(base_size = 14) + 
+    theme_bw(base_size = 16) + 
     theme(
       axis.title.y = element_blank(),
       strip.background = element_rect(fill = "white", color = "white")
     ) +
     labs(
-      y = "Total number of eggs",
+      y = "Number of eggs",
       title = "Frequency of taxonomic level predictions"
     )
   
@@ -253,7 +253,7 @@ rf_prob_plot <- function(rf_results, idx) {
   plot_data %>%
     ggplot(aes(x = prob, y = order, label = prob)) + 
     geom_col(fill = "grey75") + 
-    geom_text(aes(x = 1), nudge_x = 0.06) +
+    geom_text(aes(x = 1), nudge_x = 0.1) +
     facet_wrap(. ~ taxa, nrow = 1, scales = "free_y") + 
     scale_y_discrete(
       breaks = plot_data$order,
@@ -261,12 +261,12 @@ rf_prob_plot <- function(rf_results, idx) {
       expand = c(0,0)
     ) +
     scale_x_continuous(breaks = seq(from = 0, to = 1, by = 0.2), limits = c(0, 1.2)) +
-    theme_bw(base_size = 14) +
+    theme_bw(base_size = 16) +
     theme(
       axis.title.y = element_blank(),
       strip.background = element_rect(fill = "white", color = "white")
     ) + 
-    labs(x = "Random Forest Probability", 
+    labs(x = "Random forest probability", 
          title = "Random forest probabilities for all taxonomic levels")
   
 }

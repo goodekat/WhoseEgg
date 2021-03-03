@@ -38,7 +38,6 @@ ui <- navbarPage(
                  width = 9,
                  img(src = "eggs-in-a-row.png", width = "900px"),
                  h3(strong("Welcome to the WhoseEgg App")),
-                 hr(),
                  span(
                  p("WhoseEgg is a Shiny app to predict the identification of fish eggs for 
                  detecting invasive carp (Bighead, Grass, and Silver Carp) in the Upper
@@ -139,14 +138,15 @@ ui <- navbarPage(
     ## INPUTS 
     mainPanel(
       h3(strong("Input of Egg Characteristics")),
+      span(
+        includeMarkdown("../text/header-inputs.Rmd"),
+        style = "font-size:14px;"
+      ),
       hr(),
       fluidRow(
         column(
           width = 12,
           h4("Spreadsheet Specifications"),
-          p("The egg characteristic data must be formatted appropriately to correctly 
-          obtain predictions. Follow the guidelines in the tabs below.",
-          style = "font-size:14px;"),
           tabsetPanel(
             type = "tabs",
             # Tab for input data
@@ -156,11 +156,6 @@ ui <- navbarPage(
           ),
           hr(),
           h4("Egg Characteristics"),
-          p("Once the egg characteristic spreadsheet is uploaded, additional variables 
-          will be computed based on the input values to be used by the random forests. 
-          See the 'Input Data' tab below for the data in the uploaded spreadsheet 
-          and the 'Processed Data' tab for the set of predictor variables to be used
-          by the random forest.", style = "font-size:14px;"),
           conditionalPanel(
             condition = "!is.na(output.need_data)", 
             span(textOutput("need_data"), style = "color:#f39c13")
@@ -251,6 +246,10 @@ ui <- navbarPage(
     ),
     mainPanel(
       h3(strong("Results from Random Forests")),
+      span(
+        includeMarkdown("../text/header-predictions.Rmd"),
+        style = "font-size:14px;"
+      ),
       conditionalPanel(
         condition = "!is.na(output.error_file_type_v2)", 
         span(textOutput("error_file_type_v2"), style = "color:#f39c13")
@@ -279,13 +278,6 @@ ui <- navbarPage(
       fluidRow(
         column(
           h4("Table of Predictions"),
-          p("The table below contains the random forest predictions for each of
-          the input fish eggs. Click on the question mark icon for more information.
-          The columns of Family_Pred, Genus_Pred, and Species_Pred contain the 
-          taxonomy level with the highest random forest probability. The columns 
-          of Family_Prob, Genus_Prob, and Species_Prob contain the corresponding
-          random forest probability.", 
-          style = "font-size:14px;"),
           column(
             conditionalPanel(
               condition = "!is.na(output.message_pred_table)", 
@@ -296,14 +288,8 @@ ui <- navbarPage(
           width = 12
         )
       ),
-      br(),
       hr(),
       h4("Visualizations of Predictions"),
-      p("The tabs below contain visualizations of the random forest predictions.
-        Click on the question mark icons to read a description of what is shown
-        in the graphics. Use control/command plus or minus to zoom in or out,
-        respectively.",
-        style = "font-size:14px;"),
       tabsetPanel(
         type = "tabs",
         # Tab for summary visualizations
@@ -315,6 +301,7 @@ ui <- navbarPage(
               span(textOutput("message_pred_plots_v1"), style = "color:grey")
             ), width = 10
           ),
+          br(),
           conditionalPanel(
             condition = "is.na(output.pred_plot)",
             plotOutput("pred_plot") %>% 
@@ -392,16 +379,14 @@ ui <- navbarPage(
     ),
     mainPanel(
       h3(strong("Download Data with Predictions")),
+      span(
+        includeMarkdown("../text/header-downloads.Rmd"),
+        style = "font-size:14px;"
+      ),
       hr(),
       fluidRow(
         column(
           h4("Download Preview Table"),
-          p("The table below contains the data that will be included in the 
-          spreadsheet when downloaded. The variables include all initial 
-          variables uploaded to WhoseEgg, variables computed to generate
-          random forest predictions, the random forest predictions, and 
-          the random forest probabilities for all taxonomic levels.", 
-          style = "font-size:14px;"),
           column(
             conditionalPanel(
               condition = "!is.na(output.message_downoad_table)",
@@ -423,24 +408,22 @@ ui <- navbarPage(
     column(
       width = 9,
       h3(strong("Help Page")),
-      hr(),
       p("See the tabs below for additional information to assist with the 
         use of WhoseEgg.", style = "font-size:15px;"),
-      br(),
-      br(),
+      hr(),
       tabsetPanel(
         type = "tabs",
-        # Tab for input table specifications
-        tabPanel(
-          "Input Data",
-          br(),
-          width = 12
-        ),
         # Tab for variable definitions
         tabPanel(
           "Variable Definitions",
           br(),
           includeMarkdown("../text/glossary.Rmd"),
+          width = 12
+        ),
+        # Tab for input table specifications
+        tabPanel(
+          "Input Data",
+          br(),
           width = 12
         ),
         # Tab details on the random forests
@@ -609,7 +592,7 @@ server <- function(input, output) {
       # Create plots summarizing the random forest predictions
       output$pred_plot <- renderPlot({
         rf_pred_plot(na.omit(data_and_preds()))
-      })
+      }, height = 350, width = 850)
       
       # Create plots with the random forest probabilities for all taxonomic levels
       output$prob_plot <- renderPlot({
@@ -623,7 +606,7 @@ server <- function(input, output) {
         ))
         #Create the plots
         rf_prob_plot(na.omit(data_and_preds()), input$pred_table_rows_selected)
-      })
+      }, height = 400, width = 850)
     }
     
   })
