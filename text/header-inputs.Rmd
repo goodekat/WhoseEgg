@@ -4,6 +4,4 @@ output:
     theme: flatly
 ---
 
-The egg characteristic data must be formatted appropriately to work with WhoseEgg and correctly obtain predictions. Follow the guidelines in the tabs below underneath **Spreadsheet Specifications**.
-
-Once the egg characteristic spreadsheet is uploaded, several additional variables will be computed based on the input values to be used by the random forests: Julian_Day, Membrane_SD, Membrane_CV, Yolk_SD, Yolk_CV, and Yolk_to_Membrane_Ratio. Under **Egg Characteristics**, see the 'Input Data' tab below for the data in the uploaded spreadsheet and the 'Processed Data' tab for the set of predictor variables to be used by the random forest.
+The egg characteristic data must be formatted appropriately to work with WhoseEgg and correctly obtain predictions. Follow the guidelines in the tabs below underneath **Spreadsheet Specifications**. Once the egg characteristic spreadsheet is uploaded, several additional variables will be computed based on the input values to be used by the random forests: Julian_Day, Membrane_SD, Membrane_CV, Yolk_SD, Yolk_CV, and Yolk_to_Membrane_Ratio. Under **Egg Characteristics**, see the 'Input Data' tab below for the data in the uploaded spreadsheet and the 'Processed Data' tab for the set of predictor variables to be used by the random forest.

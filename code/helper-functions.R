@@ -393,11 +393,10 @@ check_var_ranges <- function(df) {
     max(df$Yolk_Ave, na.rm = TRUE) > max(eggdata$Yolk_Ave, na.rm = TRUE),
     max(df$Yolk_SD, na.rm = TRUE) > max(eggdata$Yolk_SD, na.rm = TRUE),
     max(df$Larval_Length, na.rm = TRUE) > max(eggdata$Larval_Length, na.rm = TRUE),
+    max(df$Julian_Day, na.rm = TRUE) > max(eggdata$Julian_Day, na.rm = TRUE),
     
     # Identify any months or Julian days not in training data
-    !(unique(na.omit(df$Month)) %in% unique(eggdata$Month)),
-    !(unique(na.omit(df$Julian_Day)) %in% unique(eggdata$Julian_Day))
-    
+    !(unique(na.omit(df$Month)) %in% unique(eggdata$Month))
   )
   
   # Return TRUE if all variables fall within the training data ranges
@@ -487,7 +486,7 @@ get_outside_var_ranges <- function(df) {
   yksd_check = df$Yolk_SD < min(eggdata$Yolk_SD) | df$Yolk_SD > max(eggdata$Yolk_SD)
   lvln_check = df$Larval_Length < min(eggdata$Larval_Length) | df$Larval_Length > max(eggdata$Larval_Length)
   mnth_check = !(df$Month %in% unique(eggdata$Month))
-  judy_check = !(df$Julian_Day %in% unique(eggdata$Julian_Day))
+  judy_check = df$Julian_Day < min(eggdata$Julian_Day) | df$Julian_Day > max(eggdata$Julian_Day)
   
   # Specify the ranges of training data variables
   cond_range = paste0("Conductivity (", min(eggdata$Conductivity), " to ", max(eggdata$Conductivity), " microS/cm):")
@@ -529,7 +528,7 @@ check_dates <- function(df) {
     is.na()
   
   # Return TRUE if all levels are correct/acceptable
-  return(sum(date_computed_nas == 0))
+  return(sum(date_computed_nas) == 0)
   
 }
 

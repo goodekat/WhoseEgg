@@ -68,17 +68,17 @@ ui <- navbarPage(
                        img(src = "species.png", width = "900px"),
                        br(),
                        br()
-                     ),
-                     tabPanel(
-                       h5("Eggs from New Locations"),
-                       br(),
-                       p("For eggs collected in locations different than those where eggs
-                         were collected for training the models or regions where additional 
-                         species are known to be present, XXX need to finish writing XXX", 
-                       style = "font-size:14px;"),
-                       br(),
-                       br()
-                     )
+                     )#,
+                     # tabPanel(
+                     #   h5("Eggs from New Locations"),
+                     #   br(),
+                     #   p("For eggs collected in locations different than those where eggs
+                     #     were collected for training the models or regions where additional 
+                     #     species are known to be present, XXX need to finish writing XXX", 
+                     #   style = "font-size:14px;"),
+                     #   br(),
+                     #   br()
+                     # )
                  ),
                  hr(),
                  span(
@@ -113,7 +113,8 @@ ui <- navbarPage(
         br(),
         br(),
         "2. Add observed egg characteristics to the downloaded spreadsheet
-        following the specifications in the main panel.",
+        (or similarly formatted spreadsheet) following the specifications 
+        in the main panel.",
         br(),
         br(),
         "3. Upload a completed spreadsheet (saved as .csv, 
@@ -369,7 +370,9 @@ ui <- navbarPage(
         actionButton("preview", "Preview Data"),
         br(),
         br(),
-        "3. Click the button below to download the prepared spreadsheet.",
+        "3. Specify whether to download the spreadhseet an Excel or csv file.",
+        selectInput("download_file_type", " ", c("xlsx" = "xlsx", "xls" = "xls", "csv" = "csv")),
+        "4. Click the button below to download the prepared spreadsheet.",
         br(),
         br(),
         downloadButton("downloadPreds", "Download Predictions")
@@ -758,10 +761,16 @@ server <- function(input, output) {
   # Data frame with prediction download
   output$downloadPreds <- downloadHandler(
     filename = function() {
-      paste("WhoseEggPredictions", ".csv", sep = "")
+      paste0("WhoseEggPredictions.", input$download_file_type)
     },
     content = function(file) {
-      write.csv(data_and_preds(), file, row.names = FALSE)
+      if (input$download_file_type == "xlsx") {
+        writexl::write_xlsx(data_and_preds(), file)
+      } else if (input$download_file_type == "xls") {
+        WriteXLS::WriteXLS(data_and_preds(), file)
+      } else if (input$download_file_type == "csv") {
+        write.csv(data_and_preds(), file, row.names = FALSE)
+      }
     }
   )
   
