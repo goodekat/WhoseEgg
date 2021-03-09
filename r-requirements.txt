@@ -1,0 +1,13 @@
+dplyr
+DT
+forcats
+gganimate
+ggplot2
+markdown
+purrr
+randomForest
+shiny
+shinyhelper
+shinythemes
+stringr
+tidyr
