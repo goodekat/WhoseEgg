@@ -46,7 +46,7 @@ ui <- navbarPage(
                      type = "tabs",
                      # Tab for input data
                      tabPanel(
-                       h5("How to use the app"),
+                       h5("How to Use the App"),
                        br(),
                        p("Follow the steps below to obtain predictions. Additional instructions
                        are inlcuded on the page corresponding to a step.", 
