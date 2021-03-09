@@ -10,4 +10,4 @@ output:
 
 - Errors or warnings will appear if a values is not formatted correctly  
 
-- Helpers may be turned off by using the data validation option in Excel (see [this Microsoft help page](https://support.microsoft.com/en-us/office/apply-data-validation-to-cells-29fecbcc-d1b9-42c1-9d76-eff3ce5f7249) for more information on data validation in Excel)
+- Helpers may be turned off by using the data validation option in Excel

@@ -9,28 +9,19 @@ Repository to store the code associated with the random forest app for predictin
 
 ## Changes made
 
-- Added a comment in app describing how to turn “helpers” off
-- Added an error in R if day entered does not agree with month
-- Tried \<br> instead of \\n for printing list in an error -- didn't work
-- Added figures from Carlos
-- Met with Mike's students
-- Capitalization of all tabs on front page
-- Added period to last box on front page
-
 ## To do list for app
 
 - Overview page:
-  - **Allow option for inputting Julian day**
+  - Allow option for inputting Julian day
   - Create and add video showing how to use the app
-  - Add a new tab for "what if I have data from different locations"?
   - Convert text in tabs to html or R code
   
 <br>
 
 - Data input page:
-  - **Highlight the search feature (especially for helping to find observations with typos)**
-  - **Change to not having link to data validation explanation**
-  - **Print lists in the errors with row breaks**
+  - Highlight the search feature (especially for helping to find observations with typos)
+  - Change to not having link to data validation explanation
+  - Print lists in the errors with row breaks
   - Add visualizations of new data compared to training data
   - Look into research on data input in apps
   - Try using Google forms for input options – could even embed it in the app
@@ -44,24 +35,24 @@ Repository to store the code associated with the random forest app for predictin
   -	Add a download image button
   -	Change the question mark to caption below the images
   -	Add interpretation of the random forest probabilities (look up a nice interpretation)
+  - Discuss interpretation of probabilities near 0.5-0.6
   -	Change header names to not be underscored
   -	Make the figures taller not to overlap
   -	Move all numbers on figures to right in summary plot
   -	Add option to click on plot and show more plots (summary to input data features and individual to training data with observation)
   -	Change wording on how the zooming can be done
   
-
 <br>
 
 - Download page:
-  - **Add option to download csv or excel spreadsheet**
 
 <br>
 
-- Help page
-  - **Write variable definitions (include short definitions and additional details for more complicated variables)**
-  - **Have tab with information on random forest** 
+- Help page:
+  - Write variable definitions (include short definitions and additional details for more complicated variables)
+  - Have tab with information on random forest
   -	Add an FAQ to help page
+    - Add a new tab for "what if I have data from different locations?"
     - Include comments about what to do if data is from a different location or contains different species
     - Why don’t by extra variables show up in the processed data tab?
   -	Add buttons to easily get to the help page for the egg characteristics
@@ -91,7 +82,7 @@ Repository to store the code associated with the random forest app for predictin
   -	Is it possible to scroll through the tables? See if this option exists in DT.
   -	Change “note” colors
   -	Look into getting the copyright for the textbook diagram (the Kelso reference)
--	Can we fix the WhoseEgg color text when hovered over?
+  -	Can we fix the WhoseEgg color text when hovered over?
   - Figure out how to host app (Dr. Dixon)
   - Prepare slides for collaborator meeting
   - Add image during loading of swimming fish

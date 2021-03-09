@@ -6,31 +6,20 @@ predicting fish species
 
 ## Changes made
 
-  - Added a comment in app describing how to turn “helpers” off
-  - Added an error in R if day entered does not agree with month
-  - Tried \<br\> instead of \\n for printing list in an error – didn’t
-    work
-  - Added figures from Carlos
-  - Met with Mike’s students
-  - Capitalization of all tabs on front page
-  - Added period to last box on front page
-
 ## To do list for app
 
   - Overview page:
-      - **Allow option for inputting Julian day**
+      - Allow option for inputting Julian day
       - Create and add video showing how to use the app
-      - Add a new tab for “what if I have data from different
-        locations”?
       - Convert text in tabs to html or R code
 
 <br>
 
   - Data input page:
-      - **Highlight the search feature (especially for helping to find
-        observations with typos)**
-      - **Change to not having link to data validation explanation**
-      - **Print lists in the errors with row breaks**
+      - Highlight the search feature (especially for helping to find
+        observations with typos)
+      - Change to not having link to data validation explanation
+      - Print lists in the errors with row breaks
       - Add visualizations of new data compared to training data
       - Look into research on data input in apps
       - Try using Google forms for input options – could even embed it
@@ -48,6 +37,7 @@ predicting fish species
       - Change the question mark to caption below the images
       - Add interpretation of the random forest probabilities (look up a
         nice interpretation)
+      - Discuss interpretation of probabilities near 0.5-0.6
       - Change header names to not be underscored
       - Make the figures taller not to overlap
       - Move all numbers on figures to right in summary plot
@@ -59,15 +49,16 @@ predicting fish species
 <br>
 
   - Download page:
-      - **Add option to download csv or excel spreadsheet**
 
 <br>
 
-  - Help page
-      - **Write variable definitions (include short definitions and
-        additional details for more complicated variables)**
-      - **Have tab with information on random forest**
+  - Help page:
+      - Write variable definitions (include short definitions and
+        additional details for more complicated variables)
+      - Have tab with information on random forest
       - Add an FAQ to help page
+          - Add a new tab for “what if I have data from different
+            locations?”
           - Include comments about what to do if data is from a
             different location or contains different species
           - Why don’t by extra variables show up in the processed data
@@ -109,15 +100,15 @@ predicting fish species
       - Change “note” colors
       - Look into getting the copyright for the textbook diagram (the
         Kelso reference)
-  - Can we fix the WhoseEgg color text when hovered over?
-  - Figure out how to host app (Dr. Dixon)
-  - Prepare slides for collaborator meeting
-  - Add image during loading of swimming fish
-  - Organize helper functions
-  - Check out
-    [ISOFAST](https://analytics.iasoybeans.com/cool-apps/ISOFAST/) for
-    ideas
-  - Watch these talks:
-    [styling](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/)
-    and [code
-    optimization](https://rstudio.com/resources/webinars/scaling-shiny-apps-with-asynchronous-programming/)
+      - Can we fix the WhoseEgg color text when hovered over?
+      - Figure out how to host app (Dr. Dixon)
+      - Prepare slides for collaborator meeting
+      - Add image during loading of swimming fish
+      - Organize helper functions
+      - Check out
+        [ISOFAST](https://analytics.iasoybeans.com/cool-apps/ISOFAST/)
+        for ideas
+      - Watch these talks:
+        [styling](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/)
+        and [code
+        optimization](https://rstudio.com/resources/webinars/scaling-shiny-apps-with-asynchronous-programming/)
