@@ -3,7 +3,7 @@ DT
 forcats
 gganimate
 ggplot2
-markdown
+rmarkdown
 purrr
 randomForest
 shiny
