@@ -16,10 +16,13 @@ library(stringr)
 library(tidyr)
 
 # Source the helper functions used by the app
-source("../code/helper-functions.R")
+source("helper-functions.R")
+
+# Load egg data
+eggdata <- read.csv("data/eggdata_for_app.csv")
 
 # Load the random forest models (trained on the years of 2014-2016)
-rfs <- readRDS("../data/rfs_for_app.rds")
+rfs <- readRDS("data/rfs_for_app.rds")
 
 ##### APP UI #####
 
@@ -39,7 +42,7 @@ ui <- navbarPage(
                  img(src = "eggs-in-a-row.png", width = "900px"),
                  h3(strong("Welcome to the WhoseEgg App")),
                  span(
-                   includeMarkdown("../text/header-overview.Rmd"),
+                   includeMarkdown("text/header-overview.Rmd"),
                   style = "font-size:14px;"
                  ),
                    tabsetPanel(
@@ -131,7 +134,7 @@ ui <- navbarPage(
     mainPanel(
       h3(strong("Input of Egg Characteristics")),
       span(
-        includeMarkdown("../text/header-inputs.Rmd"),
+        includeMarkdown("text/header-inputs.Rmd"),
         style = "font-size:14px;"
       ),
       conditionalPanel(
@@ -174,9 +177,9 @@ ui <- navbarPage(
           tabsetPanel(
             type = "tabs",
             # Tab for input data
-            tabPanel("Template Columns", br(), includeMarkdown("../text/template-columns.Rmd")),
-            tabPanel("Template Helpers", br(), includeMarkdown("../text/template-helpers.Rmd")),
-            tabPanel("Additional Variables", br(), includeMarkdown("../text/template-additional-vars.Rmd"))
+            tabPanel("Template Columns", br(), includeMarkdown("text/template-columns.Rmd")),
+            tabPanel("Template Helpers", br(), includeMarkdown("text/template-helpers.Rmd")),
+            tabPanel("Additional Variables", br(), includeMarkdown("text/template-additional-vars.Rmd"))
           ),
           hr(),
           h4("Egg Characteristics"),
@@ -243,7 +246,7 @@ ui <- navbarPage(
     mainPanel(
       h3(strong("Results from Random Forests")),
       span(
-        includeMarkdown("../text/header-predictions.Rmd"),
+        includeMarkdown("text/header-predictions.Rmd"),
         style = "font-size:14px;"
       ),
       conditionalPanel(
@@ -382,7 +385,7 @@ ui <- navbarPage(
     mainPanel(
       h3(strong("Download Data with Predictions")),
       span(
-        includeMarkdown("../text/header-downloads.Rmd"),
+        includeMarkdown("text/header-downloads.Rmd"),
         style = "font-size:14px;"
       ),
       conditionalPanel(
@@ -439,7 +442,7 @@ ui <- navbarPage(
       width = 9,
       h3(strong("Help Page")),
       span(
-        includeMarkdown("../text/header-help.Rmd"),
+        includeMarkdown("text/header-help.Rmd"),
         style = "font-size:14px;"
       ),
       tabsetPanel(
@@ -448,28 +451,28 @@ ui <- navbarPage(
         tabPanel(
           "Environmental Variables",
           br(),
-          includeMarkdown("../text/help-vars-env.Rmd"),
+          includeMarkdown("text/help-vars-env.Rmd"),
           width = 12
         ),
         # Tab for input table specifications
         tabPanel(
           "Morphological Variables",
           br(),
-          span(includeMarkdown("../text/help-vars-morph.Rmd"), style = "font-size:14px;"),
+          span(includeMarkdown("text/help-vars-morph.Rmd"), style = "font-size:14px;"),
           width = 12
         ),
         # Tab details on the random forests
         tabPanel(
           "Random Forest Details",
           span(
-            includeMarkdown("../text/help-random-forest.Rmd"),
+            includeMarkdown("text/help-random-forest.Rmd"),
             style = "font-size:14px;"
           ),
           width = 12
         ),
         tabPanel(
           "Contact",
-          span(includeMarkdown("../text/help-contact.Rmd"), style = "font-size:14px;"),
+          span(includeMarkdown("text/help-contact.Rmd"), style = "font-size:14px;"),
           width = 12
         )
       ) 
@@ -486,7 +489,7 @@ ui <- navbarPage(
       br(),
       br(),
       span(
-        includeMarkdown("../text/references.Rmd"),
+        includeMarkdown("text/references.Rmd"),
         style = "font-size:14px;"
       )
     )
@@ -508,7 +511,7 @@ server <- function(input, output) {
       paste("WhoseEggtemplate", ".xlsx", sep = "")
     },
     content = function(file) {
-      file.copy("../data/template.xlsx", file)
+      file.copy("data/template.xlsx", file)
     }
   )
   

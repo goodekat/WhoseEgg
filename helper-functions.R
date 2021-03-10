@@ -1,6 +1,4 @@
 
-eggdata <- read.csv("../data/eggdata_for_app.csv")
-
 # Function for computing variables based on given input values
 compute_variables <- function(df) {
   df %>% 
