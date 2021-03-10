@@ -89,6 +89,8 @@ predicting fish species
 <br>
 
   - Other:
+      - List app authors/contributors some where (me, Mike, Philip, and
+        Carlos)
       - **Start writing the manuscript (see fisheries magazine and
         bioenergetics model)**
       - Add next buttons to go from input data to predictions to

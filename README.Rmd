@@ -76,6 +76,7 @@ Repository to store the code associated with the random forest app for predictin
 <br>
 
 - Other:
+  - List app authors/contributors some where (me, Mike, Philip, and Carlos)
   - **Start writing the manuscript (see fisheries magazine and bioenergetics model)**
   - Add next buttons to go from input data to predictions to downloads (or add get predictions to the instructions)
   -	The fish bioenergetics Shiny app updates frequently with more data and fish species
