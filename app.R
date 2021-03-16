@@ -71,17 +71,7 @@ ui <- navbarPage(
                        img(src = "species.png", width = "900px"),
                        br(),
                        br()
-                     )#,
-                     # tabPanel(
-                     #   h5("Eggs from New Locations"),
-                     #   br(),
-                     #   p("For eggs collected in locations different than those where eggs
-                     #     were collected for training the models or regions where additional 
-                     #     species are known to be present, XXX need to finish writing XXX", 
-                     #   style = "font-size:14px;"),
-                     #   br(),
-                     #   br()
-                     # )
+                     )
                  ),
                  hr(),
                  span(

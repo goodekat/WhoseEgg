@@ -1,16 +1,18 @@
 
-# WhoseEgg
+# Shiny Carp App
 
 Repository to store the code associated with the random forest app for
 predicting fish species
 
 ## Changes made
 
+  - Email IT about time frame
+  - Determine how to host the app (IT or RStudio server)
+  - Change to not having link to data validation explanation
+
 ## To do list for app
 
   - Meeting with collaborators:
-      - **Email IT about time frame**
-      - **Determine how to host the app (IT or RStudio server)**
       - **Make a dataset with 5 errors for people to fix**
       - **Send email about trying out the app ahead of time (by March 18
         or 19)**
@@ -42,7 +44,6 @@ predicting fish species
   - Data input page:
       - **Highlight the search feature (especially for helping to find
         observations with typos)**
-      - **Change to not having link to data validation explanation**
       - **Print lists in the errors with row breaks**
       - Add visualizations of new data compared to training data
       - Look into research on data input in apps
