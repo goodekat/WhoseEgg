@@ -8,4 +8,4 @@ This page provides the ability to compute and display the random forest predicti
 
 See the **Table of Predictions** below for the taxonomic levels returned with the highest random forest probabilities for each fish egg. The columns of Family_Pred, Genus_Pred, and Species_Pred contain the taxonomy level with the highest random forest probability. The columns of Family_Prob, Genus_Prob, and Species_Prob contain the corresponding random forest probability. 
 
-See the **Visualizations of Predictions** below for various visualizations of the random forest predictions. Click on the question mark icons to read a description of what is shown in the corresponding graphics.
+See the **Visualizations of Predictions** below for various visualizations of the random forest predictions.

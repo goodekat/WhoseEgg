@@ -29,6 +29,7 @@ predicting fish species
   - Converted to using jpeg instead of png files
   - Converted text in tabs to html or R code
   - Added a scrolling option to the tables
+  - Made a dataset with 5 errors for people to fix
 
 Questions for Mike:
 
@@ -39,7 +40,7 @@ Questions for Mike:
 
   - Meeting with collaborators:
     
-      - **Make a dataset with 5 errors for people to fix**
+      - **Set up Google analytics**
       - **Send email about trying out the app ahead of time (by March 18
         or 19)**
       - Create a list of questions for the group

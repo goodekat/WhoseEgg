@@ -41,7 +41,7 @@ ui <- navbarPage(
         img(src = "eggs-in-a-row.jpeg", width = "900px"),
         h3(strong("Welcome to the WhoseEgg App")),
         span(
-          includeMarkdown("text/header-overview.Rmd"),
+          includeMarkdown("text/overview-header.Rmd"),
           "For information about the random forest models and information on how 
           the egg characteristics were measured for training the random forests, 
           see the",
@@ -69,7 +69,7 @@ ui <- navbarPage(
             h5("Locations in Training Data"),
             br(),
             span(
-              includeMarkdown("text/locations.Rmd"), 
+              includeMarkdown("text/overview-locations.Rmd"), 
               "For more information on using WhoseEgg with data collected in 
               different regions, see the FAQ on the",
               actionLink("overview2helpagain", "help page"), ".",
@@ -85,7 +85,7 @@ ui <- navbarPage(
             h5("Species in Training Data"),
             br(),
             span(
-              includeMarkdown("text/species.Rmd"), 
+              includeMarkdown("text/overview-species.Rmd"), 
               "For more information on using WhoseEgg with data collected in 
               locations where additional species may be present, see the FAQ on the",
               actionLink("overview2helpagainx2", "help page"), ".",
@@ -105,7 +105,7 @@ ui <- navbarPage(
           tabPanel(
             h5("Contributors and Contact"),
             br(),
-            span(includeMarkdown("text/contributors-contact.Rmd"), style = "font-size:14px;")
+            span(includeMarkdown("text/overview-cc.Rmd"), style = "font-size:14px;")
           )
         ),
         hr(),
@@ -137,8 +137,14 @@ ui <- navbarPage(
         br(),
         "2. Add observed values to downloaded spreadsheet or a similarly 
         formatted spreadsheet following the spreadsheet specifications 
-        in the main panel. See the", actionLink("input2help", "help page"),
-        "for information on how to measure the egg characteristics.",
+        in the main panel.", 
+        br(),
+        br(),
+        span(
+          em(strong("Note:"), "See the", actionLink("input2help", strong("help page")),
+             "for detailed information on the egg characteristics."),
+          style = 'color:#3498db'
+        ),
         br(),
         br(),
         "3. Upload a completed spreadsheet (saved as .csv, 
@@ -311,7 +317,7 @@ ui <- navbarPage(
       hr(),
       h4("Overview"),
       span(
-        includeMarkdown("text/header-predictions.Rmd"),
+        includeMarkdown("text/predictions-header.Rmd"),
         style = "font-size:14px;"
       ),
       hr(),
@@ -453,7 +459,7 @@ ui <- navbarPage(
       hr(),
       h4("Overview"),
       span(
-        includeMarkdown("text/header-downloads.Rmd"),
+        includeMarkdown("text/download-header.Rmd"),
         style = "font-size:14px;"
       ),
       hr(),
@@ -483,7 +489,7 @@ ui <- navbarPage(
       width = 9,
       h3(strong("Help Page")),
       span(
-        includeMarkdown("text/header-help.Rmd"),
+        includeMarkdown("text/help-header.Rmd"),
         style = "font-size:14px;"
       ),
       tabsetPanel(
