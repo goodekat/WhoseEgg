@@ -38,7 +38,7 @@ ui <- navbarPage(
       column(width = 1),
       column(
         width = 9,
-        img(src = "eggs-in-a-row.png", width = "900px"),
+        img(src = "eggs-in-a-row.jpeg", width = "900px"),
         h3(strong("Welcome to the WhoseEgg App")),
         span(
           includeMarkdown("text/header-overview.Rmd"),
@@ -61,21 +61,21 @@ ui <- navbarPage(
               are inlcuded on the page corresponding to a step.",
               style = "font-size:14px;"
             ),
-            img(src = "flow-chart.png", width = "800px"),
+            img(src = "flow-chart.jpeg", width = "800px"),
             br(),
             br()
           ), 
           tabPanel(
             h5("Locations in Training Data"),
             br(),
-            img(src = "locations.png", width = "900px"),
+            img(src = "locations.jpeg", width = "900px"),
             br(),
             br()
           ), 
           tabPanel(
             h5("Species in Training Data"),
             br(),
-            img(src = "species.png", width = "900px"),
+            img(src = "species.jpeg", width = "900px"),
             br(),
             br()
           ),
@@ -508,7 +508,7 @@ ui <- navbarPage(
     column(width = 1),
     column(
       width = 9,
-      img(src = "larval-ac.png", width = "900px"),
+      img(src = "larval-ac.jpeg", width = "900px"),
       br(),
       br(),
       span(
