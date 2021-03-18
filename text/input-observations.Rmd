@@ -1,0 +1,13 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+- All variables (egg_ID and the 13 egg characteristics) must be filled in for WhoseEgg to return a prediction
+
+- Observations with missing variable values will be excluded from the processed data for prediction but will be included in the final dataset for download without random forest predictions
+
+- There is no maximum number of observations that may be included
+
+- At least one egg observations is required

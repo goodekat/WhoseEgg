@@ -28,6 +28,7 @@ predicting fish species
   - Edit definitions
   - Converted to using jpeg instead of png files
   - Converted text in tabs to html or R code
+  - Added a scrolling option to the tables
 
 Questions for Mike:
 
@@ -103,8 +104,6 @@ Questions for Mike:
   - Other:
     
       - Add image during loading of swimming fish
-      - Is it possible to scroll through the tables? See if this option
-        exists in DT.
       - Can we fix the WhoseEgg color text when hovered over?
       - Organize helper functions
       - The fish bioenergetics Shiny app updates frequently with more

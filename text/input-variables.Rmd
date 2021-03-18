@@ -1,0 +1,13 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+- Fill in all variables (egg_ID and the 13 egg characteristics)
+
+- Use the helpers in the template to correctly enter the variable values (see the 'Template Helpers' tab for more info)
+
+- See the help page for detailed definitions of the egg characteristics (includes example photos)
+
+- Variable names must be exactly as they appear in the template

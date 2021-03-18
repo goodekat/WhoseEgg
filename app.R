@@ -100,7 +100,7 @@ ui <- navbarPage(
           tabPanel(
             h5("User Tips"),
             br(),
-            span(includeMarkdown("text/tips.Rmd"), style = "font-size:14px;")
+            span(includeMarkdown("text/overview-tips.Rmd"), style = "font-size:14px;")
           ),
           tabPanel(
             h5("Contributors and Contact"),
@@ -195,7 +195,7 @@ ui <- navbarPage(
       hr(),
       h4("Overview"),
       span(
-        includeMarkdown("text/header-inputs.Rmd"),
+        includeMarkdown("text/input-header.Rmd"),
         style = "font-size:14px;"
       ),
       hr(),
@@ -205,10 +205,10 @@ ui <- navbarPage(
           h4("Spreadsheet Specifications"),
           tabsetPanel(
             type = "tabs",
-            # Tab for input data
-            tabPanel("Template Columns", br(), span(includeMarkdown("text/template-columns.Rmd"), style = "font-size:14px;")),
-            tabPanel("Template Helpers", br(), span(includeMarkdown("text/template-helpers.Rmd"), style = "font-size:14px;")),
-            tabPanel("Additional Variables", br(), span(includeMarkdown("text/template-additional-vars.Rmd"), style = "font-size:14px;"))
+            tabPanel("Variable Requirements", br(), span(includeMarkdown("text/input-variables.Rmd"), style = "font-size:14px;")),
+            tabPanel("Observation Requirements", br(), span(includeMarkdown("text/input-observations.Rmd"), style = "font-size:14px;")),
+            tabPanel("Template Helpers", br(), span(includeMarkdown("text/input-template-helpers.Rmd"), style = "font-size:14px;")),
+            tabPanel("Additional Variables", br(), span(includeMarkdown("text/input-additional-vars.Rmd"), style = "font-size:14px;"))
           ),
           hr(),
           h4("Egg Characteristics"),
@@ -221,7 +221,9 @@ ui <- navbarPage(
                 condition = "!is.na(output.message_provide_data_v1)", 
                 span(textOutput("message_provide_data_v1"), style = "color:grey")
               ),
-              div(DT::dataTableOutput("input_table"), style = "font-size: 100%; width: 100%")
+              div(DT::dataTableOutput("input_table"), style = "font-size: 100%; width: 100%"),
+              br(),
+              br()
             ),
             # Tab for processed data
             tabPanel(
@@ -627,6 +629,7 @@ server <- function(input, output, session) {
         mutate_all(.funs = as.character) %>%
         datatable(
           options = list(
+            scrollY = "400px",
             pageLength = 5,
             scrollX = TRUE,
             scrollCollapse = TRUE,
@@ -644,6 +647,7 @@ server <- function(input, output, session) {
         select(all_of(rf_pred_vars)) %>%
         datatable(
           options = list(
+            scrollY = "400px",
             pageLength = 5,
             scrollX = TRUE,
             scrollCollapse = TRUE,
@@ -719,6 +723,7 @@ server <- function(input, output, session) {
           ) %>%
           datatable(
             options = list(
+              scrollY = "400px",
               pageLength = 5,
               scrollX = TRUE,
               scrollCollapse = TRUE,
@@ -765,6 +770,7 @@ server <- function(input, output, session) {
         data_and_preds() %>%
           datatable(
             options = list(
+              scrollY = "400px",
               pageLength = 5,
               scrollX = TRUE,
               scrollCollapse = TRUE,
