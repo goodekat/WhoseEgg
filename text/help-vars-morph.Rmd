@@ -164,6 +164,8 @@ Examples of eggs without pigment. There are no chromatophores present.
 
 Egg Stage 1 (early cleavage): The blastomeres will look like prongs (typically 4) pointing into one direction. The arrows point to prongs. The top left is the best I have of the 4 prongs. They are not as pronounced but you can still see the cleavage separating each blastomere. The bottom left corner picture shows a side view of 2 prongs. This is difficult to get a picture looking directly into the prongs.
 
+All diagrams of egg stages included below are from Kelso and Rutherford (1996). Permission to use the images was granted by the American Fisheries Society.
+
 <img src="../www/egg-stage-1.png" height="400">
 
 Egg Stage 2 (morula): Arrows point to blastomeres

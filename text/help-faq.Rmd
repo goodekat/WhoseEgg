@@ -1,0 +1,12 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+
+**What if I have data from different locations?**
+
+**What if I believe my data is collected in a region where fish species not included in the training data are present?**
+
+**Why don’t my extra variables show up in the processed data tab?**

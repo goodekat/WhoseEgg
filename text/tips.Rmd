@@ -1,0 +1,11 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+**Helpful tips for using WhoseEgg**
+
+- WhoseEgg may be used on any device with a browser, but we recommend using a computer for the best experience
+
+- Zoom in and out using control (Windows) or command (Mac) and the + key (or the compatible technique on user's computer)

@@ -1,7 +1,0 @@
----
-output:
-  html_document:
-    theme: flatly
----
-
-For additional assistance with WhoseEgg, please contact XXX.

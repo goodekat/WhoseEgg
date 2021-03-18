@@ -10,16 +10,13 @@ library(markdown)
 library(purrr)
 library(randomForest)
 library(shiny)
-library(shinyhelper)
+#library(shinyhelper)
 library(shinythemes)
 library(stringr)
 library(tidyr)
 
 # Source the helper functions used by the app
 source("helper-functions.R")
-
-# Load egg data
-eggdata <- read.csv("data/eggdata_for_app.csv")
 
 # Load the random forest models (trained on the years of 2014-2016)
 rfs <- readRDS("data/rfs_for_app.rds")
@@ -30,83 +27,91 @@ ui <- navbarPage(
   
   ## FORMAT INFO
   title = "WhoseEgg",
+  id = "inTabset",
   theme = shinytheme("flatly"),
   
   ## HOMEPAGE
-  tabPanel(title = div("Overview", style = "font-size:14px;"),
-           fluidPage(
-               br(),
-               column(width = 1),
-               column(
-                 width = 9,
-                 img(src = "eggs-in-a-row.png", width = "900px"),
-                 h3(strong("Welcome to the WhoseEgg App")),
-                 span(
-                   includeMarkdown("text/header-overview.Rmd"),
-                  style = "font-size:14px;"
-                 ),
-                   tabsetPanel(
-                     type = "tabs",
-                     # Tab for input data
-                     tabPanel(
-                       h5("How to Use the App"),
-                       br(),
-                       p("Follow the steps below to obtain predictions. Additional instructions
-                       are inlcuded on the page corresponding to a step.", 
-                        style = "font-size:14px;"),
-                       img(src = "flow-chart.png", width = "800px"),
-                       br(),
-                       br()
-                      ),
-                     tabPanel(
-                       h5("Locations in Training Data"),
-                       br(),
-                       img(src = "locations.png", width = "900px"),
-                       br(),
-                       br()
-                     ),
-                     tabPanel(
-                       h5("Species in Training Data"),
-                       br(),
-                       img(src = "species.png", width = "900px"),
-                       br(),
-                       br()
-                     )
-                 ),
-                 hr(),
-                 span(
-                    p(em("Funding for WhoseEgg was provided by the U.S. Fish and Wildlife Service 
-                    through Grant #F20AP11535-00.")),
-                    p(em("Data privacy statement: Data uploaded to WhoseEgg will not be saved by
-                    WhoseEgg or distributed.")),
-                 style = "font-size:14px;")
-               ),
-           )),
+  tabPanel(
+    
+    title = div("Overview", style = "font-size:14px;"),
+    value = "overview",
+    
+    fluidPage(
+      br(),
+      column(width = 1),
+      column(
+        width = 9,
+        img(src = "eggs-in-a-row.png", width = "900px"),
+        h3(strong("Welcome to the WhoseEgg App")),
+        span(includeMarkdown("text/header-overview.Rmd"), style = "font-size:14px;"),
+        tabsetPanel(
+          type = "tabs",
+          tabPanel(
+            h5("How to Use the App"),
+            br(),
+            p(
+              "Follow the steps below to obtain predictions. Additional instructions
+              are inlcuded on the page corresponding to a step.",
+              style = "font-size:14px;"
+            ),
+            img(src = "flow-chart.png", width = "800px"),
+            br(),
+            br()
+          ), 
+          tabPanel(
+            h5("Locations in Training Data"),
+            br(),
+            img(src = "locations.png", width = "900px"),
+            br(),
+            br()
+          ), 
+          tabPanel(
+            h5("Species in Training Data"),
+            br(),
+            img(src = "species.png", width = "900px"),
+            br(),
+            br()
+          ),
+          tabPanel(
+            h5("User Tips"),
+            br(),
+            span(includeMarkdown("text/tips.Rmd"), style = "font-size:14px;")
+          ),
+          tabPanel(
+            h5("Contributors and Contact"),
+            br(),
+            span(includeMarkdown("text/contributors-contact.Rmd"), style = "font-size:14px;")
+          )
+        ),
+        hr(),
+        span(
+          p(em("Funding for WhoseEgg was provided by the U.S. Fish and Wildlife Service through Grant #F20AP11535-00.")),
+          p(em("Data privacy statement: Data uploaded to WhoseEgg will not be saved by WhoseEgg or distributed.")),
+          style = "font-size:14px;"
+        )
+      )
+    )
+  ), 
   
   ## INPUT EGG CHARACTERISTICS
   tabPanel(
     
     title = div("Data Input", style = "font-size:14px;"),
+    value = "inputs",
     
     ## INSTRUCTIONS
     sidebarPanel(
       h3("Instructions"),
       span(
-      p("This page contains the tools for providing the fish egg characteristics
-        that will be used by the random forests to predict the fish taxonomies.",
-        br(),
-        br(),
-        strong("Follow these steps to provide the egg characterstics:"), 
-        br(),
-        br(),
+      p(
         "1. Download a spreadsheet template.",
         br(),
         br(),
         downloadButton("downloadTemplate", "Download Template"),
         br(),
         br(),
-        "2. Add observed egg characteristics to the downloaded spreadsheet
-        (or similarly formatted spreadsheet) following the specifications 
+        "2. Add observed values to downloaded spreadsheet (or a similarly 
+        formatted spreadsheet) following the spreadsheet specifications 
         in the main panel.",
         br(),
         br(),
@@ -115,7 +120,13 @@ ui <- navbarPage(
         br(),
         fileInput("spreadsheet", ""),
         "4. Preview the input and processed data displayed in the main 
-        panel to check for correctness."
+        panel to check for correctness.",
+        br(),
+        br(),
+        "5. Go to 'Predictions' tab to obtain predictions.",
+        br(),
+        br(),
+        actionButton('jump2pred', 'Jump to Predictions Tab')
       ), style = "font-size:14px;"),
       width = 3
     ),
@@ -123,41 +134,43 @@ ui <- navbarPage(
     ## INPUTS 
     mainPanel(
       h3(strong("Input of Egg Characteristics")),
-      span(
-        includeMarkdown("text/header-inputs.Rmd"),
-        style = "font-size:14px;"
-      ),
       conditionalPanel(
         condition = "!is.na(output.need_data)", 
-        span(textOutput("need_data"), style = "color:#f39c13")
+        span(textOutput("need_data"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_file_type_v1)", 
-        span(textOutput("error_file_type_v1"), style = "color:#f39c13")
+        span(textOutput("error_file_type_v1"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_missing_egg_id_v1)", 
-        span(textOutput("error_missing_egg_id_v1"), style = "color:#f39c13")
+        span(textOutput("error_missing_egg_id_v1"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_missing_vars_v1)", 
-        span(textOutput("error_missing_vars_v1"), style = "color:#f39c13")
+        span(textOutput("error_missing_vars_v1"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(error_wrong_fct_levels_v1)", 
-        span(textOutput("error_wrong_fct_levels_v1"), style = "color:#f39c13")
+        span(textOutput("error_wrong_fct_levels_v1"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_na_in_dates_v1)", 
-        span(textOutput("error_na_in_dates_v1"), style = "color:#f39c13")
+        span(textOutput("error_na_in_dates_v1"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.warning_missing_vals_v1)", 
-        span(textOutput("warning_missing_vals_v1"), style = "color:#3498db")
+        span(textOutput("warning_missing_vals_v1"), style = "color:#f39c13")
       ), 
       conditionalPanel(
         condition = "!is.na(output.warning_vars_outside_ranges_v1)", 
-        span(textOutput("warning_vars_outside_ranges_v1"), style = "color:#3498db")
+        span(textOutput("warning_vars_outside_ranges_v1"), style = "color:#f39c13")
+      ),
+      hr(),
+      h4("Overview"),
+      span(
+        includeMarkdown("text/header-inputs.Rmd"),
+        style = "font-size:14px;"
       ),
       hr(),
       fluidRow(
@@ -167,9 +180,9 @@ ui <- navbarPage(
           tabsetPanel(
             type = "tabs",
             # Tab for input data
-            tabPanel("Template Columns", br(), includeMarkdown("text/template-columns.Rmd")),
-            tabPanel("Template Helpers", br(), includeMarkdown("text/template-helpers.Rmd")),
-            tabPanel("Additional Variables", br(), includeMarkdown("text/template-additional-vars.Rmd"))
+            tabPanel("Template Columns", br(), span(includeMarkdown("text/template-columns.Rmd"), style = "font-size:14px;")),
+            tabPanel("Template Helpers", br(), span(includeMarkdown("text/template-helpers.Rmd"), style = "font-size:14px;")),
+            tabPanel("Additional Variables", br(), span(includeMarkdown("text/template-additional-vars.Rmd"), style = "font-size:14px;"))
           ),
           hr(),
           h4("Egg Characteristics"),
@@ -201,19 +214,14 @@ ui <- navbarPage(
   
   # RANDOM FOREST PREDICTIONS
   tabPanel(
+    
     title = div("Predictions", style = "font-size:14px;"),
+    value = "predictions",
+    
     sidebarPanel(
       h3("Instructions"),
       span(
       p(
-        "This page is used to compute and display the random forest predictions
-        for the egg data provided via the 'Data Input' tab. Visualizations of the 
-        predictions are included for further exploration of the predictions.",
-        br(),
-        br(),
-        strong("Follow these steps to view the random forest predictions:"), 
-        br(),
-        br(),
         "1. Provide egg data using the 'Data Input' tab and view the
         processed data to check for correctness.",
         br(),
@@ -224,48 +232,56 @@ ui <- navbarPage(
         actionButton("getpreds", "Get Predictions"),
         br(),
         br(),
+        em(strong("Note:"), "If a new spreadsheet is provided after predictions have been
+           computed once, the predictions will be automatically updated."),
+        br(),
+        br(),
         "3. View the table and visualizations of the predictions that will appear 
         in the main panel of this page.",
         br(),
         br(),
-        em("Note: If a new spreadsheet is provided after predictions have been
-           computed once, the predictions will be automatically updated.")
+        "4. Go to 'Downloads' tab to download data with predictions.",
+        br(),
+        br(),
+        actionButton('jump2download', 'Jump to Downloads Tab')
       ), style = "font-size:14px;"),
       width = 3
     ),
     mainPanel(
       h3(strong("Results from Random Forests")),
-      span(
-        includeMarkdown("text/header-predictions.Rmd"),
-        style = "font-size:14px;"
-      ),
       conditionalPanel(
         condition = "!is.na(output.error_file_type_v2)", 
-        span(textOutput("error_file_type_v2"), style = "color:#f39c13")
+        span(textOutput("error_file_type_v2"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_missing_egg_id_v2)", 
-        span(textOutput("error_missing_egg_id_v2"), style = "color:#f39c13")
+        span(textOutput("error_missing_egg_id_v2"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_missing_vars_v2)", 
-        span(textOutput("error_missing_vars_v2"), style = "color:#f39c13")
+        span(textOutput("error_missing_vars_v2"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(error_wrong_fct_levels_v2)", 
-        span(textOutput("error_wrong_fct_levels_v2"), style = "color:#f39c13")
+        span(textOutput("error_wrong_fct_levels_v2"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_na_in_dates_v2)", 
-        span(textOutput("error_na_in_dates_v2"), style = "color:#f39c13")
+        span(textOutput("error_na_in_dates_v2"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.warning_missing_vals_v2)", 
-        span(textOutput("warning_missing_vals_v2"), style = "color:#3498db")
+        span(textOutput("warning_missing_vals_v2"), style = "color:#f39c13")
       ), 
       conditionalPanel(
         condition = "!is.na(output.warning_vars_outside_ranges_v2)", 
-        span(textOutput("warning_vars_outside_ranges_v2"), style = "color:#3498db")
+        span(textOutput("warning_vars_outside_ranges_v2"), style = "color:#f39c13")
+      ),
+      hr(),
+      h4("Overview"),
+      span(
+        includeMarkdown("text/header-predictions.Rmd"),
+        style = "font-size:14px;"
       ),
       hr(),
       fluidRow(
@@ -288,49 +304,55 @@ ui <- navbarPage(
         # Tab for summary visualizations
         tabPanel(
           "Summary of predictions",
+          br(),
+          span(
+            strong("Frequency of taxonomic level predictions"),
+            br(),
+            br(),
+            "Each plot shows the levels of family, genus, and
+            species represented by the predictions. The length of the 
+            bars represent the total number of eggs predicted to be 
+            within a level.",
+            style = "font-size:14px;"
+          ),
+          br(),
+          br(),
           column(
             conditionalPanel(
               condition = "!is.na(output.message_pred_plots_v1)", 
               span(textOutput("message_pred_plots_v1"), style = "color:grey")
-            ), width = 10
+            ), 
+            width = 10
           ),
-          br(),
-          conditionalPanel(
-            condition = "is.na(output.pred_plot)",
-            plotOutput("pred_plot") %>% 
-              helper(
-                type = "inline", 
-                title = "Prediction frequencies", 
-                content = "Each plot shows the levels of family, genus, and 
-                species represented by the predictions. The length of the 
-                bars represent the total number of eggs predicted to be 
-                within a level.",
-                style = "color: #273E52;"
-              )
-          ),
+          plotOutput("pred_plot"),
           width = 12
         ),
         
         # Tab individual probabilities
         tabPanel(
           "Individual egg predictions",
+          br(),
+          span(
+            strong("Random forest probabilities for all taxonomic levels"),
+            br(),
+            br(),
+            "The random forests return probabilities for all 
+            taxonomic levels for each egg observation. These graphics 
+            show the probabilities for each taxonomic level for an egg.
+            The levels with a taxonomy are ordered from top to bottom 
+            by highest to lowest random forest probability.",
+            style = "font-size:14px;"
+          ),
+          br(),
+          br(),
           column(
             conditionalPanel(
               condition = "!is.na(output.message_pred_plots_v2)", 
               span(textOutput("message_pred_plots_v2"), style = "color:grey")
-            ), width = 10
+            ), 
+            width = 10
           ),
-          br(),
-          plotOutput("prob_plot") %>%
-            helper(
-              type = "inline", 
-              title = "Distribution of random forest probabilities", 
-              content = "The random forests return probabilities for all 
-              taxonomic levels for each egg observation. These graphics 
-              show the probabilities for each taxonomic level for an egg.
-              The levels with a taxonomy are ordered from top to bottom 
-              by highest to lowest random forest probability."
-            ),
+          plotOutput("prob_plot"),
           width = 12
         )
       ) 
@@ -339,19 +361,14 @@ ui <- navbarPage(
   
   # DOWNLOADS PAGE
   tabPanel(
+    
     title = div("Downloads", style = "font-size:14px;"),
+    value = "downloads",
+    
     sidebarPanel(
       h3("Instructions"),
       span(
       p(
-        "This page is used to download a spreadsheet containing
-        the input egg data and the computed random forest taxonomy 
-        prediction.",
-        br(),
-        br(),
-        strong("Follow these steps to download egg data and predictions:"), 
-        br(),
-        br(),
         "1. Provide egg data using the 'Data Input' tab and compute random
         forest predictions using the 'Predictions' tab.",
         br(),
@@ -363,7 +380,7 @@ ui <- navbarPage(
         actionButton("preview", "Preview Data"),
         br(),
         br(),
-        "3. Specify whether to download the spreadhseet an Excel or csv file.",
+        "3. Specify whether to download the spreadhseet as an Excel or csv file.",
         selectInput("download_file_type", " ", c("xlsx" = "xlsx", "xls" = "xls", "csv" = "csv")),
         "4. Click the button below to download the prepared spreadsheet.",
         br(),
@@ -374,37 +391,39 @@ ui <- navbarPage(
     ),
     mainPanel(
       h3(strong("Download Data with Predictions")),
-      span(
-        includeMarkdown("text/header-downloads.Rmd"),
-        style = "font-size:14px;"
-      ),
       conditionalPanel(
         condition = "!is.na(output.warning_vars_outside_ranges_v3)", 
-        span(textOutput("warning_vars_outside_ranges_v3"), style = "color:#3498db")
+        span(textOutput("warning_vars_outside_ranges_v3"), style = "color:#f39c13")
       ),
       conditionalPanel(
         condition = "!is.na(error_wrong_fct_levels_v3)", 
-        span(textOutput("error_wrong_fct_levels_v3"), style = "color:#f39c13")
+        span(textOutput("error_wrong_fct_levels_v3"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_missing_vars_v3)", 
-        span(textOutput("error_missing_vars_v3"), style = "color:#f39c13")
+        span(textOutput("error_missing_vars_v3"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_missing_egg_id_v3)", 
-        span(textOutput("error_missing_egg_id_v3"), style = "color:#f39c13")
+        span(textOutput("error_missing_egg_id_v3"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_na_in_dates_v3)", 
-        span(textOutput("error_na_in_dates_v3"), style = "color:#f39c13")
+        span(textOutput("error_na_in_dates_v3"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_file_type_v3)", 
-        span(textOutput("error_file_type_v3"), style = "color:#f39c13")
+        span(textOutput("error_file_type_v3"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.warning_missing_vals_v3)", 
-        span(textOutput("warning_missing_vals_v3"), style = "color:#3498db")
+        span(textOutput("warning_missing_vals_v3"), style = "color:#f39c13")
+      ),
+      hr(),
+      h4("Overview"),
+      span(
+        includeMarkdown("text/header-downloads.Rmd"),
+        style = "font-size:14px;"
       ),
       hr(),
       fluidRow(
@@ -461,8 +480,8 @@ ui <- navbarPage(
           width = 12
         ),
         tabPanel(
-          "Contact",
-          span(includeMarkdown("text/help-contact.Rmd"), style = "font-size:14px;"),
+          "FAQ",
+          span("text/help-faq.Rmd", style = "font-size:14px;"),
           width = 12
         )
       ) 
@@ -489,9 +508,23 @@ ui <- navbarPage(
 
 ##### APP SERVER #####
 
-server <- function(input, output) {
+server <- function(input, output, session) {
   
-  observe_helpers()
+  ## LINKS BETWEEN TABS ------------------------------------------------------
+  
+  # Jump to predictions from inputs
+  observeEvent(
+    input$jump2pred, {
+      updateTabsetPanel(session, "inTabset", selected = "predictions")
+    }
+  )
+  
+  # Jump to downloads from predictions
+  observeEvent(
+    input$jump2download, {
+      updateTabsetPanel(session, "inTabset", selected = "downloads")
+    }
+  )
   
   ## INPUTS ------------------------------------------------------------------
   
@@ -652,9 +685,9 @@ server <- function(input, output) {
             !check_for_egg_ids(input_data()), 
           "Please select a row in the table of predictions to view plots."
         ))
-        #Create the plots
+        # Create the plots
         rf_prob_plot(na.omit(data_and_preds()), input$pred_table_rows_selected)
-      }, height = 400, width = 850)
+      }, height = 500, width = 850)
     }
     
   })
@@ -731,8 +764,12 @@ server <- function(input, output) {
   })
   output$message_pred_plots_v1 <- message_pred_plots
   output$message_pred_plots_v2 <- message_pred_plots
+  output$message_pred_plots_v3 <- message_pred_plots
+  output$message_pred_plots_v4 <- message_pred_plots
   outputOptions(output, "message_pred_plots_v1", suspendWhenHidden = FALSE)
   outputOptions(output, "message_pred_plots_v2", suspendWhenHidden = FALSE)
+  outputOptions(output, "message_pred_plots_v3", suspendWhenHidden = FALSE)
+  outputOptions(output, "message_pred_plots_v4", suspendWhenHidden = FALSE)
 
   # Provide a message where download table will be
   output$message_download_table <- reactive({

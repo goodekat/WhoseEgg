@@ -1,3 +1,5 @@
+# Load egg data
+eggdata <- read.csv("data/eggdata_for_app.csv")
 
 # Function for computing variables based on given input values
 compute_variables <- function(df) {
@@ -221,10 +223,7 @@ rf_pred_plot <- function(rf_results, idx) {
       axis.title.y = element_blank(),
       strip.background = element_rect(fill = "white", color = "white")
     ) +
-    labs(
-      y = "Number of eggs",
-      title = "Frequency of taxonomic level predictions"
-    )
+    labs(y = "Number of eggs")
   
 }
 
@@ -264,8 +263,7 @@ rf_prob_plot <- function(rf_results, idx) {
       axis.title.y = element_blank(),
       strip.background = element_rect(fill = "white", color = "white")
     ) + 
-    labs(x = "Random forest probability", 
-         title = "Random forest probabilities for all taxonomic levels")
+    labs(x = "Random forest probability")
   
 }
 
