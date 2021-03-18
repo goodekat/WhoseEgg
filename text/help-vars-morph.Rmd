@@ -276,7 +276,7 @@ Examples of eggs without sticky debris. There is no debris or sand on the membra
 
 #### **Yolk to Membrane Ratio**
 
-**Definition**: The ratio of average yolk diameter to average membrane diameter:
+**Definition**: The ratio of average yolk diameter to average membrane diameter
 
 **Spreadsheet Variable Name**: Yolk_to_Membrane_Ratio
 

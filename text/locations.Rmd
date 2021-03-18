@@ -1,0 +1,11 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+**Validated Egg Collection Locations**
+
+The data used to train the random forests are from fish eggs collected in the Upper Mississippi River basin shown in the image below. Validation of the models showed great performed on locations included in the training data but poor performance on locations outside of the training data. 
+
+*We caution the use of WhoseEgg for prediction of eggs collected outside of the egg collection regions without prior model validation.*

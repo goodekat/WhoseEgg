@@ -22,46 +22,45 @@ predicting fish species
   - Added button to jump to help page from input page
   - Changed header names to not be underscored
   - Changed wording on how the zooming can be done
+  - Moved all numbers on figures to right in summary plot
+  - Added links to easily get to the help page for the egg
+    characteristics
+  - Edit definitions
+  - Converted to using jpeg instead of png files
+  - Converted text in tabs to html or R code
+
+Questions for Mike:
+
+  - Measuring larval length when not in late stage - 2, 3, 4, 5, and D
+  - Should I change all wording to embryo instead of yolk
 
 ## To do list for app
 
   - Meeting with collaborators:
+    
       - **Make a dataset with 5 errors for people to fix**
       - **Send email about trying out the app ahead of time (by March 18
         or 19)**
       - Create a list of questions for the group
       - Prepare slides for meeting
 
-<br>
-
-  - Manuscript:
-      - **Create an outline and send to Mike and Philip**
-
-<br>
-
   - Overview page:
-      - **Convert text in tabs to html or R code**
+    
       - Create and add video showing how to use the app
 
-<br>
-
   - Data input page:
+    
       - **Highlight the search feature (especially for helping to find
         observations with typos)**
-      - **Print lists in the errors with row breaks**
-      - Add visualizations of new data compared to training data
+      - **Add visualizations of new data compared to training data**
       - Look into research on data input in apps
       - Try using Google forms for input options – could even embed it
-        in the app
-      - Could use a conditional panel to create click through options
-        for manual input
+        in the app or could use a conditional panel to create click
+        through options for manual input
       - Allow option for inputting Julian day
-
-<br>
 
   - Prediction page:
     
-      - **Move all numbers on figures to right in summary plot**
       - **Add a download image button**
       - **Add visualizations of the data (both input data and training
         data with input data included)**
@@ -77,14 +76,12 @@ predicting fish species
 
   - Help page:
     
-      - **Edit definitions**
       - **Have tab with information on random forest**
-      - **Add buttons to easily get to the help page for the egg
-        characteristics**
       - **Fill in and add to FAQ**
 
   - Warnings/Errors:
     
+      - **Print lists in the errors with row breaks**
       - **Add warning if the data is in the future**
       - **Add a check for when a new dataset is uploaded**
       - **If you try to upload a non-csv file after uploading a file,
@@ -92,17 +89,19 @@ predicting fish species
       - **Need to make sure all error/warning messages match – such as
         including the egg ID for factor levels**
 
-<br>
+  - Manuscript:
+    
+      - **Create an outline and send to Mike and Philip**
 
   - Testing:
+    
       - Need to test that different computer types work with Excel and
         csv uploads
           - Some people were getting errors with the Excel file saying
             something about “subscript out of bounds”
 
-<br>
-
   - Other:
+    
       - Add image during loading of swimming fish
       - Is it possible to scroll through the tables? See if this option
         exists in DT.

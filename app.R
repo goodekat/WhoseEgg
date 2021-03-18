@@ -68,14 +68,32 @@ ui <- navbarPage(
           tabPanel(
             h5("Locations in Training Data"),
             br(),
-            img(src = "locations.jpeg", width = "900px"),
+            span(
+              includeMarkdown("text/locations.Rmd"), 
+              "For more information on using WhoseEgg with data collected in 
+              different regions, see the FAQ on the",
+              actionLink("overview2helpagain", "help page"), ".",
+              style = "font-size:14px;"
+            ),
+            br(),
+            br(),
+            img(src = "locations.jpeg", width = "600px"),
             br(),
             br()
           ), 
           tabPanel(
             h5("Species in Training Data"),
             br(),
-            img(src = "species.jpeg", width = "900px"),
+            span(
+              includeMarkdown("text/species.Rmd"), 
+              "For more information on using WhoseEgg with data collected in 
+              locations where additional species may be present, see the FAQ on the",
+              actionLink("overview2helpagainx2", "help page"), ".",
+              style = "font-size:14px;"
+            ),
+            br(),
+            br(),
+            img(src = "species.jpeg", width = "500px"),
             br(),
             br()
           ),
@@ -456,10 +474,8 @@ ui <- navbarPage(
   
   # HELP PAGE
   tabPanel(
-    
     title = div("Help", style = "font-size:14px;"),
     value = "help",
-    
     column(width = 1),
     column(
       width = 9,
@@ -528,6 +544,16 @@ server <- function(input, output, session) {
   
   # Jump to help page from overview
   observeEvent(input$overview2help, {
+    updateTabsetPanel(session, "inTabset", "help")
+  })
+  
+  # Another button to jump to help page from overview
+  observeEvent(input$overview2helpagain, {
+    updateTabsetPanel(session, "inTabset", "help")
+  })
+  
+  # Another button to jump to help page from overview
+  observeEvent(input$overview2helpagainx2, {
     updateTabsetPanel(session, "inTabset", "help")
   })
   
