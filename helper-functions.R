@@ -207,10 +207,11 @@ rf_pred_plot <- function(rf_results, idx) {
     mutate(order = factor(row_number()))
   
   # Create the plot
+  max_n <- max(plot_data$n)
   plot_data %>%
     ggplot(aes(x = order, y = n, label = n)) + 
     geom_bar(stat = "identity", fill = "grey75") +
-    geom_text(aes(y = n + 0.5), nudge_y = 0.5) +
+    geom_text(aes(y = max_n), nudge_y = 0.1, vjust = 0) +
     facet_wrap(. ~ taxa, scales = "free_y") + 
     coord_flip() + 
     scale_x_discrete(
@@ -250,7 +251,7 @@ rf_prob_plot <- function(rf_results, idx) {
   plot_data %>%
     ggplot(aes(x = prob, y = order, label = prob)) + 
     geom_col(fill = "grey75") + 
-    geom_text(aes(x = 1), nudge_x = 0.1) +
+    geom_text(aes(x = 1), hjust = 0, nudge_x = 0.01) +
     facet_wrap(. ~ taxa, nrow = 1, scales = "free_y") + 
     scale_y_discrete(
       breaks = plot_data$order,

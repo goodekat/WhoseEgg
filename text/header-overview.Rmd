@@ -6,6 +6,4 @@ output:
 
 WhoseEgg is a Shiny app to predict the identification of fish eggs for detecting invasive carp (Bighead, Grass, and Silver Carp) in the Upper Mississippi River basin. Users are able to provide fish egg characteristics to the app, and the predicted family, genus, and species taxonomy levels will be returned. The predictions are made using random forest models that are based on the models developed in [Camacho et al. (2019)](https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1002/nafm.10380) and validated in Goode et al. (accepted March 2021).
 
-See the first tab below for information on how to use the app. The other tabs below describe the locations where eggs were collected for training the random forests and the species present in the training data. We caution the use of WhoseEgg with eggs collected in different locations or regions where other species are known to be present. 
-
-For information about the random forest models and information on how the egg characteristics were measured for training the random forests, see the help page.
+See the first tab below for information on how to use the app. The other tabs below describe the locations where eggs were collected for training the random forests and the species present in the training data. We caution the use of WhoseEgg with eggs collected in different locations or regions where other species are known to be present.

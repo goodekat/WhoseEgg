@@ -10,7 +10,6 @@ library(markdown)
 library(purrr)
 library(randomForest)
 library(shiny)
-#library(shinyhelper)
 library(shinythemes)
 library(stringr)
 library(tidyr)
@@ -32,10 +31,8 @@ ui <- navbarPage(
   
   ## HOMEPAGE
   tabPanel(
-    
     title = div("Overview", style = "font-size:14px;"),
     value = "overview",
-    
     fluidPage(
       br(),
       column(width = 1),
@@ -43,7 +40,17 @@ ui <- navbarPage(
         width = 9,
         img(src = "eggs-in-a-row.png", width = "900px"),
         h3(strong("Welcome to the WhoseEgg App")),
-        span(includeMarkdown("text/header-overview.Rmd"), style = "font-size:14px;"),
+        span(
+          includeMarkdown("text/header-overview.Rmd"),
+          "For information about the random forest models and information on how 
+          the egg characteristics were measured for training the random forests, 
+          see the",
+          actionLink("overview2help", "help page"),
+          ".",
+          style = "font-size:14px;"
+        ),
+        br(),
+        br(),
         tabsetPanel(
           type = "tabs",
           tabPanel(
@@ -110,9 +117,10 @@ ui <- navbarPage(
         downloadButton("downloadTemplate", "Download Template"),
         br(),
         br(),
-        "2. Add observed values to downloaded spreadsheet (or a similarly 
-        formatted spreadsheet) following the spreadsheet specifications 
-        in the main panel.",
+        "2. Add observed values to downloaded spreadsheet or a similarly 
+        formatted spreadsheet following the spreadsheet specifications 
+        in the main panel. See the", actionLink("input2help", "help page"),
+        "for information on how to measure the egg characteristics.",
         br(),
         br(),
         "3. Upload a completed spreadsheet (saved as .csv, 
@@ -232,8 +240,11 @@ ui <- navbarPage(
         actionButton("getpreds", "Get Predictions"),
         br(),
         br(),
-        em(strong("Note:"), "If a new spreadsheet is provided after predictions have been
+        span(
+          em(strong("Note:"), "If a new spreadsheet is provided after predictions have been
            computed once, the predictions will be automatically updated."),
+          style = 'color:#3498db'
+        ),
         br(),
         br(),
         "3. View the table and visualizations of the predictions that will appear 
@@ -333,14 +344,14 @@ ui <- navbarPage(
           "Individual egg predictions",
           br(),
           span(
-            strong("Random forest probabilities for all taxonomic levels"),
+            strong("Random forest probabilities of all taxonomic levels for 
+                   specified observation"),
             br(),
             br(),
-            "The random forests return probabilities for all 
-            taxonomic levels for each egg observation. These graphics 
-            show the probabilities for each taxonomic level for an egg.
-            The levels with a taxonomy are ordered from top to bottom 
-            by highest to lowest random forest probability.",
+            "The random forests return probabilities for all taxonomic levels for 
+            each egg observation. These graphics show the probabilities for each 
+            taxonomic level for an egg. The levels with a taxonomy are ordered 
+            from top to bottom by highest to lowest random forest probability.",
             style = "font-size:14px;"
           ),
           br(),
@@ -350,7 +361,7 @@ ui <- navbarPage(
               condition = "!is.na(output.message_pred_plots_v2)", 
               span(textOutput("message_pred_plots_v2"), style = "color:grey")
             ), 
-            width = 10
+            width = 12
           ),
           plotOutput("prob_plot"),
           width = 12
@@ -445,7 +456,10 @@ ui <- navbarPage(
   
   # HELP PAGE
   tabPanel(
+    
     title = div("Help", style = "font-size:14px;"),
+    value = "help",
+    
     column(width = 1),
     column(
       width = 9,
@@ -481,7 +495,7 @@ ui <- navbarPage(
         ),
         tabPanel(
           "FAQ",
-          span("text/help-faq.Rmd", style = "font-size:14px;"),
+          span(includeMarkdown("text/help-faq.Rmd"), style = "font-size:14px;"),
           width = 12
         )
       ) 
@@ -512,6 +526,11 @@ server <- function(input, output, session) {
   
   ## LINKS BETWEEN TABS ------------------------------------------------------
   
+  # Jump to help page from overview
+  observeEvent(input$overview2help, {
+    updateTabsetPanel(session, "inTabset", "help")
+  })
+  
   # Jump to predictions from inputs
   observeEvent(
     input$jump2pred, {
@@ -525,6 +544,11 @@ server <- function(input, output, session) {
       updateTabsetPanel(session, "inTabset", selected = "downloads")
     }
   )
+  
+  # Jump to help page
+  observeEvent(input$input2help, {
+    updateTabsetPanel(session, "inTabset", "help")
+  })
   
   ## INPUTS ------------------------------------------------------------------
   
@@ -658,6 +682,15 @@ server <- function(input, output, session) {
             Species_Pred,
             Species_Prob
           ) %>%
+          rename(
+            "Egg ID" = "Egg_ID",
+            "Family Pred" = "Family_Pred",
+            "Family Prob" = "Family_Prob",
+            "Genus Pred" = "Genus_Pred",
+            "Genus Prob" = "Genus_Prob",
+            "Species Pred" = "Species_Pred",
+            "Species Prob" = "Species_Prob"
+          ) %>%
           datatable(
             options = list(
               pageLength = 5,
@@ -671,9 +704,12 @@ server <- function(input, output, session) {
       })
       
       # Create plots summarizing the random forest predictions
-      output$pred_plot <- renderPlot({
+      pred_plot_obj = function() {
         rf_pred_plot(na.omit(data_and_preds()))
-      }, height = 350, width = 850)
+      }
+      output$pred_plot <- renderPlot({
+        pred_plot_obj()
+      }, height = 500, width = 850)
       
       # Create plots with the random forest probabilities for all taxonomic levels
       output$prob_plot <- renderPlot({
@@ -694,7 +730,7 @@ server <- function(input, output, session) {
   
   ## DOWNLOADS ---------------------------------------------------------------
   
-  # Display predictions after button is clicked
+  # Download data and predictions
   observeEvent(input$preview, { 
     if (!is.null(input_data())) {
       # Create a table with random forest prediction results
@@ -714,7 +750,7 @@ server <- function(input, output, session) {
       })
     }
     })
-      
+  
   ## MESSAGES ----------------------------------------------------------------
   
   # Messages when no spreadsheet provided

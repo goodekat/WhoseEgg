@@ -18,7 +18,7 @@ output:
 
 **Additional Information**: Training data averages of membrane diameters range between 0.728	mm and 5.492 mm
 
-The images below show an examples of four equally spaced membrane diameter measurements.
+The images below show examples of four equally spaced membrane diameter measurements.
 
 <img src="../www/membrane-diameter.png" height="200">
 
@@ -26,7 +26,7 @@ The images below show an examples of four equally spaced membrane diameter measu
 
 #### **Average of Yolk Diameters**
 
-**Definition**: The average of four yolk measurements (mm) taken from the membrane with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
+**Definition**: The average of four diameter measurements (mm) taken from the yolk with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
 
 **Spreadsheet Variable Name**: Yolk_Ave
 
@@ -38,7 +38,7 @@ The images below show an examples of four equally spaced membrane diameter measu
 
 **Additional Information**: Training data averages of yolk diameters range between 0.434	mm and 4.371 mm
 
-The images below show an examples of four equally spaced yolk diameter measurements.
+The images below show examples of four equally spaced yolk diameter measurements.
 
 <img src="../www/yolk-diameter.png" height="200">
 
@@ -90,7 +90,7 @@ The images below show an examples of four equally spaced yolk diameter measureme
 
 **Additional Information**:
 
-Examples of compact eggs: Clearly identifiable yolk entity. The top right picture is tricky when using a picture. When viewed under the microscope the yolk would roll around within the membrane. If you look closely at the right side of the yolk, you can see the space between the yolk and membrane. the yolk is compact but very big. The yolk is nearly as big as the membrane.
+Examples of compact eggs: The yolk entity is clearly identifiable. Note that it is difficult to see the identifiable yolk of the egg in the top right corner. When the egg was viewed under a microscope, the yolk would roll around within the membrane. If you look closely at the right side of the yolk, you can see the space between the yolk and membrane. The yolk is compact but nearly as big as the membrane.
 
 <img src="../www/compact.png" width="800">
 
@@ -114,7 +114,7 @@ Examples of diffuse eggs: The yolk is not in a tightly compact entity within the
 
 **Additional Information**: 
 
-Examples of deflated eggs. All these membranes are not smooth surfaced and spherical. Notice the dents and folds indicating the membrane is smaller now than it was when it was sampled. Some of this may be due to broken membranes from egg handling or desiccation from the ethanol. Most eggs in the training data were not ripped or broken. The membranes appeared intact but shriveled due to water being sucked out by the ethanol during preservation.
+Examples of deflated eggs. All these membranes do not have a smooth surface or spherical. Notice the dents and folds indicating the membrane is smaller now than it was when it was sampled. Some of this may be due to broken membranes from egg handling or desiccation from the ethanol. Most eggs in the training data were not ripped or broken. The membranes appeared intact but shriveled due to water being sucked out by the ethanol during preservation.
 
 <img src="../www/deflated.png" width="800">
 
@@ -126,7 +126,7 @@ Examples of eggs that are not deflated. Notice all the membranes are spherical a
 
 #### **Egg Pigment**
 
-**Definition**: Specifies whether the egg has pigment of not
+**Definition**: Specifies whether the egg has pigment or not
 
 **Spreadsheet Variable Name**: Pigment
 
@@ -138,7 +138,7 @@ Examples of eggs that are not deflated. Notice all the membranes are spherical a
 
 **Additional Information**: 
 
-Examples of eggs with pigment. Arrows point at chromatophores (cell containing pigment). Notice in the image in the bottom middle that the larger dark circles are eyes with pigment.
+Examples of eggs with pigment. Arrows point at chromatophores (cell containing pigment). Notice in the image in the bottom middle that the larger dark circles are eyes.
 
 <img src="../www/pigment.png" width="800">
 
@@ -160,15 +160,15 @@ Examples of eggs without pigment. There are no chromatophores present.
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**: Below are examples of the stages. Most of these pictures of the stages will not be great representations. Assessing the stage is accomplished best with the egg under the scope so that you can move it around to inspect all sides and angles.
+**Additional Information**: Below are examples of the stages. Most of these pictures of the stages are not be great representations. Assessing the stage is accomplished best with the egg under a microscope, so that it can be moved around to inspect all sides and angles.
 
-Egg Stage 1 (early cleavage): The blastomeres will look like prongs (typically 4) pointing into one direction. The arrows point to prongs. The top left is the best I have of the 4 prongs. They are not as pronounced but you can still see the cleavage separating each blastomere. The bottom left corner picture shows a side view of 2 prongs. This is difficult to get a picture looking directly into the prongs.
+Egg Stage 1 (early cleavage): The blastomeres will look like prongs (typically 4) pointing in one direction. The arrows point to prongs. The top left is the best image showing the 4 prongs. They are not as pronounced, but the cleavage separating each blastomere is still apparent. The bottom left corner picture shows a side view of 2 prongs. It is difficult to get a picture looking directly into the prongs.
 
 All diagrams of egg stages included below are from Kelso and Rutherford (1996). Permission to use the images was granted by the American Fisheries Society.
 
 <img src="../www/egg-stage-1.png" height="400">
 
-Egg Stage 2 (morula): Arrows point to blastomeres
+Egg Stage 2 (morula): The arrows point to blastomeres.
 
 <img src="../www/egg-stage-2.png" height="200">
 
@@ -176,23 +176,23 @@ Egg Stage 3 (blastula):
 
 <img src="../www/egg-stage-3.png" height="200">
 
-Egg Stage 4 (gastrula): Arrow points to germ ring
+Egg Stage 4 (gastrula): The arrow points to germ ring
 
 <img src="../www/egg-stage-4.png" height="200">
 
-Egg Stage 5 (early embryo): Arrows point to embryonic axis (spine and back forming). This is best described as a ridgeline that sticks out of yolk.
+Egg Stage 5 (early yolk): The arrows point to yolknic axis (spine and back forming). This is best described as a ridge line that sticks out of the yolk.
 
 <img src="../www/egg-stage-5.png" height="200">
 
-Egg Stage 6 (tail-bud stage): Out of the embryonic axis, the head and tail will form a rounded end. The tail will start to protrude away from yolk.
+Egg Stage 6 (tail-bud stage): Out of the yolknic axis, the head and tail will form a rounded end. The tail will start to protrude away from the yolk.
 
 <img src="../www/egg-stage-6.png" height="200">
 
-Egg Stage 7 (tail-free stage): Tail continues to protrude away from yolk and is now not touching the yolk arrow points to tail not touching yolk
+Egg Stage 7 (tail-free stage): The tail continues to protrude away from yolk and is now not touching the yolk. The arrows point to the tail not touching the yolk.
 
 <img src="../www/egg-stage-7.png" height="200">
 
-Egg Stage 8 (late embryo): Embryo is almost fully developed. Myomeres, eyes, auditory vesicle are all present. Egg is close to hatching.
+Egg Stage 8 (late yolk): The yolk is almost fully developed. Myomeres, eyes, auditory vesicle are all present. The egg is close to hatching.
 
 <img src="../www/egg-stage-8.png" height="200">
 
@@ -200,11 +200,11 @@ Egg Stage 8 (late embryo): Embryo is almost fully developed. Myomeres, eyes, aud
 
 #### **Larval Length**
 
-**Definition**: Total length measurement (mm) along the midline from all of the late stage embryos (XXX need to figure out what is done if egg is not a late stage embryo)
+**Definition**: Total length measurement (mm) along the midline from all of the late stage yolks (eggs in stages 6-8)
 
 **Spreadsheet Variable Name**: Larval_Length
 
-**Format**: Positive continuous variable
+**Format**: Positive continuous variable (set to 0 if egg is in stage 5 or less or egg is diffuse)
 
 **Required Upload or Computed After Upload**: Required upload
 
@@ -264,7 +264,7 @@ Below is an example showing how larval length is measured.
 
 **Additional Information**: 
 
-Examples of eggs with sticky debris. In all pictures, the debris was adhered to the eggs. Some fish have sticky eggs to keep them from drifting.Most of the debris is wood but the top left shows sand can also stick to eggs.
+Examples of eggs with sticky debris. In all pictures, the debris was adhered to the eggs. Some fish have sticky eggs to keep them from drifting. Most of the debris is wood but the top left shows sand can also stick to eggs.
 
 <img src="../www/sticky-debris.png" height="400">
 
@@ -276,7 +276,7 @@ Examples of eggs without sticky debris. There is no debris or sand on the membra
 
 #### **Yolk to Membrane Ratio**
 
-**Definition**: The ratio between the average yolk diameter and average membrance diameter:
+**Definition**: The ratio between the average yolk diameter and average membrane diameter:
 
 $$\frac{\mbox{Average of Yolk Diameters}}{\mbox{Average of Membrane Diameters}}$$
 

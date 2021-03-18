@@ -19,6 +19,9 @@ predicting fish species
   - Emailed copyright people about using the figures and added statement
   - Added an FAQ to help page
   - Made the figures taller not to overlap
+  - Added button to jump to help page from input page
+  - Changed header names to not be underscored
+  - Changed wording on how the zooming can be done
 
 ## To do list for app
 
@@ -43,7 +46,6 @@ predicting fish species
 <br>
 
   - Data input page:
-      - **Add button to jump to help page**
       - **Highlight the search feature (especially for helping to find
         observations with typos)**
       - **Print lists in the errors with row breaks**
@@ -59,18 +61,16 @@ predicting fish species
 
   - Prediction page:
     
-      - **Change header names to not be underscored**
+      - **Move all numbers on figures to right in summary plot**
       - **Add a download image button**
       - **Add visualizations of the data (both input data and training
         data with input data included)**
       - **Add interpretation of the random forest probabilities (look up
         a nice interpretation)**
       - **Discuss interpretation of probabilities near 0.5-0.6**
-      - **Move all numbers on figures to right in summary plot**
       - **Add option to click on plot and show more plots (summary to
         input data features and individual to training data with
         observation)**
-      - **Change wording on how the zooming can be done**
       - Figure out how to compute prediction intervals
 
   - Download page:
@@ -97,10 +97,8 @@ predicting fish species
   - Testing:
       - Need to test that different computer types work with Excel and
         csv uploads
-    
-      - ``` 
-        Some people were getting errors with the Excel file saying something about “subscript out of bounds”
-        ```
+          - Some people were getting errors with the Excel file saying
+            something about “subscript out of bounds”
 
 <br>
 
