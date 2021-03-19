@@ -3,7 +3,7 @@ output: rmarkdown::github_document
 always_allow_html: yes
 ---
 
-# Shiny Carp App
+# WhoseEgg
 
 ![](www/eggs-in-a-row.jpeg)
 
