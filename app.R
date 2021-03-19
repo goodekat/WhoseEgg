@@ -235,7 +235,7 @@ ui <- navbarPage(
                 condition = "!is.na(output.message_provide_data_v1)", 
                 span(textOutput("message_provide_data_v1"), style = "color:grey")
               ),
-              div(DT::dataTableOutput("input_table"), style = "font-size: 100%; width: 100%"),
+              div(dataTableOutput("input_table"), style = "font-size: 100%; width: 100%"),
               br(),
               br()
             ),
@@ -246,7 +246,7 @@ ui <- navbarPage(
                 condition = "!is.na(output.message_provide_data_v2)", 
                 span(textOutput("message_provide_data_v2"), style = "color:grey")
               ),
-              div(DT::dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
+              div(dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
             )
           ),
         )
@@ -339,7 +339,7 @@ ui <- navbarPage(
               span(textOutput("message_pred_table"), style = "color:grey")
             ), width = 9
           ),
-          div(DT::dataTableOutput("pred_table"), style = "font-size: 100%; width: 100%"),
+          div(dataTableOutput("pred_table"), style = "font-size: 100%; width: 100%"),
           width = 12
         )
       ),
@@ -483,7 +483,7 @@ ui <- navbarPage(
             ),
             width = 10
           ),
-          div(DT::dataTableOutput("download_table"), style = "font-size: 100%; width: 100%"),
+          div(dataTableOutput("download_table"), style = "font-size: 100%; width: 100%"),
           width = 12
           )
         )
@@ -660,7 +660,7 @@ server <- function(input, output, session) {
   })
   
   # Create a table with the input values
-  output$input_table <- DT::renderDataTable({
+  output$input_table <- renderDataTable({
     if (!is.null(input_data())){
       input_data() %>%
         mutate_all(.funs = as.character) %>%
@@ -678,7 +678,7 @@ server <- function(input, output, session) {
   })
   
   # Create a table with the processed input values
-  output$processed_table <- DT::renderDataTable({
+  output$processed_table <- renderDataTable({
     if (!is.null(input_data())) {
       processed_inputs() %>%
         select(all_of(rf_pred_vars)) %>%
@@ -736,7 +736,7 @@ server <- function(input, output, session) {
   observeEvent(input$getpreds, { 
     if (!is.null(input_data())) {
       # Create a table with random forest prediction results
-      output$pred_table <- DT::renderDataTable({
+      output$pred_table <- renderDataTable({
         # Put the random forest results in a table
         data_and_preds() %>%
           na.omit() %>%
@@ -802,7 +802,7 @@ server <- function(input, output, session) {
   observeEvent(input$preview, { 
     if (!is.null(input_data())) {
       # Create a table with random forest prediction results
-      output$download_table <- DT::renderDataTable({
+      output$download_table <- renderDataTable({
         # Put the random forest results in a table
         data_and_preds() %>%
           datatable(

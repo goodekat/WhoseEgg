@@ -6,8 +6,12 @@ ggplot2
 rmarkdown
 purrr
 randomForest
+readxl
 shiny
 shinyhelper
 shinythemes
 stringr
 tidyr
+tools
+writexl
+WriteXLS
