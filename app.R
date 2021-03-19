@@ -514,6 +514,7 @@ ui <- navbarPage(
         tabPanel(
           "Random Forest Details",
           span(
+            br(),
             includeMarkdown("text/help-random-forest.Rmd"),
             style = "font-size:14px;"
           ),
@@ -521,6 +522,7 @@ ui <- navbarPage(
         ),
         tabPanel(
           "FAQ",
+          br(),
           span(includeMarkdown("text/help-faq.Rmd"), style = "font-size:14px;"),
           width = 12
         )
