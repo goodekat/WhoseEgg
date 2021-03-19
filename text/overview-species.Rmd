@@ -8,4 +8,4 @@ output:
 
 Random forests are only able to make predictions for fish species included in the data used to train the models. The family, genus, and species of fish included in the data using to train the models are listed below in alphabetical order. Note: Invasive carp include Bighead, Grass, and Silver Carp.
 
-*We caution of the use of WhoseEgg for eggs collected in locations where additional fish species are present.*
+<span style="color:#3498db">*We caution the use of WhoseEgg for prediction of eggs collected outside of the egg collection regions without prior model validation.*</span>

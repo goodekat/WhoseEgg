@@ -143,9 +143,8 @@ ui <- navbarPage(
         br(),
         br(),
         span(
-          em(strong("Note:"), "See the", actionLink("input2help", strong("help page")),
-             "for detailed information on the egg characteristics."),
-          style = 'color:#3498db'
+          em("Note: See the", actionLink("input2help", "help page"),
+          "for detailed information on the egg characteristics.")
         ),
         br(),
         br(),
