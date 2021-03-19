@@ -599,6 +599,20 @@ server <- function(input, output, session) {
     }
   )
   
+  # # Put the input variables in a data frame
+  # input_data <- reactive({
+  #   file <- input$spreadsheet
+  #   ext <- tools::file_ext(file$datapath)
+  #   req(file)
+  #   if (ext == "csv") {
+  #     read.csv(file$datapath)
+  #   } else if (ext %in% c("xlsx", "xls")) {
+  #     readxl::read_excel(file$datapath)
+  #   } else{
+  #     NULL
+  #   }
+  # })
+  
   # Put the input variables in a data frame
   input_data <- reactive({
     file <- input$spreadsheet
@@ -606,8 +620,14 @@ server <- function(input, output, session) {
     req(file)
     if (ext == "csv") {
       read.csv(file$datapath)
-    } else if (ext %in% c("xlsx", "xls")) {
-      readxl::read_excel(file$datapath)
+    } else if (ext == "xlsx") {
+      file.copy(file$datapath, paste(file$datapath, ".xlsx", sep = ""))
+      readxl::read_excel(paste(file$datapath, ".xlsx", sep = ""), 1)
+      #readxl::read_excel(file$datapath)
+    } else if (ext == "xls") {
+      file.copy(file$datapath, paste(file$datapath, ".xls", sep = ""))
+      readxl::read_excel(paste(file$datapath, ".xls", sep = ""), 1)
+      #readxl::read_excel(file$datapath)
     } else{
       NULL
     }
