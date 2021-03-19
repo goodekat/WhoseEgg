@@ -620,16 +620,9 @@ server <- function(input, output, session) {
     req(file)
     if (ext == "csv") {
       read.csv(file$datapath)
-    } else if (ext == "xlsx") {
+    } else {
       file.copy(file$datapath, paste(file$datapath, ".xlsx", sep = ""))
       readxl::read_excel(paste(file$datapath, ".xlsx", sep = ""), 1)
-      #readxl::read_excel(file$datapath)
-    } else if (ext == "xls") {
-      file.copy(file$datapath, paste(file$datapath, ".xls", sep = ""))
-      readxl::read_excel(paste(file$datapath, ".xls", sep = ""), 1)
-      #readxl::read_excel(file$datapath)
-    } else{
-      NULL
     }
   })
   
