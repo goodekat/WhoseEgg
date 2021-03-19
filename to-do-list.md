@@ -50,8 +50,8 @@ Overview page:
 
 Data input page:
 
-- **Highlight the search feature (especially for helping to find observations with typos)**
 - **Add visualizations of new data compared to training data**
+- Highlight the search feature (especially for helping to find observations with typos)
 - Look into research on data input in apps
 - Try using Google forms for input options – could even embed it
   in the app or could use a conditional panel to create click
@@ -60,10 +60,10 @@ Data input page:
 
 Prediction page:
 
-- **Add a download image button**
 - **Add visualizations of the data (both input data and training data with input data included)**
 - **Add interpretation of the random forest probabilities (look up a nice interpretation)**
 - **Discuss interpretation of probabilities near 0.5-0.6**
+- **Add a download image button**
 - **Add option to click on plot and show more plots (summary to
   input data features and individual to training data with
   observation)**
@@ -73,8 +73,8 @@ Download page:
 
 Help page:
 
-- **Have tab with information on random forest**
 - **Fill in and add to FAQ**
+- **Have tab with information on random forest**
 
 Warnings/Errors:
 
