@@ -3,43 +3,12 @@
 
 ## Completed
 
-- Emailed IT about time frame
-- Determined how to host the app (IT or RStudio server)
-- Changed to not having link to data validation explanation
-- Changed the question mark to caption below the images
-- Added next buttons to go from input data to predictions to downloads
-  (or add get predictions to the instructions)
-- Changed error and warning messages to red/orange
-- Emphasized ‘note’
-- Listed app authors/contributors some where (me, Mike, Philip, and
-  Carlos)
-- Emailed copyright people about using the figures and added statement
-- Added an FAQ to help page
-- Made the figures taller not to overlap
-- Added button to jump to help page from input page
-- Changed header names to not be underscored
-- Changed wording on how the zooming can be done
-- Moved all numbers on figures to right in summary plot
-- Added links to easily get to the help page for the egg
-  characteristics
-- Edit definitions
-- Converted to using jpeg instead of png files
-- Converted text in tabs to html or R code
-- Added a scrolling option to the tables
-- Made a dataset with 5 errors for people to fix
-- Set up Google analytics
-- Made GitHub repo public
-
-Questions for Mike:
-
-- Measuring larval length when not in late stage - 2, 3, 4, 5, and D
-- Should I change all wording to embryo instead of yolk
+- Filled in and added to FAQ
 
 ## To do
 
 Meeting with collaborators:
   
-- **Send email about trying out the app ahead of time (by March 18 or 19)**
 - **Figure out why excel upload is not working**
 - Create a list of questions for the group
 - Prepare slides for meeting
@@ -73,7 +42,6 @@ Download page:
 
 Help page:
 
-- **Fill in and add to FAQ**
 - **Have tab with information on random forest**
 
 Warnings/Errors:
@@ -109,3 +77,4 @@ Other:
   [styling](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/)
   and [code
   optimization](https://rstudio.com/resources/webinars/scaling-shiny-apps-with-asynchronous-programming/)
+- Add readmes throughout app explaining organization and functionality for future developers

@@ -4,7 +4,7 @@ output:
     theme: flatly
 ---
 
-#### **Average of Membrane Diameters**
+### Average of Membrane Diameters
 
 **Definition**: The average of four diameter measurements (mm) taken from the membrane with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
 
@@ -24,7 +24,7 @@ The images below show examples of four equally spaced membrane diameter measurem
 
 <hr/>
 
-#### **Average of Yolk Diameters**
+### Average of Yolk Diameters
 
 **Definition**: The average of four diameter measurements (mm) taken from the yolk with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
 
@@ -44,7 +44,7 @@ The images below show examples of four equally spaced yolk diameter measurements
 
 <hr/>
 
-#### **Coefficient of Variation of Membrane Diameters**
+### Coefficient of Variation of Membrane Diameters
 
 **Definition**: The coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the membrane with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
 
@@ -60,7 +60,7 @@ The images below show examples of four equally spaced yolk diameter measurements
 
 <hr/>
 
-#### **Coefficient of Variation of Yolk Diameters**
+### Coefficient of Variation of Yolk Diameters
 
 **Definition**: The coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the yolk with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
 
@@ -76,7 +76,7 @@ The images below show examples of four equally spaced yolk diameter measurements
 
 <hr/>
 
-#### **Compact or Diffuse**
+### Compact or Diffuse
 
 **Definition**: Specifies whether the egg collected is compact or diffuse
 
@@ -100,7 +100,7 @@ Examples of diffuse eggs: The yolk is not in a tightly compact entity within the
 
 <hr/>
 
-#### **Deflated**
+### Deflated
 
 **Definition**: Specifies whether the egg is deflated or not
 
@@ -124,7 +124,7 @@ Examples of eggs that are not deflated. Notice all the membranes are spherical a
 
 <hr/>
 
-#### **Egg Pigment**
+### Egg Pigment
 
 **Definition**: Specifies whether the egg has pigment or not
 
@@ -148,7 +148,7 @@ Examples of eggs without pigment. There are no chromatophores present.
 
 <hr/>
 
-#### **Egg Stage**
+### Egg Stage
 
 **Definition**: Stage of the egg when collected - either 1 through 8, broken, or diffuse
 
@@ -198,7 +198,7 @@ Egg Stage 8 (late yolk): The yolk is almost fully developed. Myomeres, eyes, aud
 
 <hr/>
 
-#### **Larval Length**
+### Larval Length
 
 **Definition**: Total length measurement (mm) along the midline from all of the late stage yolks (eggs in stages 6-8)
 
@@ -218,7 +218,7 @@ Below is an example showing how larval length is measured.
 
 <hr/>
 
-#### **Standard Deviation of Membrane Diameters**
+### Standard Deviation of Membrane Diameters
 
 **Definition**: The standard deviation of four diameter measurements (mm) taken from the membrane with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
 
@@ -234,7 +234,7 @@ Below is an example showing how larval length is measured.
 
 <hr/>
 
-#### **Standard Deviation of Yolk Diameters**
+### Standard Deviation of Yolk Diameters
 
 **Definition**: The standard deviation of four diameter measurements (mm) taken from the yolk with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
 
@@ -250,7 +250,7 @@ Below is an example showing how larval length is measured.
 
 <hr/>
 
-#### **Sticky Debris**
+### Sticky Debris
 
 **Definition**: Specifies whether there was debris on the egg
 
@@ -274,7 +274,7 @@ Examples of eggs without sticky debris. There is no debris or sand on the membra
 
 <hr/>
 
-#### **Yolk to Membrane Ratio**
+### Yolk to Membrane Ratio
 
 **Definition**: The ratio of average yolk diameter to average membrane diameter
 

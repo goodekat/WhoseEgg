@@ -20,6 +20,10 @@ source("helper-functions.R")
 # Load the random forest models (trained on the years of 2014-2016)
 rfs <- readRDS("data/rfs_for_app.rds")
 
+# Prepare text files
+rmdfiles <- c("text/05-help-faq.Rmd")
+knit(rmdfiles, output = "text/05-help-faq.md", quiet = T)
+
 ##### APP UI #####
 
 ui <- navbarPage(
@@ -28,11 +32,17 @@ ui <- navbarPage(
   title = "WhoseEgg",
   id = "inTabset",
   theme = shinytheme("flatly"),
+  position = "fixed-top",
   
   ## HOMEPAGE
   tabPanel(
+    
     # Google analytics
     tags$head(includeHTML("google-analytics.html")),
+    
+    # Add padding to work with fixed upper panel
+    tags$style(type="text/css", "body {padding-top: 70px;}"),
+    
     title = div("Overview", style = "font-size:14px;"),
     value = "overview",
     fluidPage(
@@ -43,10 +53,10 @@ ui <- navbarPage(
         img(src = "eggs-in-a-row.jpeg", width = "900px"),
         h3(strong("Welcome to the WhoseEgg App")),
         span(
-          includeMarkdown("text/overview-header.Rmd"),
-          "For information about the random forest models and information on how 
-          the egg characteristics were measured for training the random forests, 
-          see the",
+          includeMarkdown("text/01-overview-header.Rmd"),
+          "For information about the random forest models, information on how 
+          the egg characteristics were measured for training the random forests,
+          and handling data from different locations, see the",
           actionLink("overview2help", "help page"),
           ".",
           style = "font-size:14px;"
@@ -71,7 +81,7 @@ ui <- navbarPage(
             h5("Locations in Training Data"),
             br(),
             span(
-              includeMarkdown("text/overview-locations.Rmd"), 
+              includeMarkdown("text/01-overview-locations.Rmd"), 
               "For more information on using WhoseEgg with data collected in 
               different regions, see the FAQ on the",
               actionLink("overview2helpagain", "help page"), ".",
@@ -79,35 +89,31 @@ ui <- navbarPage(
             ),
             br(),
             br(),
-            img(src = "locations.jpeg", width = "600px"),
-            br(),
-            br()
+            img(src = "locations.jpeg", width = "600px")
           ), 
           tabPanel(
             h5("Species in Training Data"),
             br(),
             span(
-              includeMarkdown("text/overview-species.Rmd"), 
+              includeMarkdown("text/01-overview-species.Rmd"), 
               "For more information on using WhoseEgg with data collected in 
               locations where additional species may be present, see the FAQ on the",
               actionLink("overview2helpagainx2", "help page"), ".",
+              br(),
+              br(),
+              tableOutput("species_table"),
               style = "font-size:14px;"
-            ),
-            br(),
-            br(),
-            img(src = "species.jpeg", width = "500px"),
-            br(),
-            br()
+            )
           ),
           tabPanel(
             h5("User Tips"),
             br(),
-            span(includeMarkdown("text/overview-tips.Rmd"), style = "font-size:14px;")
+            span(includeMarkdown("text/01-overview-tips.Rmd"), style = "font-size:14px;")
           ),
           tabPanel(
             h5("Contributors and Contact"),
             br(),
-            span(includeMarkdown("text/overview-cc.Rmd"), style = "font-size:14px;")
+            span(includeMarkdown("text/01-overview-cc.Rmd"), style = "font-size:14px;")
           )
         ),
         hr(),
@@ -128,6 +134,7 @@ ui <- navbarPage(
     
     ## INSTRUCTIONS
     sidebarPanel(
+      style = "position:fixed;width:22%;",
       h3("Instructions"),
       span(
       p(
@@ -202,7 +209,7 @@ ui <- navbarPage(
       hr(),
       h4("Overview"),
       span(
-        includeMarkdown("text/input-header.Rmd"),
+        includeMarkdown("text/02-input-header.Rmd"),
         style = "font-size:14px;"
       ),
       hr(),
@@ -212,10 +219,10 @@ ui <- navbarPage(
           h4("Spreadsheet Specifications"),
           tabsetPanel(
             type = "tabs",
-            tabPanel("Variable Requirements", br(), span(includeMarkdown("text/input-variables.Rmd"), style = "font-size:14px;")),
-            tabPanel("Observation Requirements", br(), span(includeMarkdown("text/input-observations.Rmd"), style = "font-size:14px;")),
-            tabPanel("Template Helpers", br(), span(includeMarkdown("text/input-template-helpers.Rmd"), style = "font-size:14px;")),
-            tabPanel("Additional Variables", br(), span(includeMarkdown("text/input-additional-vars.Rmd"), style = "font-size:14px;"))
+            tabPanel("Variable Requirements", br(), span(includeMarkdown("text/02-input-variables.Rmd"), style = "font-size:14px;")),
+            tabPanel("Observation Requirements", br(), span(includeMarkdown("text/02-input-observations.Rmd"), style = "font-size:14px;")),
+            tabPanel("Template Helpers", br(), span(includeMarkdown("text/02-input-template-helpers.Rmd"), style = "font-size:14px;")),
+            tabPanel("Additional Variables", br(), span(includeMarkdown("text/02-input-additional-vars.Rmd"), style = "font-size:14px;"))
           ),
           hr(),
           h4("Egg Characteristics"),
@@ -254,6 +261,7 @@ ui <- navbarPage(
     value = "predictions",
     
     sidebarPanel(
+      style = "position:fixed;width:22%;",
       h3("Instructions"),
       span(
       p(
@@ -318,7 +326,7 @@ ui <- navbarPage(
       hr(),
       h4("Overview"),
       span(
-        includeMarkdown("text/predictions-header.Rmd"),
+        includeMarkdown("text/03-predictions-header.Rmd"),
         style = "font-size:14px;"
       ),
       hr(),
@@ -404,6 +412,7 @@ ui <- navbarPage(
     value = "downloads",
     
     sidebarPanel(
+      style = "position:fixed;width:22%;",
       h3("Instructions"),
       span(
       p(
@@ -460,7 +469,7 @@ ui <- navbarPage(
       hr(),
       h4("Overview"),
       span(
-        includeMarkdown("text/download-header.Rmd"),
+        includeMarkdown("text/04-downloads-header.Rmd"),
         style = "font-size:14px;"
       ),
       hr(),
@@ -490,7 +499,7 @@ ui <- navbarPage(
       width = 9,
       h3(strong("Help Page")),
       span(
-        includeMarkdown("text/help-header.Rmd"),
+        includeMarkdown("text/05-help-header.Rmd"),
         style = "font-size:14px;"
       ),
       tabsetPanel(
@@ -499,30 +508,27 @@ ui <- navbarPage(
         tabPanel(
           "Environmental Variables",
           br(),
-          includeMarkdown("text/help-vars-env.Rmd"),
+          includeMarkdown("text/05-help-vars-env.Rmd"),
           width = 12
         ),
         # Tab for input table specifications
         tabPanel(
           "Morphological Variables",
           br(),
-          span(includeMarkdown("text/help-vars-morph.Rmd"), style = "font-size:14px;"),
+          span(includeMarkdown("text/05-help-vars-morph.Rmd"), style = "font-size:14px;"),
           width = 12
         ),
         # Tab details on the random forests
         tabPanel(
           "Random Forest Details",
-          span(
-            br(),
-            includeMarkdown("text/help-random-forest.Rmd"),
-            style = "font-size:14px;"
-          ),
+          br(),
+          span(includeMarkdown("text/05-help-random-forest.Rmd"), style = "font-size:14px;"),
           width = 12
         ),
         tabPanel(
           "FAQ",
           br(),
-          span(includeMarkdown("text/help-faq.Rmd"), style = "font-size:14px;"),
+          span(includeMarkdown("text/05-help-faq.md"), style = "font-size:14px;"),
           width = 12
         )
       ) 
@@ -539,7 +545,7 @@ ui <- navbarPage(
       br(),
       br(),
       span(
-        includeMarkdown("text/references.Rmd"),
+        includeMarkdown("text/06-references.Rmd"),
         style = "font-size:14px;"
       )
     )
@@ -587,6 +593,29 @@ server <- function(input, output, session) {
     updateTabsetPanel(session, "inTabset", "help")
   })
   
+  ## OVERVIEW ------------------------------------------------------------------
+  
+  # Create a table with the input values
+  output$species_table <- function() {
+    eggdata %>% 
+      count(Family_ACGC, Genus_ACGC, Common_Name_ACGC) %>% 
+      rename(
+        "Family" = "Family_ACGC",
+        "Genus" = "Genus_ACGC",
+        "Common Name" = "Common_Name_ACGC",
+        "Number of Eggs in Training Data" = "n"
+      ) %>%
+      knitr::kable("html", align = "lllc") %>%
+      kableExtra::column_spec(
+        column = 1:4,
+        width = "3cm"
+      ) %>%
+      kableExtra::collapse_rows(
+        columns = 1:3,
+        valign = "top"
+      )
+  }
+  
   ## INPUTS ------------------------------------------------------------------
   
   # Template download
@@ -606,8 +635,14 @@ server <- function(input, output, session) {
     req(file)
     if (ext == "csv") {
       read.csv(file$datapath)
-    } else if (ext %in% c("xlsx", "xls")) {
-      readxl::read_excel(file$datapath)
+    } else if (ext == "xlsx") {
+      file.copy(file$datapath, paste(file$datapath, ".xlsx", sep = ""))
+      readxl::read_excel(paste(file$datapath, ".xlsx", sep = ""), 1)
+      #readxl::read_excel(file$datapath)
+    } else if (ext == "xls") {
+      file.copy(file$datapath, paste(file$datapath, ".xls", sep = ""))
+      readxl::read_excel(paste(file$datapath, ".xls", sep = ""), 1)
+      #readxl::read_excel(file$datapath)
     } else{
       NULL
     }
