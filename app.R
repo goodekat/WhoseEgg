@@ -22,7 +22,7 @@ rfs <- readRDS("data/rfs_for_app.rds")
 
 # Prepare text files
 rmdfiles <- c("text/05-help-faq.Rmd")
-knit(rmdfiles, output = "text/05-help-faq.md", quiet = T)
+knitr::knit(rmdfiles, output = "text/05-help-faq.md", quiet = T)
 
 ##### APP UI #####
 
@@ -631,20 +631,13 @@ server <- function(input, output, session) {
   # Put the input variables in a data frame
   input_data <- reactive({
     file <- input$spreadsheet
-    ext <- tools::file_ext(file$datapath)
+    ext <- tools::file_ext(file$name)
     req(file)
     if (ext == "csv") {
       read.csv(file$datapath)
-    } else if (ext == "xlsx") {
-      file.copy(file$datapath, paste(file$datapath, ".xlsx", sep = ""))
-      readxl::read_excel(paste(file$datapath, ".xlsx", sep = ""), 1)
-      #readxl::read_excel(file$datapath)
-    } else if (ext == "xls") {
-      file.copy(file$datapath, paste(file$datapath, ".xls", sep = ""))
-      readxl::read_excel(paste(file$datapath, ".xls", sep = ""), 1)
-      #readxl::read_excel(file$datapath)
-    } else{
-      NULL
+    } else {
+      file.rename(file$datapath, paste(file$datapath, ext, sep = "."))
+      readxl::read_excel(paste(file$datapath, ext, sep = "."), 1)
     }
   })
   

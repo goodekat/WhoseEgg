@@ -6,7 +6,7 @@ output:
 
 ### General Information on Random Forests
 
-Random forests are machine learning models that use an ensemble of classification or regression trees to provide predictions.
+Random forests are machine learning models that use an ensemble of classification trees (categorical response variable) or regression trees (continuous response variable) to provide predictions. The term *random* is used because randomness is introduced when each tree is fit. In particular 
 
 ### Random Forests in WhoseEgg
 
