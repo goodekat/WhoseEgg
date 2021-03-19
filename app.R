@@ -31,6 +31,8 @@ ui <- navbarPage(
   
   ## HOMEPAGE
   tabPanel(
+    # Google analytics
+    tags$head(includeHTML("google-analytics.html")),
     title = div("Overview", style = "font-size:14px;"),
     value = "overview",
     fluidPage(
