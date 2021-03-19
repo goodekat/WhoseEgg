@@ -4,7 +4,7 @@ output:
     theme: flatly
 ---
 
-The random forests used in WhoseEgg are the augmented models described in Goode et al. (2021) and based on the models developed in Camacho et al. (2019). Code for these models is available at https://github.com/goodekat/WhoseEgg/blob/main/preparation-code/rfs-for-app.md, and the models are available as RDS files at https://github.com/goodekat/WhoseEgg/blob/main/data/rfs_for_app.rds.
+The random forests used in WhoseEgg are the augmented models described in Goode et al. (2021) and based on the models developed in Camacho et al. (2019). Code for these models is available at https://github.com/goodekat/WhoseEgg/blob/main/prep/rfs-for-app.md, and the models are available as RDS files at https://github.com/goodekat/WhoseEgg/blob/main/data/rfs_for_app.rds.
 
 Three random forest models:
 
