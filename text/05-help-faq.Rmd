@@ -1,8 +1,10 @@
 ---
+title: <strong><p style="font-size:26px">Frequently Asked Questions</p></strong>
 output:
   html_document:
     theme: flatly
     toc: true
+    self_contained: false
 ---
 
 ### What if I have data from different locations?
@@ -21,7 +23,7 @@ If there is interest in using WhoseEgg to make predictions on data collected in 
 
 - If you try validating or updating the WhoseEgg models, the creators of WhoseEgg would be interested to hear about your results. Let us know by emailing whoseegg@iastate.edu.
 
-<img src="../www/locations.jpeg" style="width:50%">
+<img src="../locations.jpeg" style="width:50%">
 
 <hr>
 
@@ -79,6 +81,6 @@ While it is okay to upload extra variables to WhoseEgg, these variables will not
 
 <hr>
 
-### The text in the figures is too small for me to read. What can be done about this?
+### The text is too small for me to read. What can be done about this?
 
 Try zooming in on the figures using control (Windows) or command (Mac) and the + key (or a similar technique available via your computer).

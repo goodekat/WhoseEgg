@@ -20,9 +20,12 @@ source("helper-functions.R")
 # Load the random forest models (trained on the years of 2014-2016)
 rfs <- readRDS("data/rfs_for_app.rds")
 
-# Prepare text files
-rmdfiles <- c("text/05-help-faq.Rmd")
-knitr::knit(rmdfiles, output = "text/05-help-faq.md", quiet = T)
+# Prepare Rmarkdown text files
+rmarkdown::render("text/05-help-faq.Rmd", quiet = TRUE)
+rmarkdown::render("text/05-help-rf.Rmd", quiet = TRUE)
+rmarkdown::render("text/05-help-vars-env.Rmd", quiet = TRUE)
+rmarkdown::render("text/05-help-vars-morph.Rmd", quiet = TRUE)
+rmarkdown::render("text/06-references.Rmd", quiet = TRUE)
 
 ##### APP UI #####
 
@@ -51,7 +54,7 @@ ui <- navbarPage(
       column(
         width = 9,
         img(src = "eggs-in-a-row.jpeg", width = "900px"),
-        h3(strong("Welcome to the WhoseEgg App")),
+        h2(strong("Welcome to the WhoseEgg App")),
         span(
           includeMarkdown("text/01-overview-header.Rmd"),
           "For information about the random forest models, information on how 
@@ -106,7 +109,7 @@ ui <- navbarPage(
             )
           ),
           tabPanel(
-            h5("User Tips"),
+            h5("Tips"),
             br(),
             span(includeMarkdown("text/01-overview-tips.Rmd"), style = "font-size:14px;")
           ),
@@ -173,7 +176,7 @@ ui <- navbarPage(
     
     ## INPUTS 
     mainPanel(
-      h3(strong("Input of Egg Characteristics")),
+      h2(strong("Input of Egg Characteristics")),
       conditionalPanel(
         condition = "!is.na(output.need_data)", 
         span(textOutput("need_data"), style = "color:#e44c3d")
@@ -207,7 +210,7 @@ ui <- navbarPage(
         span(textOutput("warning_vars_outside_ranges_v1"), style = "color:#f39c13")
       ),
       hr(),
-      h4("Overview"),
+      h3("Overview"),
       span(
         includeMarkdown("text/02-input-header.Rmd"),
         style = "font-size:14px;"
@@ -216,7 +219,7 @@ ui <- navbarPage(
       fluidRow(
         column(
           width = 12,
-          h4("Spreadsheet Specifications"),
+          h3("Spreadsheet Specifications"),
           tabsetPanel(
             type = "tabs",
             tabPanel("Variable Requirements", br(), span(includeMarkdown("text/02-input-variables.Rmd"), style = "font-size:14px;")),
@@ -225,7 +228,7 @@ ui <- navbarPage(
             tabPanel("Additional Variables", br(), span(includeMarkdown("text/02-input-additional-vars.Rmd"), style = "font-size:14px;"))
           ),
           hr(),
-          h4("Egg Characteristics"),
+          h3("Egg Characteristics"),
           tabsetPanel(
             type = "tabs",
             # Tab for input data
@@ -294,7 +297,7 @@ ui <- navbarPage(
       width = 3
     ),
     mainPanel(
-      h3(strong("Results from Random Forests")),
+      h2(strong("Results from Random Forests")),
       conditionalPanel(
         condition = "!is.na(output.error_file_type_v2)", 
         span(textOutput("error_file_type_v2"), style = "color:#e44c3d")
@@ -324,7 +327,7 @@ ui <- navbarPage(
         span(textOutput("warning_vars_outside_ranges_v2"), style = "color:#f39c13")
       ),
       hr(),
-      h4("Overview"),
+      h3("Overview"),
       span(
         includeMarkdown("text/03-predictions-header.Rmd"),
         style = "font-size:14px;"
@@ -332,7 +335,7 @@ ui <- navbarPage(
       hr(),
       fluidRow(
         column(
-          h4("Table of Predictions"),
+          h3("Table of Predictions"),
           column(
             conditionalPanel(
               condition = "!is.na(output.message_pred_table)", 
@@ -344,7 +347,7 @@ ui <- navbarPage(
         )
       ),
       hr(),
-      h4("Visualizations of Predictions"),
+      h3("Visualizations of Predictions"),
       tabsetPanel(
         type = "tabs",
         # Tab for summary visualizations
@@ -437,7 +440,7 @@ ui <- navbarPage(
       width = 3
     ),
     mainPanel(
-      h3(strong("Download Data with Predictions")),
+      h2(strong("Download Data with Predictions")),
       conditionalPanel(
         condition = "!is.na(output.warning_vars_outside_ranges_v3)", 
         span(textOutput("warning_vars_outside_ranges_v3"), style = "color:#f39c13")
@@ -467,7 +470,7 @@ ui <- navbarPage(
         span(textOutput("warning_missing_vals_v3"), style = "color:#f39c13")
       ),
       hr(),
-      h4("Overview"),
+      h3("Overview"),
       span(
         includeMarkdown("text/04-downloads-header.Rmd"),
         style = "font-size:14px;"
@@ -475,7 +478,7 @@ ui <- navbarPage(
       hr(),
       fluidRow(
         column(
-          h4("Download Preview Table"),
+          h3("Download Preview Table"),
           column(
             conditionalPanel(
               condition = "!is.na(output.message_downoad_table)",
@@ -497,7 +500,7 @@ ui <- navbarPage(
     column(width = 1),
     column(
       width = 9,
-      h3(strong("Help Page")),
+      h2(strong("Help Page")),
       span(
         includeMarkdown("text/05-help-header.Rmd"),
         style = "font-size:14px;"
@@ -508,27 +511,27 @@ ui <- navbarPage(
         tabPanel(
           "Environmental Variables",
           br(),
-          includeMarkdown("text/05-help-vars-env.Rmd"),
+          span(includeHTML("text/05-help-vars-env.html"), style = "font-size:14px;"),
           width = 12
         ),
         # Tab for input table specifications
         tabPanel(
           "Morphological Variables",
           br(),
-          span(includeMarkdown("text/05-help-vars-morph.Rmd"), style = "font-size:14px;"),
+          span(includeHTML("text/05-help-vars-morph.html"), style = "font-size:14px;"),
           width = 12
         ),
         # Tab details on the random forests
         tabPanel(
           "Random Forest Details",
           br(),
-          span(includeMarkdown("text/05-help-random-forest.Rmd"), style = "font-size:14px;"),
+          span(includeHTML("text/05-help-rf.html"), style = "font-size:14px;"),
           width = 12
         ),
         tabPanel(
           "FAQ",
           br(),
-          span(includeMarkdown("text/05-help-faq.md"), style = "font-size:14px;"),
+          span(includeHTML("text/05-help-faq.html"), style = "font-size:14px;"),
           width = 12
         )
       ) 
@@ -541,11 +544,11 @@ ui <- navbarPage(
     column(width = 1),
     column(
       width = 9,
-      img(src = "larval-ac.jpeg", width = "900px"),
-      br(),
-      br(),
       span(
-        includeMarkdown("text/06-references.Rmd"),
+        img(src = "larval-ac.jpeg", width = "900px"),
+        br(),
+        br(),
+        includeHTML("text/06-references.html"),
         style = "font-size:14px;"
       )
     )

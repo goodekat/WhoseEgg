@@ -4,14 +4,17 @@
 ## Completed
 
 - Filled in and added to FAQ
+- Fixed problem with Excel
+- Added TOCs to help page tabs
+- Added tab with information on random forest
 
 ## To do
 
 Meeting with collaborators:
   
-- **Figure out why excel upload is not working**
 - Create a list of questions for the group
 - Prepare slides for meeting
+- Highlight the search feature (especially for helping to find observations with typos) -- added to tips
 
 Overview page:
 
@@ -20,7 +23,6 @@ Overview page:
 Data input page:
 
 - **Add visualizations of new data compared to training data**
-- Highlight the search feature (especially for helping to find observations with typos)
 - Look into research on data input in apps
 - Try using Google forms for input options – could even embed it
   in the app or could use a conditional panel to create click
@@ -41,8 +43,6 @@ Prediction page:
 Download page:
 
 Help page:
-
-- **Have tab with information on random forest**
 
 Warnings/Errors:
 
@@ -68,6 +68,8 @@ Other:
 - Add image during loading of swimming fish
 - Can we fix the WhoseEgg color text when hovered over?
 - Organize helper functions
+- Switch to using random forests with reduced features
+- Try using weighting in random forests to account for imbalance in classes
 - The fish bioenergetics Shiny app updates frequently with more
   data and fish species
 - Check out
@@ -77,4 +79,4 @@ Other:
   [styling](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/)
   and [code
   optimization](https://rstudio.com/resources/webinars/scaling-shiny-apps-with-asynchronous-programming/)
-- Add readmes throughout app explaining organization and functionality for future developers
+- Add READMEs throughout app explaining organization and functionality for future developers

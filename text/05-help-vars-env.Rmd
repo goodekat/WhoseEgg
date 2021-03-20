@@ -1,7 +1,10 @@
 ---
+title: <strong><p style="font-size:26px">Details on Environmental Variables</p></strong>
 output:
   html_document:
     theme: flatly
+    toc: true
+    self_contained: false
 ---
 
 ### Day
