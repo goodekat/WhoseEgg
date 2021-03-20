@@ -137,7 +137,6 @@ ui <- navbarPage(
     
     ## INSTRUCTIONS
     sidebarPanel(
-      style = "position:fixed;width:22%;",
       h3("Instructions"),
       span(
       p(
@@ -264,7 +263,6 @@ ui <- navbarPage(
     value = "predictions",
     
     sidebarPanel(
-      style = "position:fixed;width:22%;",
       h3("Instructions"),
       span(
       p(
@@ -415,7 +413,6 @@ ui <- navbarPage(
     value = "downloads",
     
     sidebarPanel(
-      style = "position:fixed;width:22%;",
       h3("Instructions"),
       span(
       p(
