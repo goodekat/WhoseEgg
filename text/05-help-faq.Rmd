@@ -7,6 +7,10 @@ output:
     self_contained: false
 ---
 
+```{r include = FALSE}
+library(dplyr)
+```
+
 ### What if I have data from different locations?
 
 The random forests used by WhoseEgg to make predictions have been validated for eggs collected in the figure below. In particular, the data collected in 2014 and 2015 were used to train the random forests, and the data collected in 2016 were used to validate the models. The models trained using data from 2014 and 2015 showed great performed on the data from 2016 in locations that were sampled in 2014 and/or 2015 but performed worse on locations not previously sampled. However, the sample size of observations at locations sampled only in 2016 was small. See Goode et al. (2021) for more details. These results suggest that the models in WhoseEgg may not perform well on data collected in different geographic regions.

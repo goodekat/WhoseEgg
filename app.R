@@ -21,11 +21,12 @@ source("helper-functions.R")
 rfs <- readRDS("data/rfs_for_app.rds")
 
 # Prepare Rmarkdown text files
-rmarkdown::render("text/05-help-faq.Rmd", quiet = TRUE)
-rmarkdown::render("text/05-help-rf.Rmd", quiet = TRUE)
-rmarkdown::render("text/05-help-vars-env.Rmd", quiet = TRUE)
-rmarkdown::render("text/05-help-vars-morph.Rmd", quiet = TRUE)
-rmarkdown::render("text/06-references.Rmd", quiet = TRUE)
+# Run the code below whenever a file is updated
+#rmarkdown::render("text/05-help-faq.Rmd", quiet = TRUE)
+#rmarkdown::render("text/05-help-rf.Rmd", quiet = TRUE)
+#rmarkdown::render("text/05-help-vars-env.Rmd", quiet = TRUE)
+#rmarkdown::render("text/05-help-vars-morph.Rmd", quiet = TRUE)
+#rmarkdown::render("text/06-references.Rmd", quiet = TRUE)
 
 ##### APP UI #####
 
@@ -1020,7 +1021,7 @@ server <- function(input, output, session) {
           "Warning: Some variables outside of ranges in training data.
           This will lead to model extrapolation and possibly poor predictions.
           Egg IDs with values outside of ranges: ",
-          paste(get_outside_var_ranges(processed_inputs()), collapse = ", ")
+          get_outside_var_ranges(processed_inputs())
         )
       } else {
         NA
