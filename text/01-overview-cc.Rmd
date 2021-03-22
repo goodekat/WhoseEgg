@@ -4,7 +4,7 @@ output:
     theme: flatly
 ---
 
-WhoseEgg was created by Katherine Goode, Mike Weber, and Philip Dixon at Iowa State University. 
+WhoseEgg was created by [Katherine Goode](https://goodekat.github.io/), [Mike Weber](https://michaeljohnweber.wixsite.com/fisherieslab), and [Philip Dixon](https://pdixon.stat.iastate.edu/) at Iowa State University. 
 
 The creators would like to thank Carlos Camacho for his assistance especially with the content describing the morphological variables on the help page.
 

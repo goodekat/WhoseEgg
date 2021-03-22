@@ -110,7 +110,7 @@ ui <- navbarPage(
             )
           ),
           tabPanel(
-            h5("Tips"),
+            h5("User Tips"),
             br(),
             span(includeMarkdown("text/01-overview-tips.Rmd"), style = "font-size:14px;")
           ),
