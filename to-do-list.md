@@ -3,18 +3,7 @@
 
 ## Completed
 
-- Filled in and added to FAQ
-- Fixed problem with Excel
-- Added TOCs to help page tabs
-- Added tab with information on random forest
-- Highlight the search feature (especially for helping to find observations with typos) -- added to tips
-
 ## To do
-
-Meeting with collaborators:
-  
-- **Create a list of questions for the group**
-- **Prepare slides for meeting**
 
 Overview page:
 
