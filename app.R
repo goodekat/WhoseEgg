@@ -31,8 +31,13 @@ ui <- navbarPage(
   
   ## HOMEPAGE
   tabPanel(
+    
     # Google analytics
     tags$head(includeHTML("google-analytics.html")),
+    
+    # Matomo 
+    tags$head(includeHTML("matomo.txt")),
+    
     title = div("Overview", style = "font-size:14px;"),
     value = "overview",
     fluidPage(
