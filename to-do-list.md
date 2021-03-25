@@ -3,6 +3,8 @@
 
 ## Completed
 
+- Changed compact/diffuse levels on help page to C or D (instead of Y or N)
+
 ## To do
 
 Overview page:
@@ -11,6 +13,8 @@ Overview page:
 
 Data input page:
 
+- Figure out the issue with additional csv spaces (ask Heike)
+- Create an MDS plot with training and new data
 - Add visualizations of new data compared to training data
 - Allow option for inputting Julian day
 
@@ -24,8 +28,11 @@ Prediction page:
 
 Download page:
 
+- Add variable flagging observations that are outside the range of the training data
+
 Help page:
 
+- Figure out issue with larval length and egg stage (which doesn't match up)
 - Add guidance on how to interpret random forest probabilities (especially probabilities near 0.5-0.6)
 - Add link to validation paper to FAQ on validation
 
@@ -43,7 +50,7 @@ Manuscript:
 
 Testing:
   
-- Need to test that different computer types work with Excel and csv uploads
+- Need to test that different computer types work with Excel and csv uploads (ask Heike how to do this)
     - Some people were getting errors with the Excel file saying something about “subscript out of bounds”
 
 Other:

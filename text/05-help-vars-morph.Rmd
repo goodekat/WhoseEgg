@@ -85,7 +85,7 @@ The images below show examples of four equally spaced yolk diameter measurements
 
 **Spreadsheet Variable Name**: Compact_Diffuse
 
-**Format**: Y or N
+**Format**: C or D
 
 **Required Upload or Computed After Upload**: Required upload
 
