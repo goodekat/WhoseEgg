@@ -12,17 +12,12 @@ Overview page:
 Data input page:
 
 - Add visualizations of new data compared to training data
-- Look into research on data input in apps
-- Try using Google forms for input options – could even embed it
-  in the app or could use a conditional panel to create click
-  through options for manual input
 - Allow option for inputting Julian day
 
 Prediction page:
 
 - Add visualizations of the data (both input data and training data with input data included)
 - Add interpretation of the random forest probabilities (look up a nice interpretation)
-- Discuss interpretation of probabilities near 0.5-0.6
 - Add a download image button
 - Add option to click on plot and show more plots (summary to input data features and individual to training data with observation)
 - Figure out how to compute prediction intervals
@@ -30,6 +25,9 @@ Prediction page:
 Download page:
 
 Help page:
+
+- Add guidance on how to interpret random forest probabilities (especially probabilities near 0.5-0.6)
+- Add link to validation paper to FAQ on validation
 
 Warnings/Errors:
 
@@ -41,7 +39,7 @@ Warnings/Errors:
 
 Manuscript:
   
-- **Create an outline and send to Mike and Philip**
+- **Start writing**
 
 Testing:
   
@@ -53,9 +51,14 @@ Other:
 - Add image during loading of swimming fish
 - Can we fix the WhoseEgg color text when hovered over?
 - Organize helper functions
-- Switch to using random forests with reduced features
-- Try using weighting in random forests to account for imbalance in classes
-- The fish bioenergetics Shiny app updates frequently with more data and fish species
 - Check out [ISOFAST](https://analytics.iasoybeans.com/cool-apps/ISOFAST/) for ideas
 - Watch these talks: [styling](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/) and [code optimization](https://rstudio.com/resources/webinars/scaling-shiny-apps-with-asynchronous-programming/)
-- Add READMEs throughout app explaining organization and functionality for future developers
+- Organize github for future developers
+
+Ideas for future versions: 
+
+- Try using Google forms for input options – could even embed it in the app or could use a conditional panel to create click through options for manual input
+- Look into research on data input in apps
+- Switch to using random forests with reduced features
+- Try using weighting in random forests to account for imbalance in classes
+- Look into the process the fish bioenergetics Shiny app uses to update frequently with more data and fish species
