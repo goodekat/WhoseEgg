@@ -44,6 +44,9 @@ ui <- navbarPage(
     # Google analytics
     tags$head(includeHTML("google-analytics.html")),
     
+    # Matomo 
+    #tags$head(includeHTML("matomo.txt")),
+    
     # Add padding to work with fixed upper panel
     tags$style(type="text/css", "body {padding-top: 70px;}"),
     
