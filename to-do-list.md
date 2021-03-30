@@ -10,12 +10,13 @@
 Overview page:
 
 - Create and add video showing how to use the app
+- Added check that removes any rows with no data
 
 Data input page:
 
-- Figure out the issue with additional csv spaces (ask Heike)
-- Create an MDS plot with training and new data
-- Add visualizations of new data compared to training data
+- **Figure out the issue with additional csv spaces (ask Heike)**
+- **Create an MDS plot with training and new data**
+- **Add visualizations of new data compared to training data**
 - Allow option for inputting Julian day
 
 Prediction page:

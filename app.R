@@ -638,10 +638,12 @@ server <- function(input, output, session) {
     ext <- tools::file_ext(file$name)
     req(file)
     if (ext == "csv") {
-      read.csv(file$datapath)
+      read.csv(file$datapath) %>%
+        filter_all(any_vars(!is.na(.)))
     } else {
       file.rename(file$datapath, paste(file$datapath, ext, sep = "."))
-      readxl::read_excel(paste(file$datapath, ext, sep = "."), 1)
+      readxl::read_excel(paste(file$datapath, ext, sep = "."), 1) %>%
+        filter_all(any_vars(!is.na(.)))
     }
   })
   
