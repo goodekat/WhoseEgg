@@ -558,10 +558,11 @@ rf_num_vars <-
 prepare_mds_data <- function(processed_inputs) {
   
   # Prepare training data
-  training <- eggdata %>% select(all_of(rf_num_vars)) %>% mutate(dataset = "training")
+  training <- eggdata %>% select(all_of(rf_num_vars)) %>% mutate(dataset = "training") %>% 
+    mutate(Egg_ID = NA)
   
   # Prepare input data
-  new <- processed_inputs %>% select(all_of(rf_num_vars)) %>% mutate(dataset = "new")
+  new <- processed_inputs %>% select(Egg_ID, all_of(rf_num_vars)) %>% mutate(dataset = "new")
   
   # Join the data
   bind_rows(training, new) %>% mutate(id = 1:n())
@@ -574,24 +575,24 @@ plot_mds <- function(processed_inputs) {
   all_data <- prepare_mds_data(processed_inputs)
   
   # Compute a distance matrix and get MDS
-  dist <- all_data %>% select(-dataset) %>% dist()
+  dist <- all_data %>% select(-dataset, -Egg_ID) %>% dist()
   mds <- cmdscale(dist, eig = TRUE, k = 2)
   
   # Compute percent of variation
   perc_var <- round((mds$eig / sum(mds$eig))[1:2] * 100, 2)
   
   # Create the plot
-  mds_plot <- 
-    mds$points %>%
+  mds$points %>%
     data.frame() %>%
-    mutate(dataset = all_data$dataset, id = all_data$id) %>%
+    mutate(dataset = all_data$dataset, Egg_ID = all_data$Egg_ID) %>%
     mutate(dataset = 
              forcats::fct_recode(
                dataset, 
                "Input Data" = "new", 
                "WhoseEgg Training Data" = "training")
     ) %>%
-    ggplot(aes(x = X1, y = X2, color = dataset, label = id)) +
+    rename("Coordinate 1" = "X1", "Coordinate 2" = "X2") %>%
+    ggplot(aes(x = `Coordinate 1`, y = `Coordinate 2`, color = dataset, label = Egg_ID)) +
     geom_point() + 
     theme_bw(base_size = 16) + 
     theme(legend.position = "top") +
@@ -601,9 +602,6 @@ plot_mds <- function(processed_inputs) {
       color = ""
     ) + 
     scale_color_manual(values = c("#18bc9b", "#2b3e50"))
-  
-  # Make interactive
-  plotly::ggplotly(mds_plot)
   
 }
 

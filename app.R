@@ -7,6 +7,7 @@ library(DT)
 library(forcats)
 library(ggplot2)
 library(markdown)
+library(plotly)
 library(purrr)
 library(randomForest)
 library(shiny)
@@ -253,8 +254,20 @@ ui <- navbarPage(
                 span(textOutput("message_provide_data_v2"), style = "color:grey")
               ),
               div(dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
+            ),
+            # Tab for visualizations
+            tabPanel(
+              "Visualizing Inputs",
+              plotlyOutput("mds_plot"),
+              br(),
+              br(),
+              br(),
+              br(),
+              br(),
+              verbatimTextOutput("poi_plot")
+              #plotOutput("mds_plot")
             )
-          ),
+          )
         )
       )
     )
@@ -699,6 +712,42 @@ server <- function(input, output, session) {
           )
         )
     }
+  })
+  
+  # Set a reactive value for putting a mark on the heatmap after a click 
+  poi <- reactiveValues(location = NULL)
+  
+  # Create MDS plot comparing training data to input data
+  output$mds_plot <- renderPlotly({
+    ggplotly(
+      plot_mds(processed_inputs()), 
+      source = "mds_plot",
+      width = 800, 
+      height = 500
+    )
+  })
+  
+  # Create MDS plot comparing training data to input data
+  output$poi_plot <- renderPrint({ #renderPlotly({
+    
+    # Obtain the click data
+    click_data <- event_data("plotly_click", source = "mds_plot")
+    click_data
+    
+    # Create the feature plot if there is click data
+    # if(length(click_data)){
+    # 
+    #   # Create a dataset with the location of cell that was clicked
+    #   location <- data.frame(land1 = paste("Land", click_data$x), 
+    #                          land2 = paste("Land", click_data$y),
+    #                          bullet_locations %>% 
+    #                            filter(curveNumber == click_data$curveNumber))
+    #   
+    #   # Save the locations to use for the reactive mark on the tileplot
+    #   tileplot_mark$location <- location
+    #   
+    #}
+    
   })
   
   ## PREDICTIONS -------------------------------------------------------------
