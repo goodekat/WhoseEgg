@@ -1,0 +1,10 @@
+---
+output:
+  html_document:
+    theme: flatly
+    self_contained: false
+bibliography: "../references.bib"
+nocite: '@*'
+---
+
+## **References**

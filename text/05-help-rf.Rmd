@@ -1,0 +1,68 @@
+---
+title: <strong><p style="font-size:26px">Information on Random Forests</p></strong>
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    self_contained: false
+---
+
+### General Information
+
+Random forests are machine learning models that use an ensemble of classification trees (categorical response variable) or regression trees (continuous response variable) to provide predictions. The term *random* is used because randomness is introduced when each tree is fit. In particular, when a tree is fit, two means of randomness are introduced: 
+
+1. The data used to train the random forest are a bootstrap sample from the training data. 
+2. At each node in the training of a tree, only small randomly selected subset of predictor variables are considered. Often the number of predictor variables selected is equal to the square root of the total number of predictor variables.
+
+Typically, many trees (such as 500) are trained and used within a forest. To get predictions, the random forest obtains the prediction from each individual trees and either
+
+- computes an average of the predictions (for regression problems), or 
+- computes the proportion of predictions for each response variable level (for classification problems).
+
+The diagram below shows a very simple example of a random forest for classification. There model has 4 predictor variables and a categorical response variable with three levels (species). The random forest is made up of three trees. The circles in the trees represent the features chosen by the tree, and the rectangles represent the classification at the end of a path. The bold lines represent the paths corresponding to an observation of interest. In a classification example such as this, the random forest returns a probability for each species. The example below shows the probability for species one, which is 2/3 since of the three trees returned a prediction of species 1. The random forests also returns a prediction. In the case of classification, the prediction is the level with the highest probability. In this example, the prediction is species 1.
+
+<img src="../rf-diagram.jpeg" height="450">
+
+For more information on random forests, see the following resource: [Cutler et al. (2007)](https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1890/07-0539.1)
+
+### Random Forests in WhoseEgg
+
+The random forests used in WhoseEgg are the augmented models described in Goode et al. (2021) and based on the models developed in Camacho et al. (2019). The models, code for training the models, and the training data are available on the [GitHub repository for WhoseEgg](https://github.com/goodekat/WhoseEgg):
+
+- [saved models](https://github.com/goodekat/WhoseEgg/blob/main/data/rfs_for_app.rds)
+- [R code for training models](https://github.com/goodekat/WhoseEgg/blob/main/prep/rfs-for-app.md)
+- [training data](https://github.com/goodekat/WhoseEgg/blob/main/data/eggdata_for_app.csv)
+
+Three random forest models:
+
+- All use 1000 trees
+- Trained using the randomForest package in R
+- All other tuning parameters set to 
+
+Response variables of random forest models:
+
+- Family
+- Genus
+- Species
+- Note: all three of these variables treat Bighead, Grass, and Silver Carp as one category
+  
+Predictor variables: 
+
+- Egg_ID
+- Month
+- Julian_Day
+- Temperature
+- Conductivity
+- Deflated
+- Pigment
+- Egg_Stage
+- Compact_Diffuse
+- Sticky_Debris
+- Membrane_Ave
+- Membrane_SD
+- Membrane_CV
+- Yolk_Ave
+- Yolk_SD
+- Yolk_CV
+- Yolk_to_Membrane_Ratio
+- Larval_Length

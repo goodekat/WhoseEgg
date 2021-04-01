@@ -1,0 +1,15 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+**Helpful tips for using WhoseEgg**
+
+- WhoseEgg may be used on any device with a browser, but we recommend using a computer for the best experience
+
+- Zoom in and out using control (Windows) or command (Mac) and the + key (or the compatible technique on user's computer)
+
+- Figures in the app can be saved by right clicking on the image and selecting an option to save the the image
+
+- For tables of data printed in the app, use the search box to help find observations of interest. This is especially useful for finding problematic observations that result in errors when the data is uploaded.

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>05-help-vars-env.utf8</title>
+
+<script src="05-help-vars-env_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="05-help-vars-env_files/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="05-help-vars-env_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="05-help-vars-env_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="05-help-vars-env_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="05-help-vars-env_files/navigation-1.1/tabsets.js"></script>
+<link href="05-help-vars-env_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="05-help-vars-env_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore"><strong>
+<p style="font-size:26px">
+Details on Environmental Variables
+</p>
+</strong></h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#day">Day</a></li>
+<li><a href="#conductivity">Conductivity</a></li>
+<li><a href="#julian-day">Julian Day</a></li>
+<li><a href="#month">Month</a></li>
+<li><a href="#temperature">Temperature</a></li>
+<li><a href="#year">Year</a></li>
+</ul>
+</div>
+
+<div id="day" class="section level3">
+<h3>Day</h3>
+<p><strong>Definition</strong>: Day of the month when the fish egg was collected</p>
+<p><strong>Spreadsheet Variable Name</strong>: Day</p>
+<p><strong>Format</strong>: Integer between 1 and 31, respective to the month</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: No</p>
+<hr/>
+</div>
+<div id="conductivity" class="section level3">
+<h3>Conductivity</h3>
+<p><strong>Definition</strong>: Conductivity (microS/cm) of the water where the egg was collected</p>
+<p><strong>Spreadsheet Variable Name</strong>: Conductivity</p>
+<p><strong>Format</strong>: Continuous variable greater than 0</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
+<p><strong>Additional Information</strong>: Training data conductivity values range between 274 microS/cm and 781 microS/cm</p>
+<hr/>
+</div>
+<div id="julian-day" class="section level3">
+<h3>Julian Day</h3>
+<p><strong>Definition</strong>: Julian day when the fish egg was collected</p>
+<p><strong>Spreadsheet Variable Name</strong>: Julian_Day</p>
+<p><strong>Format</strong>: Integer between 1 and 365</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Computed after upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
+<p><strong>Additional Information</strong>: Julian days in training data range between 113 and 243</p>
+<hr/>
+</div>
+<div id="month" class="section level3">
+<h3>Month</h3>
+<p><strong>Definition</strong>: Month when the fish egg was collected</p>
+<p><strong>Spreadsheet Variable Name</strong>: Month</p>
+<p><strong>Format</strong>: Integer between 1 and 12</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
+<p><strong>Additional Information</strong>: Months in training data are 4, 5, 6, 7, 8</p>
+<hr/>
+</div>
+<div id="temperature" class="section level3">
+<h3>Temperature</h3>
+<p><strong>Definition</strong>: Temperature (degrees Celsius) of the water where the egg was collected</p>
+<p><strong>Spreadsheet Variable Name</strong>: Temperature</p>
+<p><strong>Format</strong>: Continuous variable</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
+<p><strong>Additional Information</strong>: Training data temperature values range between 11 C and 30.7 C</p>
+<hr/>
+</div>
+<div id="year" class="section level3">
+<h3>Year</h3>
+<p><strong>Definition</strong>: Year when the fish egg was collected</p>
+<p><strong>Spreadsheet Variable Name</strong>: Year</p>
+<p><strong>Format</strong>: YYYY</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: No</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

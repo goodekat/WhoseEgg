@@ -538,3 +538,101 @@ get_na_dates <- function(df){
     pull(Egg_ID)
   
 }
+
+rf_num_vars <-
+  c(
+    "Month",
+    "Julian_Day",
+    "Temperature",
+    "Conductivity",
+    "Membrane_Ave",
+    "Membrane_SD",
+    "Membrane_CV",
+    "Yolk_Ave",
+    "Yolk_SD",
+    "Yolk_CV",
+    "Yolk_to_Membrane_Ratio",
+    "Larval_Length"
+  )
+
+prepare_mds_data <- function(processed_inputs) {
+  
+  # Prepare training data
+  training <- eggdata %>% select(all_of(rf_num_vars)) %>% mutate(dataset = "training") %>% 
+    mutate(Egg_ID = NA)
+  
+  # Prepare input data
+  new <- processed_inputs %>% select(Egg_ID, all_of(rf_num_vars)) %>% mutate(dataset = "new")
+  
+  # Join the data
+  bind_rows(training, new) %>% mutate(id = 1:n())
+  
+}
+
+# Plot MDS with training and input data
+plot_mds <- function(processed_inputs) {
+  
+  all_data <- prepare_mds_data(processed_inputs)
+  
+  # Compute a distance matrix and get MDS
+  dist <- all_data %>% select(-dataset, -Egg_ID) %>% dist()
+  mds <- cmdscale(dist, eig = TRUE, k = 2)
+  
+  # Compute percent of variation
+  perc_var <- round((mds$eig / sum(mds$eig))[1:2] * 100, 2)
+  
+  # Create the plot
+  mds$points %>%
+    data.frame() %>%
+    mutate(dataset = all_data$dataset, Egg_ID = all_data$Egg_ID) %>%
+    mutate(dataset = 
+             forcats::fct_recode(
+               dataset, 
+               "Input Data" = "new", 
+               "WhoseEgg Training Data" = "training")
+    ) %>%
+    rename("Coordinate 1" = "X1", "Coordinate 2" = "X2") %>%
+    ggplot(aes(x = `Coordinate 1`, y = `Coordinate 2`, color = dataset, label = Egg_ID)) +
+    geom_point() + 
+    theme_bw(base_size = 16) + 
+    theme(legend.position = "top") +
+    labs(
+      x = paste0("Coordinate 1 (", perc_var[1], "%)"),
+      y = paste0("Coordinate 2 (", perc_var[2], "%)"),
+      color = ""
+    ) + 
+    scale_color_manual(values = c("#18bc9b", "#2b3e50"))
+  
+}
+
+# Plot histograms of training data and an observation of interest
+plot_features <- function(obs_of_int_id, processed_inputs) {
+  
+  all_data <- prepare_mds_data(processed_inputs)
+  
+  obs_of_int <-
+    all_data %>%
+    filter(id == obs_of_int_id) %>%
+    select(-dataset, -id) %>%
+    mutate_all(.funs = as.numeric) %>% 
+    tidyr::pivot_longer(cols = everything()) %>%
+    mutate(name = stringr::str_replace_all(name, "_", " "))
+  
+  all_data %>%
+    filter(dataset == "training") %>%
+    select(-dataset, -id) %>%
+    mutate_all(.funs = as.numeric) %>% 
+    tidyr::pivot_longer(cols = everything()) %>%
+    mutate(name = stringr::str_replace_all(name, "_", " ")) %>%
+    ggplot(aes(x = value)) + 
+    geom_histogram(bins = 30, fill = "#2b3e50") +
+    geom_vline(data = obs_of_int, aes(xintercept = value), color = "#18bc9b") +
+    facet_wrap(. ~ name, scales = "free", strip.position = "bottom") + 
+    theme_bw(base_size = 16) + 
+    theme(
+      strip.placement = "outside",
+      strip.background = element_rect(color = "white", fill = "white")
+    ) + 
+    labs(x = "", y = "")
+  
+}

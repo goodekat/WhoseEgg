@@ -7,6 +7,7 @@ library(DT)
 library(forcats)
 library(ggplot2)
 library(markdown)
+#library(plotly)
 library(purrr)
 library(randomForest)
 library(shiny)
@@ -20,6 +21,14 @@ source("helper-functions.R")
 # Load the random forest models (trained on the years of 2014-2016)
 rfs <- readRDS("data/rfs_for_app.rds")
 
+# Prepare Rmarkdown text files
+# Run the code below whenever a file is updated
+#rmarkdown::render("text/05-help-faq.Rmd", quiet = TRUE)
+#rmarkdown::render("text/05-help-rf.Rmd", quiet = TRUE)
+#rmarkdown::render("text/05-help-vars-env.Rmd", quiet = TRUE)
+#rmarkdown::render("text/05-help-vars-morph.Rmd", quiet = TRUE)
+#rmarkdown::render("text/06-references.Rmd", quiet = TRUE)
+
 ##### APP UI #####
 
 ui <- navbarPage(
@@ -28,15 +37,16 @@ ui <- navbarPage(
   title = "WhoseEgg",
   id = "inTabset",
   theme = shinytheme("flatly"),
+  position = "fixed-top",
   
   ## HOMEPAGE
   tabPanel(
     
-    # Google analytics
-    tags$head(includeHTML("google-analytics.html")),
-    
     # Matomo 
     tags$head(includeHTML("matomo.txt")),
+    
+    # Add padding to work with fixed upper panel
+    tags$style(type="text/css", "body {padding-top: 70px;}"),
     
     title = div("Overview", style = "font-size:14px;"),
     value = "overview",
@@ -46,12 +56,12 @@ ui <- navbarPage(
       column(
         width = 9,
         img(src = "eggs-in-a-row.jpeg", width = "900px"),
-        h3(strong("Welcome to the WhoseEgg App")),
+        h2(strong("Welcome to the WhoseEgg App")),
         span(
-          includeMarkdown("text/overview-header.Rmd"),
-          "For information about the random forest models and information on how 
-          the egg characteristics were measured for training the random forests, 
-          see the",
+          includeMarkdown("text/01-overview-header.Rmd"),
+          "For information about the random forest models, information on how 
+          the egg characteristics were measured for training the random forests,
+          and handling data from different locations, see the",
           actionLink("overview2help", "help page"),
           ".",
           style = "font-size:14px;"
@@ -76,7 +86,7 @@ ui <- navbarPage(
             h5("Locations in Training Data"),
             br(),
             span(
-              includeMarkdown("text/overview-locations.Rmd"), 
+              includeMarkdown("text/01-overview-locations.Rmd"), 
               "For more information on using WhoseEgg with data collected in 
               different regions, see the FAQ on the",
               actionLink("overview2helpagain", "help page"), ".",
@@ -84,35 +94,31 @@ ui <- navbarPage(
             ),
             br(),
             br(),
-            img(src = "locations.jpeg", width = "600px"),
-            br(),
-            br()
+            img(src = "locations.jpeg", width = "600px")
           ), 
           tabPanel(
             h5("Species in Training Data"),
             br(),
             span(
-              includeMarkdown("text/overview-species.Rmd"), 
+              includeMarkdown("text/01-overview-species.Rmd"), 
               "For more information on using WhoseEgg with data collected in 
               locations where additional species may be present, see the FAQ on the",
               actionLink("overview2helpagainx2", "help page"), ".",
+              br(),
+              br(),
+              tableOutput("species_table"),
               style = "font-size:14px;"
-            ),
-            br(),
-            br(),
-            img(src = "species.jpeg", width = "500px"),
-            br(),
-            br()
+            )
           ),
           tabPanel(
             h5("User Tips"),
             br(),
-            span(includeMarkdown("text/overview-tips.Rmd"), style = "font-size:14px;")
+            span(includeMarkdown("text/01-overview-tips.Rmd"), style = "font-size:14px;")
           ),
           tabPanel(
             h5("Contributors and Contact"),
             br(),
-            span(includeMarkdown("text/overview-cc.Rmd"), style = "font-size:14px;")
+            span(includeMarkdown("text/01-overview-cc.Rmd"), style = "font-size:14px;")
           )
         ),
         hr(),
@@ -171,7 +177,7 @@ ui <- navbarPage(
     
     ## INPUTS 
     mainPanel(
-      h3(strong("Input of Egg Characteristics")),
+      h2(strong("Input of Egg Characteristics")),
       conditionalPanel(
         condition = "!is.na(output.need_data)", 
         span(textOutput("need_data"), style = "color:#e44c3d")
@@ -205,25 +211,25 @@ ui <- navbarPage(
         span(textOutput("warning_vars_outside_ranges_v1"), style = "color:#f39c13")
       ),
       hr(),
-      h4("Overview"),
+      h3("Overview"),
       span(
-        includeMarkdown("text/input-header.Rmd"),
+        includeMarkdown("text/02-input-header.Rmd"),
         style = "font-size:14px;"
       ),
       hr(),
       fluidRow(
         column(
           width = 12,
-          h4("Spreadsheet Specifications"),
+          h3("Spreadsheet Specifications"),
           tabsetPanel(
             type = "tabs",
-            tabPanel("Variable Requirements", br(), span(includeMarkdown("text/input-variables.Rmd"), style = "font-size:14px;")),
-            tabPanel("Observation Requirements", br(), span(includeMarkdown("text/input-observations.Rmd"), style = "font-size:14px;")),
-            tabPanel("Template Helpers", br(), span(includeMarkdown("text/input-template-helpers.Rmd"), style = "font-size:14px;")),
-            tabPanel("Additional Variables", br(), span(includeMarkdown("text/input-additional-vars.Rmd"), style = "font-size:14px;"))
+            tabPanel("Variable Requirements", br(), span(includeMarkdown("text/02-input-variables.Rmd"), style = "font-size:14px;")),
+            tabPanel("Observation Requirements", br(), span(includeMarkdown("text/02-input-observations.Rmd"), style = "font-size:14px;")),
+            tabPanel("Template Helpers", br(), span(includeMarkdown("text/02-input-template-helpers.Rmd"), style = "font-size:14px;")),
+            tabPanel("Additional Variables", br(), span(includeMarkdown("text/02-input-additional-vars.Rmd"), style = "font-size:14px;"))
           ),
           hr(),
-          h4("Egg Characteristics"),
+          h3("Egg Characteristics"),
           tabsetPanel(
             type = "tabs",
             # Tab for input data
@@ -245,8 +251,20 @@ ui <- navbarPage(
                 span(textOutput("message_provide_data_v2"), style = "color:grey")
               ),
               div(dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
-            )
-          ),
+            )#,
+            # Tab for visualizations
+            #tabPanel(
+              #"Visualizing Inputs",
+              #plotlyOutput("mds_plot"),
+              #br(),
+              #br(),
+              #br(),
+              #br(),
+              #br(),
+              #verbatimTextOutput("poi_plot")
+              #plotOutput("mds_plot")
+            #)
+          )
         )
       )
     )
@@ -291,7 +309,7 @@ ui <- navbarPage(
       width = 3
     ),
     mainPanel(
-      h3(strong("Results from Random Forests")),
+      h2(strong("Results from Random Forests")),
       conditionalPanel(
         condition = "!is.na(output.error_file_type_v2)", 
         span(textOutput("error_file_type_v2"), style = "color:#e44c3d")
@@ -321,15 +339,15 @@ ui <- navbarPage(
         span(textOutput("warning_vars_outside_ranges_v2"), style = "color:#f39c13")
       ),
       hr(),
-      h4("Overview"),
+      h3("Overview"),
       span(
-        includeMarkdown("text/predictions-header.Rmd"),
+        includeMarkdown("text/03-predictions-header.Rmd"),
         style = "font-size:14px;"
       ),
       hr(),
       fluidRow(
         column(
-          h4("Table of Predictions"),
+          h3("Table of Predictions"),
           column(
             conditionalPanel(
               condition = "!is.na(output.message_pred_table)", 
@@ -341,7 +359,7 @@ ui <- navbarPage(
         )
       ),
       hr(),
-      h4("Visualizations of Predictions"),
+      h3("Visualizations of Predictions"),
       tabsetPanel(
         type = "tabs",
         # Tab for summary visualizations
@@ -433,7 +451,7 @@ ui <- navbarPage(
       width = 3
     ),
     mainPanel(
-      h3(strong("Download Data with Predictions")),
+      h2(strong("Download Data with Predictions")),
       conditionalPanel(
         condition = "!is.na(output.warning_vars_outside_ranges_v3)", 
         span(textOutput("warning_vars_outside_ranges_v3"), style = "color:#f39c13")
@@ -463,15 +481,15 @@ ui <- navbarPage(
         span(textOutput("warning_missing_vals_v3"), style = "color:#f39c13")
       ),
       hr(),
-      h4("Overview"),
+      h3("Overview"),
       span(
-        includeMarkdown("text/download-header.Rmd"),
+        includeMarkdown("text/04-downloads-header.Rmd"),
         style = "font-size:14px;"
       ),
       hr(),
       fluidRow(
         column(
-          h4("Download Preview Table"),
+          h3("Download Preview Table"),
           column(
             conditionalPanel(
               condition = "!is.na(output.message_downoad_table)",
@@ -493,9 +511,9 @@ ui <- navbarPage(
     column(width = 1),
     column(
       width = 9,
-      h3(strong("Help Page")),
+      h2(strong("Help Page")),
       span(
-        includeMarkdown("text/help-header.Rmd"),
+        includeMarkdown("text/05-help-header.Rmd"),
         style = "font-size:14px;"
       ),
       tabsetPanel(
@@ -504,30 +522,27 @@ ui <- navbarPage(
         tabPanel(
           "Environmental Variables",
           br(),
-          includeMarkdown("text/help-vars-env.Rmd"),
+          span(includeHTML("text/05-help-vars-env.html"), style = "font-size:14px;"),
           width = 12
         ),
         # Tab for input table specifications
         tabPanel(
           "Morphological Variables",
           br(),
-          span(includeMarkdown("text/help-vars-morph.Rmd"), style = "font-size:14px;"),
+          span(includeHTML("text/05-help-vars-morph.html"), style = "font-size:14px;"),
           width = 12
         ),
         # Tab details on the random forests
         tabPanel(
           "Random Forest Details",
-          span(
-            br(),
-            includeMarkdown("text/help-random-forest.Rmd"),
-            style = "font-size:14px;"
-          ),
+          br(),
+          span(includeHTML("text/05-help-rf.html"), style = "font-size:14px;"),
           width = 12
         ),
         tabPanel(
           "FAQ",
           br(),
-          span(includeMarkdown("text/help-faq.Rmd"), style = "font-size:14px;"),
+          span(includeHTML("text/05-help-faq.html"), style = "font-size:14px;"),
           width = 12
         )
       ) 
@@ -540,11 +555,11 @@ ui <- navbarPage(
     column(width = 1),
     column(
       width = 9,
-      img(src = "larval-ac.jpeg", width = "900px"),
-      br(),
-      br(),
       span(
-        includeMarkdown("text/references.Rmd"),
+        img(src = "larval-ac.jpeg", width = "900px"),
+        br(),
+        br(),
+        includeHTML("text/06-references.html"),
         style = "font-size:14px;"
       )
     )
@@ -592,6 +607,29 @@ server <- function(input, output, session) {
     updateTabsetPanel(session, "inTabset", "help")
   })
   
+  ## OVERVIEW ------------------------------------------------------------------
+  
+  # Create a table with the input values
+  output$species_table <- function() {
+    eggdata %>% 
+      count(Family_ACGC, Genus_ACGC, Common_Name_ACGC) %>% 
+      rename(
+        "Family" = "Family_ACGC",
+        "Genus" = "Genus_ACGC",
+        "Common Name" = "Common_Name_ACGC",
+        "Number of Eggs in Training Data" = "n"
+      ) %>%
+      knitr::kable("html", align = "lllc") %>%
+      kableExtra::column_spec(
+        column = 1:4,
+        width = "3cm"
+      ) %>%
+      kableExtra::collapse_rows(
+        columns = 1:3,
+        valign = "top"
+      )
+  }
+  
   ## INPUTS ------------------------------------------------------------------
   
   # Template download
@@ -610,10 +648,12 @@ server <- function(input, output, session) {
     ext <- tools::file_ext(file$name)
     req(file)
     if (ext == "csv") {
-      read.csv(file$datapath)
+      read.csv(file$datapath) %>%
+        filter_all(any_vars(!is.na(.)))
     } else {
       file.rename(file$datapath, paste(file$datapath, ext, sep = "."))
-      readxl::read_excel(paste(file$datapath, ext, sep = "."), 1)
+      readxl::read_excel(paste(file$datapath, ext, sep = "."), 1) %>%
+        filter_all(any_vars(!is.na(.)))
     }
   })
   
@@ -670,6 +710,41 @@ server <- function(input, output, session) {
         )
     }
   })
+  
+  # Set a reactive value for putting a mark on the heatmap after a click 
+  #poi <- reactiveValues(location = NULL)
+  
+  # # Create MDS plot comparing training data to input data
+  # output$mds_plot <- renderPlotly({
+  #   ggplotly(
+  #     plot_mds(processed_inputs()), 
+  #     source = "mds_plot",
+  #     width = 800, 
+  #     height = 500
+  #   )
+  # })
+  
+  # output$poi_plot <- renderPrint({ #renderPlotly({
+  #   
+  #   # Obtain the click data
+  #   click_data <- event_data("plotly_click", source = "mds_plot")
+  #   click_data
+  #   
+  #   # Create the feature plot if there is click data
+  #   # if(length(click_data)){
+  #   # 
+  #   #   # Create a dataset with the location of cell that was clicked
+  #   #   location <- data.frame(land1 = paste("Land", click_data$x), 
+  #   #                          land2 = paste("Land", click_data$y),
+  #   #                          bullet_locations %>% 
+  #   #                            filter(curveNumber == click_data$curveNumber))
+  #   #   
+  #   #   # Save the locations to use for the reactive mark on the tileplot
+  #   #   tileplot_mark$location <- location
+  #   #   
+  #   #}
+  #   
+  # })
   
   ## PREDICTIONS -------------------------------------------------------------
   
@@ -996,7 +1071,7 @@ server <- function(input, output, session) {
           "Warning: Some variables outside of ranges in training data.
           This will lead to model extrapolation and possibly poor predictions.
           Egg IDs with values outside of ranges: ",
-          paste(get_outside_var_ranges(processed_inputs()), collapse = ", ")
+          get_outside_var_ranges(processed_inputs())
         )
       } else {
         NA

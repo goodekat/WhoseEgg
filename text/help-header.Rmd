@@ -1,7 +1,0 @@
----
-output:
-  html_document:
-    theme: flatly
----
-
-This page contains additional information to assist with the use of WhoseEgg. The tabs of **Environmental Variables** and **Morphological Variables** contain information about the variables including definitions and spreadsheet required format. The **Random Forest Details** contains information on the training and structure of the random forests used for prediction in WhoseEgg. For questions that are not able to be answered via the content provided here or to provide feedback to the creators of WhoseEgg, see the **Contact** tab.

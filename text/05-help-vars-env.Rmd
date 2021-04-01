@@ -1,0 +1,98 @@
+---
+title: <strong><p style="font-size:26px">Details on Environmental Variables</p></strong>
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    self_contained: false
+---
+
+### Day
+
+**Definition**: Day of the month when the fish egg was collected 
+
+**Spreadsheet Variable Name**: Day
+
+**Format**: Integer between 1 and 31, respective to the month
+
+**Required Upload or Computed After Upload**: Required upload
+
+**Random Forest Predictor Variable**: No
+
+<hr/>
+
+### Conductivity
+
+**Definition**: Conductivity (microS/cm) of the water where the egg was collected
+
+**Spreadsheet Variable Name**: Conductivity
+
+**Format**: Continuous variable greater than 0
+
+**Required Upload or Computed After Upload**: Required upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: Training data conductivity values range between 274 microS/cm and	781 microS/cm
+
+<hr/>
+
+### Julian Day
+
+**Definition**: Julian day when the fish egg was collected
+
+**Spreadsheet Variable Name**: Julian_Day
+
+**Format**: Integer between 1 and 365
+
+**Required Upload or Computed After Upload**: Computed after upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: Julian days in training data range between 113 and 243
+
+<hr/>
+
+### Month
+
+**Definition**: Month when the fish egg was collected
+
+**Spreadsheet Variable Name**: Month
+
+**Format**: Integer between 1 and 12
+
+**Required Upload or Computed After Upload**: Required upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: Months in training data are 4, 5, 6, 7, 8
+
+<hr/>
+
+### Temperature
+
+**Definition**: Temperature (degrees Celsius) of the water where the egg was collected
+
+**Spreadsheet Variable Name**: Temperature
+
+**Format**: Continuous variable
+
+**Required Upload or Computed After Upload**: Required upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: Training data temperature values range between 11 C and	30.7 C	
+
+<hr/>
+
+### Year
+
+**Definition**: Year when the fish egg was collected
+
+**Spreadsheet Variable Name**: Year
+
+**Format**: YYYY
+
+**Required Upload or Computed After Upload**: Required upload
+
+**Random Forest Predictor Variable**: No

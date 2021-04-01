@@ -1,5 +1,5 @@
 ---
-title: "Computing values for WhoseEgg"
+title: "Computing variable levels and extreme values"
 author: "Katherine Goode"
 date: 'Last Updated: `r format(Sys.time(), "%B %d, %Y")`'
 output: rmarkdown::github_document
@@ -20,31 +20,6 @@ library(tidyr)
 # Load egg data
 eggdata <- read.csv("../data/eggdata_for_app.csv")
 ```
-
-## Species table
-
-```{r}
-# Make table
-eggdata %>% 
-  count(Family_ACGC, Genus_ACGC, Common_Name_ACGC) %>% 
-  rename(
-    "Family" = "Family_ACGC",
-    "Genus" = "Genus_ACGC",
-    "Common Name" = "Common_Name_ACGC",
-    "Number of Eggs in Training Data" = "n"
-  ) %>%
-  knitr::kable(align = "lllc") %>%
-  kableExtra::column_spec(
-    column = 1:4,
-    width = "3cm"
-  ) %>%
-  kableExtra::collapse_rows(
-    columns = 1:3,
-    valign = "top"
-  )
-```
-
-## Computing variable levels and extreme values
 
 Date variables: 
 
