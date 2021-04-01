@@ -4,13 +4,18 @@
 ## Completed
 
 - Changed compact/diffuse levels on help page to C or D (instead of Y or N)
+- Added check that removes any rows with no data
+- Added link to validation paper to FAQ on validation
 
 ## To do
+
+Manuscript:
+  
+- **Start writing**
 
 Overview page:
 
 - Create and add video showing how to use the app
-- Added check that removes any rows with no data
 
 Data input page:
 
@@ -21,11 +26,11 @@ Data input page:
 
 Prediction page:
 
-- Add visualizations of the data (both input data and training data with input data included)
-- Add interpretation of the random forest probabilities (look up a nice interpretation)
-- Add a download image button
-- Add option to click on plot and show more plots (summary to input data features and individual to training data with observation)
+- **Add visualizations of the data (both input data and training data with input data included)**
+- **Add interpretation of the random forest probabilities (look up a nice interpretation)**
+- **Add option to click on plot and show more plots (summary to input data features and individual to training data with observation)**
 - Figure out how to compute prediction intervals
+- Add a download image button
 
 Download page:
 
@@ -35,19 +40,14 @@ Help page:
 
 - **Figure out issue with larval length and egg stage (which doesn't match up)**
 - **Add guidance on how to interpret random forest probabilities (especially probabilities near 0.5-0.6)**
-- Add link to validation paper to FAQ on validation
 
 Warnings/Errors:
 
-- Print lists in the errors with row breaks
-- Add warning if the data is in the future
-- Add a check for when a new dataset is uploaded
-- If you try to upload a non-csv file after uploading a file, you get a weird error on the prediction page
-- Need to make sure all error/warning messages match – such as including the egg ID for factor levels
-
-Manuscript:
-  
-- **Start writing**
+- **Print lists in the errors with row breaks**
+- **Add warning if the data is in the future**
+- **Add a check for when a new dataset is uploaded**
+- **If you try to upload a non-csv file after uploading a file, you get a weird error on the prediction page**
+- **Need to make sure all error/warning messages match – such as including the egg ID for factor levels**
 
 Testing:
   
@@ -59,9 +59,8 @@ Other:
 - Add image during loading of swimming fish
 - Can we fix the WhoseEgg color text when hovered over?
 - Organize helper functions
-- Check out [ISOFAST](https://analytics.iasoybeans.com/cool-apps/ISOFAST/) for ideas
-- Watch these talks: [styling](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/) and [code optimization](https://rstudio.com/resources/webinars/scaling-shiny-apps-with-asynchronous-programming/)
 - Organize github for future developers
+- Watch these talks: [styling](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/) and [code optimization](https://rstudio.com/resources/webinars/scaling-shiny-apps-with-asynchronous-programming/)
 
 Ideas for future versions: 
 
