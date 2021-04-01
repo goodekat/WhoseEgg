@@ -71,7 +71,7 @@ ui <- navbarPage(
         tabsetPanel(
           type = "tabs",
           tabPanel(
-            h5("How to Use the App"),
+            "How to Use the App",
             br(),
             p(
               "Follow the steps below to obtain predictions. Additional instructions
@@ -83,7 +83,7 @@ ui <- navbarPage(
             br()
           ), 
           tabPanel(
-            h5("Locations in Training Data"),
+            "Locations in Training Data",
             br(),
             span(
               includeMarkdown("text/01-overview-locations.Rmd"), 
@@ -97,7 +97,7 @@ ui <- navbarPage(
             img(src = "locations.jpeg", width = "600px")
           ), 
           tabPanel(
-            h5("Species in Training Data"),
+            "Species in Training Data",
             br(),
             span(
               includeMarkdown("text/01-overview-species.Rmd"), 
@@ -111,12 +111,12 @@ ui <- navbarPage(
             )
           ),
           tabPanel(
-            h5("User Tips"),
+            "User Tips",
             br(),
             span(includeMarkdown("text/01-overview-tips.Rmd"), style = "font-size:14px;")
           ),
           tabPanel(
-            h5("Contributors and Contact"),
+            "Contributors and Contact",
             br(),
             span(includeMarkdown("text/01-overview-cc.Rmd"), style = "font-size:14px;")
           )
