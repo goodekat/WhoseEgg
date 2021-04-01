@@ -42,9 +42,6 @@ ui <- navbarPage(
   ## HOMEPAGE
   tabPanel(
     
-    # Google analytics
-    #tags$head(includeHTML("google-analytics.html")),
-    
     # Matomo 
     tags$head(includeHTML("matomo.txt")),
     
