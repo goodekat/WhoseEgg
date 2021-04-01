@@ -29,12 +29,12 @@ Prediction page:
 
 Download page:
 
-- Add variable flagging observations that are outside the range of the training data
+- **Add variable flagging observations that are outside the range of the training data**
 
 Help page:
 
-- Figure out issue with larval length and egg stage (which doesn't match up)
-- Add guidance on how to interpret random forest probabilities (especially probabilities near 0.5-0.6)
+- **Figure out issue with larval length and egg stage (which doesn't match up)**
+- **Add guidance on how to interpret random forest probabilities (especially probabilities near 0.5-0.6)**
 - Add link to validation paper to FAQ on validation
 
 Warnings/Errors:

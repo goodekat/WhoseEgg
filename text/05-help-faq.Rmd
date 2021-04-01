@@ -11,17 +11,31 @@ output:
 library(dplyr)
 ```
 
+### What if I am having difficulty uploading data to WhoseEgg?
+
+If you are having difficultly uploading a spreadsheet to WhoseEgg, first go through the following check list to ensure that all steps have been taken correctly:
+
+- Make sure you are upload a file that ends in .csv, .xlsx, or .xls. 
+- Follow all ‘Spreadsheet Specifications’ on the ‘Data Input’ page.
+- Make sure there are no empty rows in the spreadsheet.
+
+If all of the above are met, try one of these suggestions below:
+
+- Try a different file format to see if it fixes the problem (e.g. switch from .csv to .xlsx).
+- Start with a new spreadsheet, fill out one row, and try uploading it.
+- Try a different browser.
+
 ### What if I have data from different locations?
 
-The random forests used by WhoseEgg to make predictions have been validated for eggs collected in the figure below. In particular, the data collected in 2014 and 2015 were used to train the random forests, and the data collected in 2016 were used to validate the models. The models trained using data from 2014 and 2015 showed great performed on the data from 2016 in locations that were sampled in 2014 and/or 2015 but performed worse on locations not previously sampled. However, the sample size of observations at locations sampled only in 2016 was small. See Goode et al. (2021) for more details. These results suggest that the models in WhoseEgg may not perform well on data collected in different geographic regions.
+The random forests used by WhoseEgg to make predictions have been validated for eggs collected in the figure below. In particular, the data collected in 2014 and 2015 were used to train the random forests, and the data collected in 2016 were used to validate the models. The models trained using data from 2014 and 2015 showed great performance on the data from 2016 in locations that were sampled in 2014 and/or 2015 but were less successful in locations not previously sampled. However, the sample size in 2016 was smaller than the original dataset. See [Goode et al. (2021)](https://afspubs.onlinelibrary.wiley.com/doi/10.1002/nafm.10616) for more details. These results suggest that the models in WhoseEgg may not perform well on data collected in different geographic regions and additional validations are needed.
 
 If there is interest in using WhoseEgg to make predictions on data collected in different geographic regions, we recommend the following as possible options:
 
-- Be cautious interpreting the predictions from WhoseEgg if the models are applied to data collected in different geographic regions.
+- Be cautious interpreting the predictions from WhoseEgg if the models are applied to data collected in different geographic regions, especially if the regions have different fish species composition.
 
-- Compare the predictor variable values to [those used to train](https://github.com/goodekat/WhoseEgg/blob/main/data/eggdata_for_app.csv) the random forests in WhoseEgg. If your predictor variable values differ from the WhoseEgg data (especially values outside the range of the variable values), the models will have to extrapolate to make predictions, which could lead to untrustworthy predictions.
+- Compare the predictor variable values to [those used to train](https://github.com/goodekat/WhoseEgg/blob/main/data/eggdata_for_app.csv) the random forests in WhoseEgg. If your predictor variable values differ from the WhoseEgg data (especially values outside the range of the variable values), the models will have to extrapolate to make predictions. This often leads to untrustworthy predictions.
 
-- Perform your own validation of the random forests by applying WhoseEgg to eggs that have been genetically identified. Compare the predictions from WhoseEgg to the genetic identifications to determine if the WhoseEgg predictions are reasonably trustworthy for the new region. 
+- Perform your own validation of the random forests by applying WhoseEgg to eggs that have been genetically identified. Compare the predictions from WhoseEgg to the genetic identifications to determine if the WhoseEgg predictions are reasonably trustworthy for the new region. See [Goode et al. (2021)](https://afspubs.onlinelibrary.wiley.com/doi/10.1002/nafm.10616) for an example model validation.
 
 - If familiar with R, try updating the WhoseEgg models training your own random forests based on the [code](https://github.com/goodekat/WhoseEgg/blob/main/prep/rfs-for-app.md) and [data](https://github.com/goodekat/WhoseEgg/blob/main/data/eggdata_for_app.csv) available at the WhoseEgg [GitHub repository](https://github.com/goodekat/WhoseEgg). Add your data to the [data](https://github.com/goodekat/WhoseEgg/blob/main/data/eggdata_for_app.csv) used to train the models used by WhoseEgg and train new random forest models. 
 
@@ -31,13 +45,13 @@ If there is interest in using WhoseEgg to make predictions on data collected in 
 
 <hr>
 
-### What if I believe my data is collected in a region where fish species not included in the training data are present?
+### What if I believe I collected fish eggs from species not included in the training data are present?
 
 Random forests are only able to make predictions for response variable levels included in the training data. See the table below for a list of the family, genus, and species levels included the WhoseEgg training data. If you believe that your data contains a level not present in the training data, we caution the use of WhoseEgg. If you would still like to apply WhoseEgg to your data, we recommend the following as possible options:
 
 - The random forests will classify observations based on predictor variable similarity to those in the training data. Think about whether the different species that may be present in your data are similar to any species in the training data. Check to see if these species appear in the predictions made by WhoseEgg.
 
-- Determine if the species have similar egg characteristics to invasive carp. If they are different from invasive carp, then it may be okay to proceed using WhoseEgg, because the main objective is to identify invasive carp. However, make sure to read through the answer to the previous question about having data from new locations before proceeding.
+- Determine if the species have similar egg characteristics to invasive carp. If they are different from invasive carp, then it may be okay to proceed using WhoseEgg if your main objective is to identify invasive carp. However, make sure to read through the answer to the previous question about having data from new locations before proceeding.
 
 ```{r echo = FALSE}
 read.csv("../data/eggdata_for_app.csv") %>%
@@ -61,9 +75,9 @@ read.csv("../data/eggdata_for_app.csv") %>%
 
 <hr>
 
-### Will WhoseEgg be updated to contain data from different geographic regions?
+### Will WhoseEgg be updated to contain data from different geographic regions and for more species?
 
-The creators of WhoseEgg would like to update the models to contain data from different geographic regions, but there are not plans to do so at this time. If you would like to collaborate by sharing data from different regions or work to update the models yourself, let the creators of WhoseEgg know by emailing whoseegg@iastate.edu.
+The creators of WhoseEgg are interested in updating the models to contain data from different geographic regions and with more species, but there are not plans to do so at this time.
 
 <hr>
 
@@ -73,7 +87,7 @@ The validation of the random forests used by WhoseEgg focused on the classificat
 
 - See the table listed under the question 'What if I believe my data is collected in a region where fish species not included in the training data are present?' to determine how many eggs were included in the training data of the fish species of interest. If the number is large, it may be okay to trust the predictions from WhoseEgg. If the number is small, we urge users to be cautious about interpreting the results. 
 
-- Individuals are welcome to use the [random forests](https://github.com/goodekat/WhoseEgg/blob/main/data/rfs_for_app.rds) and [training data](https://github.com/goodekat/WhoseEgg/blob/main/data/eggdata_for_app.csv) available at the WhoseEgg [GitHub repository](https://github.com/goodekat/WhoseEgg) to conduct their own validation of the models focused on other species. 
+- Individuals are welcome to use the [random forests](https://github.com/goodekat/WhoseEgg/blob/main/data/rfs_for_app.rds) and [training data](https://github.com/goodekat/WhoseEgg/blob/main/data/eggdata_for_app.csv) available at the WhoseEgg [GitHub repository](https://github.com/goodekat/WhoseEgg) to conduct their own validation of the models focused on other species. See [Goode et al. (2021)](https://afspubs.onlinelibrary.wiley.com/doi/10.1002/nafm.10616) for an example model validation.
 
 - If you try validating the WhoseEgg models for other species, the creators of WhoseEgg would be interested to hear about your results. Let us know by emailing whoseegg@iastate.edu.
 

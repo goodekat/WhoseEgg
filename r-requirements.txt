@@ -4,6 +4,7 @@ forcats
 gganimate
 ggplot2
 rmarkdown
+plotly
 purrr
 randomForest
 readxl
