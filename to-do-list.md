@@ -60,7 +60,6 @@ Other:
 - Can we fix the WhoseEgg color text when hovered over?
 - Organize helper functions
 - Organize github for future developers
-- Watch these talks: [styling](https://rstudio.com/resources/rstudioconf-2020/styling-shiny-apps-with-sass-and-bootstrap-4/) and [code optimization](https://rstudio.com/resources/webinars/scaling-shiny-apps-with-asynchronous-programming/)
 
 Ideas for future versions: 
 
