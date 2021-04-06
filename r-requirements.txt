@@ -3,6 +3,8 @@ DT
 forcats
 gganimate
 ggplot2
+kableExtra
+knitr
 rmarkdown
 plotly
 purrr
