@@ -3,10 +3,6 @@
 
 ## Completed
 
-- Changed compact/diffuse levels on help page to C or D (instead of Y or N)
-- Added check that removes any rows with no data
-- Added link to validation paper to FAQ on validation
-
 ## To do
 
 Manuscript:

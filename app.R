@@ -14,6 +14,7 @@ library(shiny)
 library(shinythemes)
 library(stringr)
 library(tidyr)
+library(waiter)
 
 # Source the helper functions used by the app
 source("helper-functions.R")
@@ -39,11 +40,15 @@ ui <- navbarPage(
   theme = shinytheme("flatly"),
   position = "fixed-top",
   
+  
   ## HOMEPAGE
   tabPanel(
     
     # Matomo 
     tags$head(includeHTML("matomo.txt")),
+    
+    # Specify for using the spinner
+    use_waiter(),
     
     # Add padding to work with fixed upper panel
     tags$style(type="text/css", "body {padding-top: 70px;}"),
@@ -714,8 +719,20 @@ server <- function(input, output, session) {
   # Set a reactive value for putting a mark on the heatmap after a click 
   poi <- reactiveValues(location = NULL)
 
+  # create a waiter with an id
+  w <- 
+    Waiter$new(
+      id = "mds_plot", 
+      #color = transparent(.5), 
+      html = spin_ripple()
+    )
+  
   # Create MDS plot comparing training data to input data
   output$mds_plot <- renderPlotly({
+    w$show()
+    on.exit({
+      w$hide()
+    })
     ggplotly(
       plot_mds(processed_inputs()),
       source = "mds_plot",
