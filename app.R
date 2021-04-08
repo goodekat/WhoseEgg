@@ -38,7 +38,7 @@ ui <- navbarPage(
   title = "WhoseEgg",
   id = "inTabset",
   theme = shinytheme("flatly"),
-  position = "fixed-top",
+  #position = "fixed-top", # uncomment to fix the header
   
   
   ## HOMEPAGE
@@ -51,7 +51,8 @@ ui <- navbarPage(
     use_waiter(),
     
     # Add padding to work with fixed upper panel
-    tags$style(type="text/css", "body {padding-top: 70px;}"),
+    # Uncomment if fixing the header
+    #tags$style(type="text/css", "body {padding-top: 70px;}"),
     
     title = div("Overview", style = "font-size:14px;"),
     value = "overview",
@@ -266,8 +267,7 @@ ui <- navbarPage(
               br(),
               br(),
               br(),
-              verbatimTextOutput("poi_plot")#,
-              #plotOutput("mds_plot")
+              plotOutput("poi_plot")
             )
           )
         )
@@ -741,27 +741,17 @@ server <- function(input, output, session) {
     )
   })
   
-  output$poi_plot <- renderPrint({ #renderPlotly({
+  output$poi_plot <- renderPlot({
   
     # Obtain the click data
     click_data <- event_data("plotly_click", source = "mds_plot")
-    click_data
+    
+    # Create the plot if an observation has been clicked
+    if(length(click_data)){
+      plot_features(click_data$pointNumber + 1, processed_inputs())
+    }
   
-    # Create the feature plot if there is click data
-    # if(length(click_data)){
-    #
-    #   # Create a dataset with the location of cell that was clicked
-    #   location <- data.frame(land1 = paste("Land", click_data$x),
-    #                          land2 = paste("Land", click_data$y),
-    #                          bullet_locations %>%
-    #                            filter(curveNumber == click_data$curveNumber))
-    #
-    #   # Save the locations to use for the reactive mark on the tileplot
-    #   tileplot_mark$location <- location
-    #
-    #}
-  
-  })
+  }, height = 650, width = 850)
   
   ## PREDICTIONS -------------------------------------------------------------
   

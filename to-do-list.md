@@ -8,6 +8,7 @@
 Manuscript:
   
 - **Start writing**
+- Check out reference formats of other articles in magazine and copy their formats
 
 Overview page:
 
@@ -15,9 +16,13 @@ Overview page:
 
 Data input page:
 
-- **Figure out the issue with additional csv spaces (ask Heike)**
 - **Create an MDS plot with training and new data**
+  - **Switch to computing MDS on training data first and then projecting input data on the training data space**
+  - **Scale the variables first**
+  - **Switch to using Gower distance and all variables**
+- **Try computing Cook's D and leverage**
 - **Add visualizations of new data compared to training data**
+- Could email to ask the woman about the extra spaces to see if fixed now
 - Allow option for inputting Julian day
 
 Prediction page:
@@ -34,8 +39,11 @@ Download page:
 
 Help page:
 
+- **Add comments on the interpretations of random forests**
+- **Look into how to compute empirical probabilities and try out the model calibration technique**
 - **Figure out issue with larval length and egg stage (which doesn't match up)**
 - **Add guidance on how to interpret random forest probabilities (especially probabilities near 0.5-0.6)**
+- **Check to see if any fisheries papers on random forests**
 
 Warnings/Errors:
 
@@ -49,9 +57,12 @@ Testing:
   
 - Need to test that different computer types work with Excel and csv uploads (ask Heike how to do this)
     - Some people were getting errors with the Excel file saying something about “subscript out of bounds”
+- Try out app on various computers and browsers to see if it works
 
 Other:
   
+- **Prepare for lunchinatoRs**
+- **Proofread app**
 - Add image during loading of swimming fish
 - Can we fix the WhoseEgg color text when hovered over?
 - Organize helper functions

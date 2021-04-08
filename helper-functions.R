@@ -1,6 +1,9 @@
 # Load egg data
 eggdata <- read.csv("data/eggdata_for_app.csv")
 
+# Load the training data MDS
+mds <- readRDS("data/mds_for_app.rds")
+
 # Function for computing variables based on given input values
 compute_variables <- function(df) {
   df %>% 
@@ -572,11 +575,11 @@ prepare_mds_data <- function(processed_inputs) {
 # Plot MDS with training and input data
 plot_mds <- function(processed_inputs) {
   
-  all_data <- prepare_mds_data(processed_inputs)
+  #all_data <- prepare_mds_data(processed_inputs)
   
   # Compute a distance matrix and get MDS
-  dist <- all_data %>% select(-dataset, -Egg_ID) %>% dist()
-  mds <- cmdscale(dist, eig = TRUE, k = 2)
+  #dist <- all_data %>% select(-dataset, -id, -Egg_ID) %>% dist()
+  #mds <- cmdscale(dist, eig = TRUE, k = 2)
   
   # Compute percent of variation
   perc_var <- round((mds$eig / sum(mds$eig))[1:2] * 100, 2)
@@ -584,17 +587,17 @@ plot_mds <- function(processed_inputs) {
   # Create the plot
   mds$points %>%
     data.frame() %>%
-    mutate(dataset = all_data$dataset, Egg_ID = all_data$Egg_ID) %>%
-    mutate(dataset = 
-             forcats::fct_recode(
-               dataset, 
-               "Input Data" = "new", 
-               "WhoseEgg Training Data" = "training")
-    ) %>%
+    #mutate(dataset = all_data$dataset, Egg_ID = all_data$Egg_ID) %>%
+    # mutate(dataset = 
+    #          forcats::fct_recode(
+    #            dataset, 
+    #            "Input Data" = "new", 
+    #            "WhoseEgg Training Data" = "training")
+    # ) %>%
     rename("Coordinate 1" = "X1", "Coordinate 2" = "X2") %>%
-    ggplot(aes(x = `Coordinate 1`, y = `Coordinate 2`, color = dataset, label = Egg_ID)) +
+    ggplot(aes(x = `Coordinate 1`, y = `Coordinate 2`)) + #, color = dataset, label = Egg_ID)) +
     geom_point() + 
-    theme_bw(base_size = 16) + 
+    theme_bw(base_size = 12) + 
     theme(legend.position = "top") +
     labs(
       x = paste0("Coordinate 1 (", perc_var[1], "%)"),
@@ -613,16 +616,16 @@ plot_features <- function(obs_of_int_id, processed_inputs) {
   obs_of_int <-
     all_data %>%
     filter(id == obs_of_int_id) %>%
-    select(-dataset, -id) %>%
+    select(-dataset, -Egg_ID) %>%
     mutate_all(.funs = as.numeric) %>% 
-    tidyr::pivot_longer(cols = everything()) %>%
+    tidyr::pivot_longer(cols = -id) %>%
     mutate(name = stringr::str_replace_all(name, "_", " "))
   
   all_data %>%
     filter(dataset == "training") %>%
-    select(-dataset, -id) %>%
+    select(-dataset, -Egg_ID) %>%
     mutate_all(.funs = as.numeric) %>% 
-    tidyr::pivot_longer(cols = everything()) %>%
+    tidyr::pivot_longer(cols = -id) %>%
     mutate(name = stringr::str_replace_all(name, "_", " ")) %>%
     ggplot(aes(x = value)) + 
     geom_histogram(bins = 30, fill = "#2b3e50") +
