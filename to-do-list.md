@@ -63,6 +63,9 @@ Other:
   
 - **Prepare for lunchinatoRs**
 - **Proofread app**
+- **Deal with larval length issue (see Mike's answer in email)**
+- **Change all wording to embryo instead of yolk**
+- **Make sure I'm always using embryo to membrane ratio instead of perivitelline space index**
 - Add image during loading of swimming fish
 - Can we fix the WhoseEgg color text when hovered over?
 - Organize helper functions
