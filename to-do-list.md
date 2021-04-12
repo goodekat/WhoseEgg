@@ -3,11 +3,12 @@
 
 ## Completed
 
+- Drafted introduction
+
 ## To do
 
 Manuscript:
   
-- **Start writing**
 - Check out reference formats of other articles in magazine and copy their formats
 
 Overview page:
@@ -16,20 +17,20 @@ Overview page:
 
 Data input page:
 
-- **Create an MDS plot with training and new data**
-  - **Switch to computing MDS on training data first and then projecting input data on the training data space**
-  - **Scale the variables first**
-  - **Switch to using Gower distance and all variables**
-- **Try computing Cook's D and leverage**
 - **Add visualizations of new data compared to training data**
+- **Create an MDS plot with training and new data**
+  - Switch to computing MDS on training data first and then projecting input data on the training data space
+  - Scale the variables first
+  - Switch to using Gower distance and all variables
+- Try computing Cook's D and leverage
 - Could email to ask the woman about the extra spaces to see if fixed now
 - Allow option for inputting Julian day
 
 Prediction page:
 
-- **Add visualizations of the data (both input data and training data with input data included)**
 - **Add interpretation of the random forest probabilities (look up a nice interpretation)**
-- **Add option to click on plot and show more plots (summary to input data features and individual to training data with observation)**
+- Add visualizations of the data (both input data and training data with input data included)
+- Add option to click on plot and show more plots (summary to input data features and individual to training data with observation)
 - Figure out how to compute prediction intervals
 - Add a download image button
 
@@ -39,11 +40,9 @@ Download page:
 
 Help page:
 
-- **Add comments on the interpretations of random forests**
-- **Look into how to compute empirical probabilities and try out the model calibration technique**
-- **Figure out issue with larval length and egg stage (which doesn't match up)**
-- **Add guidance on how to interpret random forest probabilities (especially probabilities near 0.5-0.6)**
-- **Check to see if any fisheries papers on random forests**
+- **Add comments on the interpretations of random forests (especially probabilities near 0.5-0.6)**
+- **Determine whether to include an other papers on random forests sent by Dr. Dixon**
+- Look into how to compute empirical probabilities and try out the model calibration technique
 
 Warnings/Errors:
 
