@@ -9,7 +9,7 @@
 
 Manuscript:
   
-- Check out reference formats of other articles in magazine and copy their formats
+- **Draft description of app section**
 
 Overview page:
 
