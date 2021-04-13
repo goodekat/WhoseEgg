@@ -2,7 +2,9 @@
 title: "Applying MDS to the Training Data for WhoseEgg Shiny App"
 author: "Katherine Goode <br>"
 date: 'Last Updated: `r format(Sys.time(), "%B %d, %Y")`'
-output: rmarkdown::github_document
+output: 
+  rmarkdown::github_document:
+    pandoc_args: --webtex
 ---
 
 ```{r setup, include = FALSE}
@@ -54,36 +56,30 @@ Load the egg data:
 eggdata <- read.csv("../data/eggdata_for_app.csv")
 ```
 
-Select just the predictor variables:
+Select just the predictor variables and scale the numeric variables:
 
 ```{r}
-eggdata_preds = eggdata %>% select(all_of(vars_pred))
+eggdata_preds <-
+  eggdata %>% 
+  select(all_of(vars_pred)) %>%
+  mutate_if(.predicate = is.numeric, .funs = scale)
 ```
-
-```{r}
-str(eggdata_preds)
-```
-
-# MDS with Euclidean Distance
-
-```{r}
-scale(egg)
-```
-
 
 # MDS with Gower Distance
 
 ```{r}
-nobs = dim(eggdata_preds)[1]
-nobs
+n = dim(eggdata_preds)[1]
+n
 ```
+
+## MDS on Training Data
 
 Compute the Gower distance between each observation and all other observations in the data and put in a list (where each element contains the distances between one observation and all the other observations.)
 
 ```{r}
 list_of_distances <-
   map(
-    .x = 1:nobs,
+    .x = 1:n,
     .f = function(obs) {
       gower_dist(eggdata_preds, eggdata_preds[obs,])
     }
@@ -93,7 +89,7 @@ list_of_distances <-
 Convert the list of distances to a distance matrix:
 
 ```{r}
-dist_matrix = matrix(unlist(list_of_distances), ncol = nobs)
+dist_matrix = matrix(unlist(list_of_distances), ncol = n)
 ```
 
 Apply MDS (specify that the eigenvalues are returned): 
@@ -102,12 +98,16 @@ Apply MDS (specify that the eigenvalues are returned):
 mds <- cmdscale(dist_matrix, eig = TRUE, k = 2)
 ```
 
+Plot the eigenvalues:
+
 ```{r}
 data.frame(eig = mds$eig) %>%
   mutate(num = 1:n(), prop = eig / sum(eig)) %>%
   ggplot(aes(x = num, y = prop)) + 
   geom_point()
 ```
+
+Plot the first two dimensions: 
 
 ```{r}
 data.frame(mds$points) %>%
@@ -124,4 +124,70 @@ saveRDS(
   file = "../data/mds_for_app.rds"
 )
 ```
+
+## MDS on Testing Data
+
+Based on discussion [here](https://stats.stackexchange.com/questions/368331/project-new-point-into-mds-space)
+
+- $n$ = number of observations
+- $\delta_n$ = matrix of squared distances between all observations
+- $L_k$ = a $k\times n$ matrix of the MDS low dimensional embedding space
+- $L_k^{\#}$ = the transpose of the pseudo-inverse of $L_k$
+- $\delta_i$ = the $i$th column of $\delta_n$ containing the squared distances from point $i$ to all other points
+- $\overset{\rightarrow}{\delta}_{\mu}=\frac{1}{n}\sum_{i=1}^n\overset{\rightarrow}{\delta}_i$ = mean of the columns of the distance matrix
+- $a$ = a new observation which we want to put in low dimensional space
+- $\overset{\rightarrow}{\delta}_a$ = vector containing the square distance from $a$ to every other training point
+
+Then the projection of the new point $a$ into the lower dimensional space is
+
+$$\overset{\rightarrow}{x}_a=-\frac{1}{2}L_k^{\#}\left(\overset{\rightarrow}{\delta}_a-\overset{\rightarrow}{\delta}_\mu\right)$$
+
+Put a new observation in the low dimensional space of the training data MDS: 
+
+```{r}
+delta_n = (dist_matrix)^2
+L2 = t(mds$points)
+L2inv <- t(MASS::ginv(L2))
+delta_mu <- colSums(delta_n) / n
+a = eggdata_preds[1,]
+delta_a = (gower_dist(eggdata_preds, a))^2
+xa = -0.5 * L2inv %*% (delta_a - delta_mu)
+```
+
+```{r}
+data.frame(mds$points) %>%
+  mutate(data = "training") %>%
+  bind_rows(data.frame(t(xa), data = "new")) %>%
+  ggplot(aes(x = X1, y = X2, color = data)) + 
+  geom_point() + 
+  theme(aspect.ratio = 1)
+```
+
+Put a new observation in the low dimensional space of the training data MDS: 
+
+```{r}
+b = eggdata_preds[1:10,]
+n_b = dim(b)[1]
+delta_b <-
+  map(
+    .x = 1:n_b,
+    .f = function(obs) {
+      gower_dist(eggdata_preds, b[obs,])^2
+    }
+  ) %>% 
+  unlist() %>%
+  matrix(ncol = n_b)
+xb = -0.5 * L2inv %*% (delta_b - delta_mu)
+```
+
+```{r}
+data.frame(mds$points) %>%
+  mutate(data = "training") %>%
+  bind_rows(data.frame(t(xb), data = "new")) %>%
+  ggplot(aes(x = X1, y = X2, color = data)) + 
+  geom_point() + 
+  theme(aspect.ratio = 1)
+```
+
+
 
