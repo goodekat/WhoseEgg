@@ -16,5 +16,6 @@ shinythemes
 stringr
 tidyr
 tools
+waiter
 writexl
 WriteXLS
