@@ -38,7 +38,7 @@ ui <- navbarPage(
   title = "WhoseEgg",
   id = "inTabset",
   theme = shinytheme("flatly"),
-  #position = "fixed-top", # uncomment to fix the header
+  #position = "fixed-top", # remove comment to fix the header in place
   
   
   ## HOMEPAGE
@@ -51,25 +51,25 @@ ui <- navbarPage(
     use_waiter(),
     
     # Add padding to work with fixed upper panel
-    # Uncomment if fixing the header
+    # Remove comment if fixing the header
     #tags$style(type="text/css", "body {padding-top: 70px;}"),
     
-    title = div("Overview", style = "font-size:14px;"),
-    value = "overview",
+    title = div("Home", style = "font-size:14px;"),
+    value = "home",
     fluidPage(
       br(),
       column(width = 1),
       column(
         width = 9,
-        img(src = "eggs-in-a-row.jpeg", width = "900px"),
+        img(src = "eggs-in-a-row.jpeg", width = "100%", height = "auto"),
         h2(strong("Welcome to the WhoseEgg App")),
         span(
-          includeMarkdown("text/01-overview-header.Rmd"),
-          "For information about the random forest models, information on how 
-          the egg characteristics were measured for training the random forests,
-          and handling data from different locations, see the",
-          actionLink("overview2help", "help page"),
-          ".",
+          includeMarkdown("text/01-home-header.Rmd"),
+          "See the",
+          actionLink("home2help", "help page"),
+          "for information about the random forest models used by WhoseEgg, the
+          definitions of the egg characteristics, and recommendations for how 
+          to handle data from different locations or containing different species.",
           style = "font-size:14px;"
         ),
         br(),
@@ -84,32 +84,30 @@ ui <- navbarPage(
               are inlcuded on the page corresponding to a step.",
               style = "font-size:14px;"
             ),
-            img(src = "flow-chart.jpeg", width = "800px"),
-            br(),
-            br()
+            div(img(src = "flow-chart.jpeg", width = "90%"), style="text-align: center;")
           ), 
           tabPanel(
             "Locations in Training Data",
             br(),
             span(
-              includeMarkdown("text/01-overview-locations.Rmd"), 
+              includeMarkdown("text/01-home-locations.Rmd"), 
               "For more information on using WhoseEgg with data collected in 
               different regions, see the FAQ on the",
-              actionLink("overview2helpagain", "help page"), ".",
+              actionLink("home2helpagain", "help page"), ".",
               style = "font-size:14px;"
             ),
             br(),
             br(),
-            img(src = "locations.jpeg", width = "600px")
+            img(src = "locations.jpeg", width = "70%", height = "auto")
           ), 
           tabPanel(
             "Species in Training Data",
             br(),
             span(
-              includeMarkdown("text/01-overview-species.Rmd"), 
-              "For more information on using WhoseEgg with data collected in 
-              locations where additional species may be present, see the FAQ on the",
-              actionLink("overview2helpagainx2", "help page"), ".",
+              includeMarkdown("text/01-home-species.Rmd"), 
+              "For more information on using WhoseEgg with data collected in which
+              additional species may be present, see the FAQ on the",
+              actionLink("home2helpagainx2", "help page"), ".",
               br(),
               br(),
               tableOutput("species_table"),
@@ -119,12 +117,12 @@ ui <- navbarPage(
           tabPanel(
             "User Tips",
             br(),
-            span(includeMarkdown("text/01-overview-tips.Rmd"), style = "font-size:14px;")
+            span(includeMarkdown("text/01-home-tips.Rmd"), style = "font-size:14px;")
           ),
           tabPanel(
             "Contributors and Contact",
             br(),
-            span(includeMarkdown("text/01-overview-cc.Rmd"), style = "font-size:14px;")
+            span(includeMarkdown("text/01-home-cc.Rmd"), style = "font-size:14px;")
           )
         ),
         hr(),
@@ -257,18 +255,18 @@ ui <- navbarPage(
                 span(textOutput("message_provide_data_v2"), style = "color:grey")
               ),
               div(dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
-            ),
+            )#,
             # Tab for visualizations
-            tabPanel(
-              "Visualizing Inputs",
-              plotlyOutput("mds_plot"),
-              br(),
-              br(),
-              br(),
-              br(),
-              br(),
-              plotOutput("poi_plot")
-            )
+            # tabPanel(
+            #   "Visualizing Inputs",
+            #   plotlyOutput("mds_plot"),
+            #   br(),
+            #   br(),
+            #   br(),
+            #   br(),
+            #   br(),
+            #   plotOutput("poi_plot")
+            # )
           )
         )
       )
@@ -561,9 +559,7 @@ ui <- navbarPage(
     column(
       width = 9,
       span(
-        img(src = "larval-ac.jpeg", width = "900px"),
-        br(),
-        br(),
+        div(img(src = "larval-ac.jpeg", width = "100%", height = "auto"), style="text-align: center;"),
         includeHTML("text/06-references.html"),
         style = "font-size:14px;"
       )
@@ -578,18 +574,18 @@ server <- function(input, output, session) {
   
   ## LINKS BETWEEN TABS ------------------------------------------------------
   
-  # Jump to help page from overview
-  observeEvent(input$overview2help, {
+  # Jump to help page from home
+  observeEvent(input$home2help, {
     updateTabsetPanel(session, "inTabset", "help")
   })
   
-  # Another button to jump to help page from overview
-  observeEvent(input$overview2helpagain, {
+  # Another button to jump to help page from home
+  observeEvent(input$home2helpagain, {
     updateTabsetPanel(session, "inTabset", "help")
   })
   
-  # Another button to jump to help page from overview
-  observeEvent(input$overview2helpagainx2, {
+  # Another button to jump to help page from home
+  observeEvent(input$home2helpagainx2, {
     updateTabsetPanel(session, "inTabset", "help")
   })
   
@@ -720,38 +716,38 @@ server <- function(input, output, session) {
   poi <- reactiveValues(location = NULL)
 
   # create a waiter with an id
-  w <- 
-    Waiter$new(
-      id = "mds_plot", 
-      #color = transparent(.5), 
-      html = spin_ripple()
-    )
+  # w <- 
+  #   Waiter$new(
+  #     id = "mds_plot", 
+  #     #color = transparent(.5), 
+  #     html = spin_ripple()
+  #   )
   
   # Create MDS plot comparing training data to input data
-  output$mds_plot <- renderPlotly({
-    w$show()
-    on.exit({
-      w$hide()
-    })
-    ggplotly(
-      plot_mds(processed_inputs()),
-      source = "mds_plot",
-      width = 800,
-      height = 500
-    )
-  })
+  # output$mds_plot <- renderPlotly({
+  #   w$show()
+  #   on.exit({
+  #     w$hide()
+  #   })
+  #   ggplotly(
+  #     plot_mds(processed_inputs()),
+  #     source = "mds_plot",
+  #     width = 800,
+  #     height = 500
+  #   )
+  # })
   
-  output$poi_plot <- renderPlot({
-  
-    # Obtain the click data
-    click_data <- event_data("plotly_click", source = "mds_plot")
-    
-    # Create the plot if an observation has been clicked
-    if(length(click_data)){
-      plot_features(click_data$pointNumber + 1, processed_inputs())
-    }
-  
-  }, height = 650, width = 850)
+  # output$poi_plot <- renderPlot({
+  # 
+  #   # Obtain the click data
+  #   click_data <- event_data("plotly_click", source = "mds_plot")
+  #   
+  #   # Create the plot if an observation has been clicked
+  #   if(length(click_data)){
+  #     plot_features(click_data$pointNumber + 1, processed_inputs())
+  #   }
+  # 
+  # }, height = 650, width = 850)
   
   ## PREDICTIONS -------------------------------------------------------------
   
