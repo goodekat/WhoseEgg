@@ -14,7 +14,7 @@ library(shiny)
 library(shinythemes)
 library(stringr)
 library(tidyr)
-library(waiter)
+#library(waiter)
 
 # Source the helper functions used by the app
 source("helper-functions.R")
@@ -49,7 +49,7 @@ ui <- navbarPage(
     tags$head(includeHTML("matomo.txt")),
     
     # Specify for using the spinner
-    use_waiter(),
+    #use_waiter(),
     
     # Add padding to work with fixed upper panel
     # Remove comment if fixing the header
