@@ -39,7 +39,7 @@ ui <- navbarPage(
   title = "WhoseEgg",
   id = "inTabset",
   theme = shinytheme("flatly"),
-  #position = "fixed-top", # remove comment to fix the header in place
+  position = "fixed-top", # remove comment to fix the header in place
   
   
   # HOMEPAGE ------------------------------------------------------------------
@@ -53,7 +53,7 @@ ui <- navbarPage(
     
     # Add padding to work with fixed upper panel
     # Remove comment if fixing the header
-    #tags$style(type="text/css", "body {padding-top: 70px;}"),
+    tags$style(type="text/css", "body {padding-top: 5%;}"),
     
     title = div("Home", style = "font-size:14px;"),
     value = "home",
