@@ -1,0 +1,11 @@
+---
+output:
+  html_document:
+    theme: flatly
+---
+
+**Egg Collection Locations**
+
+The data used to train the random forests in WhoseEgg are from fish eggs collected in the Upper Mississippi River basin at the locations shown in the image below. Validation of models from [Camacho et al. (2019)](https://afspubs.onlinelibrary.wiley.com/doi/abs/10.1002/nafm.10380) showed great performance at locations included in the training data, but performance decreased on locations outside of the training data. For more details on the validation process, see [Goode et al. (2021)](https://afspubs.onlinelibrary.wiley.com/doi/10.1002/nafm.10616).
+
+<span style="color:#3498db">*As a result, we caution the use of WhoseEgg for the prediction of eggs collected outside of the training data egg collection region without prior model validation.*</span>

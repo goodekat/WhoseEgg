@@ -163,7 +163,7 @@ Examples of eggs without pigment. There are no chromatophores present.
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**: Below are examples of the stages. Most of these pictures of the stages are not be great representations. Assessing the stage is accomplished best with the egg under a microscope, so that it can be moved around to inspect all sides and angles.
+**Additional Information**: Below are examples of the stages. Most of these pictures of the stages are not great representations. Assessing the stage is accomplished best with the egg under a microscope, so that it can be moved around to inspect all sides and angles.
 
 Egg Stage 1 (early cleavage): The blastomeres will look like prongs (typically 4) pointing in one direction. The arrows point to prongs. The top left is the best image showing the 4 prongs. They are not as pronounced, but the cleavage separating each blastomere is still apparent. The bottom left corner picture shows a side view of 2 prongs. It is difficult to get a picture looking directly into the prongs.
 
