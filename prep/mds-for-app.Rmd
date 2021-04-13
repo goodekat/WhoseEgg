@@ -127,7 +127,7 @@ saveRDS(
 
 ## MDS on Testing Data
 
-Based on discussion [here](https://stats.stackexchange.com/questions/368331/project-new-point-into-mds-space)
+Based on discussion [here](https://stats.stackexchange.com/questions/368331/project-new-point-into-mds-space), which references [De Silva and Tenenbaum (2004)](http://graphics.stanford.edu/courses/cs468-05-winter/Papers/Landmarks/Silva_landmarks5.pdf):
 
 - $n$ = number of observations
 - $\delta_n$ = matrix of squared distances between all observations
