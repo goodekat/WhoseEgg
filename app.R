@@ -150,7 +150,7 @@ ui <- navbarPage(
         "1. Download a spreadsheet template.",
         br(),
         br(),
-        downloadButton("downloadTemplate", "Download Template"),
+        downloadButton("downloadTemplate", "Download Template", style = "padding:5%; font-size:90%; width:95%; height:auto"),
         br(),
         br(),
         "2. Add observed values to downloaded spreadsheet or a similarly 
@@ -175,7 +175,7 @@ ui <- navbarPage(
         "5. Go to the 'Predictions' page to obtain predictions.",
         br(),
         br(),
-        actionButton('jump2pred', 'Jump to Predictions')
+        actionButton('jump2pred', 'Jump to Predictions', style = "padding:5%; font-size:90%; width:95%; height:auto")
       ), style = "font-size:14px;"),
       width = 3
     ),
@@ -295,7 +295,7 @@ ui <- navbarPage(
         "2. Click the button below to generate the random forest predictions.",
         br(),
         br(),
-        actionButton("getpreds", "Get Predictions"),
+        actionButton("getpreds", "Get Predictions", style = "padding:5%; font-size:90%; width:75%; height:auto"),
         br(),
         br(),
         span(
@@ -312,7 +312,7 @@ ui <- navbarPage(
         "4. Go to 'Downloads' tab to download data with predictions.",
         br(),
         br(),
-        actionButton('jump2download', 'Jump to Downloads Tab')
+        actionButton('jump2download', 'Jump to Downloads', style = "padding:5%; font-size:90%; width:95%; height:auto")
       ), style = "font-size:14px;"),
       width = 3
     ),
@@ -447,7 +447,7 @@ ui <- navbarPage(
         predictions joined.",
         br(),
         br(),
-        actionButton("preview", "Preview Data"),
+        actionButton("preview", "Preview Data", style = "padding:5%; font-size:90%; width:75%; height:auto"),
         br(),
         br(),
         "3. Specify whether to download the spreadhseet as an Excel or csv file.",
@@ -455,7 +455,7 @@ ui <- navbarPage(
         "4. Click the button below to download the prepared spreadsheet.",
         br(),
         br(),
-        downloadButton("downloadPreds", "Download Predictions")
+        downloadButton("downloadPreds", "Download Predictions", style = "padding:5%; font-size:90%; width:95%; height:auto")
       ), style = "font-size:14px;"),
       width = 3
     ),
