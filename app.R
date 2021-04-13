@@ -23,12 +23,13 @@ source("helper-functions.R")
 rfs <- readRDS("data/rfs_for_app.rds")
 
 # Prepare Rmarkdown text files
-# Run the code below whenever a file is updated
+# Run the code below or knit the Rmd whenever a file is updated
 #rmarkdown::render("text/05-help-faq.Rmd", quiet = TRUE)
 #rmarkdown::render("text/05-help-rf.Rmd", quiet = TRUE)
 #rmarkdown::render("text/05-help-vars-env.Rmd", quiet = TRUE)
 #rmarkdown::render("text/05-help-vars-morph.Rmd", quiet = TRUE)
 #rmarkdown::render("text/06-references.Rmd", quiet = TRUE)
+
 
 ##### APP UI #####
 
@@ -41,7 +42,7 @@ ui <- navbarPage(
   #position = "fixed-top", # remove comment to fix the header in place
   
   
-  ## HOMEPAGE
+  # HOMEPAGE ------------------------------------------------------------------
   tabPanel(
     
     # Matomo 
@@ -135,7 +136,7 @@ ui <- navbarPage(
     )
   ), 
   
-  ## INPUT EGG CHARACTERISTICS
+  # INPUT EGG CHARACTERISTICS -------------------------------------------------
   tabPanel(
     
     title = div("Data Input", style = "font-size:14px;"),
@@ -171,10 +172,10 @@ ui <- navbarPage(
         panel to check for correctness.",
         br(),
         br(),
-        "5. Go to 'Predictions' tab to obtain predictions.",
+        "5. Go to the 'Predictions' page to obtain predictions.",
         br(),
         br(),
-        actionButton('jump2pred', 'Jump to Predictions Tab')
+        actionButton('jump2pred', 'Jump to Predictions')
       ), style = "font-size:14px;"),
       width = 3
     ),
@@ -218,6 +219,9 @@ ui <- navbarPage(
       h3("Overview"),
       span(
         includeMarkdown("text/02-input-header.Rmd"),
+        "See the 'Random Forest Details' tab on the",
+        actionLink("input2help2", "help page"), 
+        "for a full list of the predictor variables used by the random forests in WhoseEgg.",
         style = "font-size:14px;"
       ),
       hr(),
@@ -273,7 +277,8 @@ ui <- navbarPage(
     )
   ),
   
-  # RANDOM FOREST PREDICTIONS
+  # RANDOM FOREST PREDICTIONS --------------------------------------------------
+  
   tabPanel(
     
     title = div("Predictions", style = "font-size:14px;"),
@@ -423,7 +428,8 @@ ui <- navbarPage(
     )
   ),
   
-  # DOWNLOADS PAGE
+  # DOWNLOADS PAGE -------------------------------------------------------------
+  
   tabPanel(
     
     title = div("Downloads", style = "font-size:14px;"),
@@ -507,7 +513,7 @@ ui <- navbarPage(
       ) 
   ),
   
-  # HELP PAGE
+  # HELP PAGE ------------------------------------------------------------------
   tabPanel(
     title = div("Help", style = "font-size:14px;"),
     value = "help",
@@ -552,7 +558,7 @@ ui <- navbarPage(
     )
   ),
   
-  # REFERENCES
+  # REFERENCES -----------------------------------------------------------------
   tabPanel(
     title = div("References", style = "font-size:14px;"),
     column(width = 1),
@@ -567,6 +573,7 @@ ui <- navbarPage(
   )
   
 )
+
 
 ##### APP SERVER #####
 
@@ -603,8 +610,13 @@ server <- function(input, output, session) {
     }
   )
   
-  # Jump to help page
+  # Jump to help page from inputs
   observeEvent(input$input2help, {
+    updateTabsetPanel(session, "inTabset", "help")
+  })
+  
+  # Jump to help page from inputs (again)
+  observeEvent(input$input2help2, {
     updateTabsetPanel(session, "inTabset", "help")
   })
   

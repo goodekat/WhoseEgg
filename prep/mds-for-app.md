@@ -1,7 +1,7 @@
 Applying MDS to the Training Data for WhoseEgg Shiny App
 ================
 Katherine Goode <br>
-Last Updated: April 12, 2021
+Last Updated: April 13, 2021
 
 This document contains code that applies multidimensional scaling (MDS)
 to the random forest training data used in WhoseEgg. The results are
@@ -140,7 +140,9 @@ saveRDS(
 ## MDS on Testing Data
 
 Based on discussion
-[here](https://stats.stackexchange.com/questions/368331/project-new-point-into-mds-space)
+[here](https://stats.stackexchange.com/questions/368331/project-new-point-into-mds-space),
+which references [De Silva and Tenenbaum
+(2004)](http://graphics.stanford.edu/courses/cs468-05-winter/Papers/Landmarks/Silva_landmarks5.pdf):
 
 -   ![n](https://latex.codecogs.com/png.latex?n "n") = number of
     observations

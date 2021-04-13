@@ -6,4 +6,4 @@ output:
 
 - It is okay to include additional variables in the uploaded spreadsheet
 
-- Additional variables will be excluded from the processed data used for prediction but included in final downloadable spreadsheet
+- Additional variables will be excluded from the processed data used for prediction but included in the final spreadsheet for download

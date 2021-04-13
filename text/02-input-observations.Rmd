@@ -8,6 +8,7 @@ output:
 
 - Observations with missing variable values will be excluded from the processed data for prediction but will be included in the final dataset for download without random forest predictions
 
-- There is no maximum number of observations that may be included
+- At least one egg observation is required
 
-- At least one egg observations is required
+- There is no maximum number of observations that may be included, but the time it takes to compute predictions will increase as the number of observations increases
+

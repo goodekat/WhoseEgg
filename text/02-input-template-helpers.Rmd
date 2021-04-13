@@ -4,10 +4,10 @@ output:
     theme: flatly
 ---
 
-- Select a cell with a variable name to see required formats, units, or accepted levels
+- Select a cell in the Excel template with a variable name to see required format, units, and/or accepted levels
 
-- Cells of categorical variables contains drop down options  
+- Cells of categorical variables contain drop down options  
 
-- Errors or warnings will appear if a values is not formatted correctly  
+- Errors or warnings will appear if a value is not formatted correctly  
 
 - Helpers may be turned off by using the data validation option in Excel
