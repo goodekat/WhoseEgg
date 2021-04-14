@@ -39,7 +39,7 @@ ui <- navbarPage(
   title = "WhoseEgg",
   id = "inTabset",
   theme = shinytheme("flatly"),
-  position = "fixed-top", # remove comment to fix the header in place
+  #position = "fixed-top", # remove comment to fix the header in place
   
   
   # HOMEPAGE ------------------------------------------------------------------
@@ -53,7 +53,7 @@ ui <- navbarPage(
     
     # Add padding to work with fixed upper panel
     # Remove comment if fixing the header
-    tags$style(type="text/css", "body {padding-top: 5%;}"),
+    #tags$style(type="text/css", "body {padding-top: 5%;}"),
     
     title = div("Home", style = "font-size:14px;"),
     value = "home",
@@ -245,7 +245,7 @@ ui <- navbarPage(
               "Input Data",
               conditionalPanel(
                 condition = "!is.na(output.message_provide_data_v1)", 
-                span(textOutput("message_provide_data_v1"), style = "color:grey")
+                span(textOutput("message_provide_data_v1"), style = "color:grey;font-size:14px")
               ),
               div(dataTableOutput("input_table"), style = "font-size: 100%; width: 100%"),
               br(),
@@ -256,7 +256,7 @@ ui <- navbarPage(
               "Processed Data",
               conditionalPanel(
                 condition = "!is.na(output.message_provide_data_v2)", 
-                span(textOutput("message_provide_data_v2"), style = "color:grey")
+                span(textOutput("message_provide_data_v2"), style = "color:grey;font-size:14px")
               ),
               div(dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
             )#,
@@ -359,7 +359,7 @@ ui <- navbarPage(
           column(
             conditionalPanel(
               condition = "!is.na(output.message_pred_table)", 
-              span(textOutput("message_pred_table"), style = "color:grey")
+              span(textOutput("message_pred_table"), style = "color:grey;font-size:14px")
             ), width = 9
           ),
           div(dataTableOutput("pred_table"), style = "font-size: 100%; width: 100%"),
@@ -372,16 +372,16 @@ ui <- navbarPage(
         type = "tabs",
         # Tab for summary visualizations
         tabPanel(
-          "Summary of predictions",
+          "Summary of Predictions",
           br(),
           span(
-            strong("Frequency of taxonomic level predictions"),
+            strong("Frequency of Predictions per Taxonomic Level"),
             br(),
             br(),
             "Each plot shows the levels of family, genus, and
-            species represented by the predictions. The length of the 
-            bars represent the total number of eggs predicted to be 
-            within a level.",
+            species included in the predictions. The length of the 
+            bars represent the total number of eggs classified within 
+            a level by the random forest.",
             style = "font-size:14px;"
           ),
           br(),
@@ -389,7 +389,7 @@ ui <- navbarPage(
           column(
             conditionalPanel(
               condition = "!is.na(output.message_pred_plots_v1)", 
-              span(textOutput("message_pred_plots_v1"), style = "color:grey")
+              span(textOutput("message_pred_plots_v1"), style = "color:grey;font-size:14px")
             ), 
             width = 10
           ),
@@ -399,17 +399,17 @@ ui <- navbarPage(
         
         # Tab individual probabilities
         tabPanel(
-          "Individual egg predictions",
+          "Individual Egg Predictions",
           br(),
           span(
-            strong("Random forest probabilities of all taxonomic levels for 
-                   specified observation"),
+            strong("Random Forest Probabilities for a Specified Egg"),
             br(),
             br(),
-            "The random forests return probabilities for all taxonomic levels for 
-            each egg observation. These graphics show the probabilities for each 
-            taxonomic level for an egg. The levels with a taxonomy are ordered 
-            from top to bottom by highest to lowest random forest probability.",
+            "The random forests return probabilities for all taxonomic levels in 
+            the training data for each egg observation. These graphics show the 
+            probabilities for each taxonomic level for an egg. The taxonomic 
+            levels are ordered from top to bottom by highest to lowest random 
+            forest probability.",
             style = "font-size:14px;"
           ),
           br(),
@@ -417,7 +417,7 @@ ui <- navbarPage(
           column(
             conditionalPanel(
               condition = "!is.na(output.message_pred_plots_v2)", 
-              span(textOutput("message_pred_plots_v2"), style = "color:grey")
+              span(textOutput("message_pred_plots_v2"), style = "color:grey;font-size:14px")
             ), 
             width = 12
           ),
@@ -502,7 +502,7 @@ ui <- navbarPage(
           column(
             conditionalPanel(
               condition = "!is.na(output.message_downoad_table)",
-              span(textOutput("message_download_table"), style = "color:grey")
+              span(textOutput("message_download_table"), style = "color:grey;font-size:14px")
             ),
             width = 10
           ),
@@ -565,9 +565,9 @@ ui <- navbarPage(
     column(
       width = 9,
       span(
-        div(img(src = "larval-ac.jpeg", width = "100%", height = "auto"), style="text-align: center;"),
+        div(img(src = "larval-ac.jpeg", width = "85%", height = "auto"), style="text-align: center;"),
         includeHTML("text/06-references.html"),
-        style = "font-size:14px;"
+        style = "font-size:14px; line-height: 2em;"
       )
     )
   )
@@ -904,14 +904,16 @@ server <- function(input, output, session) {
   # Provide a message where prediction table will be
   output$message_pred_table <- reactive({
     if (input$getpreds == 0 | is.null(input$spreadsheet)) {
-      "A table with predictions will appear here after inputs are provided via
-      the 'Data Input' page and the 'Get Predictions' button is clicked."
+      "A table with predictions will appear here after egg characteristics are 
+      provided via the 'Data Input' page and the 'Get Predictions' button is 
+      clicked."
     } else if (is.null(input_data()) |
                !check_for_vars(input_data()) |
                !check_fct_levels(input_data()) | 
                !check_for_egg_ids(input_data())) {
-      "A table with predictions will appear here after inputs are provided via
-      the 'Data Input' page and the 'Get Predictions' button is clicked."
+      "A table with predictions will appear here after egg characteristics are 
+      provided via the 'Data Input' page and the 'Get Predictions' button is 
+      clicked."
     } else {
       NA
     }

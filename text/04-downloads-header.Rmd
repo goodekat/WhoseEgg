@@ -4,6 +4,10 @@ output:
     theme: flatly
 ---
 
-This page is used to download a spreadsheet containing the input egg data and the computed random forest taxonomy prediction. To download the data, follow the instructions in the sidebar panel to the left.
+This page is used to download a spreadsheet containing the input egg data and the random forest results. To download the data, follow the instructions in the sidebar panel to the left.
         
-The **Download Preview Table** below contains the data that will be included in the spreadsheet when downloaded. The variables include all initial variables uploaded to WhoseEgg, variables computed to generate random forest predictions, the random forest predictions, and the random forest probabilities for all taxonomic levels.
+The **Download Preview Table** below contains the data that will be included in the spreadsheet when downloaded. The spreadsheet includes:
+  - all initial variables uploaded to WhoseEgg, 
+  - variables computed to generate random forest predictions, 
+  - the random forest predictions, and
+  - the random forest probabilities for all taxonomic levels.

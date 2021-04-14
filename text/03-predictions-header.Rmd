@@ -6,6 +6,6 @@ output:
 
 This page provides the ability to compute and display the random forest predictions for the egg data provided via the 'Data Input' tab. To obtain the predictions, follow the instructions in the sidebar panel to the left. The sections below provide tools for viewing and exploring the predictions.
 
-See the **Table of Predictions** below for the taxonomic levels returned with the highest random forest probabilities for each fish egg. The columns of Family Pred, Genus Pred, and Species Pred contain the taxonomy level with the highest random forest probability. The columns of Family Prob, Genus Prob, and Species Prob contain the corresponding random forest probability. 
+See the **Table of Predictions** below for the random forest predictions and corresponding probabilities for each fish egg. The columns of `Family Pred`, `Genus Pred`, and `Species Pred` contain taxonomic level for the corresponding egg with the highest random forest probability. The columns of `Family Prob`, `Genus Prob`, and `Species Prob` contain the corresponding random forest probabilities. A random forest probability is the proportion of trees in the random forest that predict a certain level. See the 'Random Forest Details' tab on the help page for information on how random forest predictions and probabilities are determined.
 
 See the **Visualizations of Predictions** below for various visualizations of the random forest predictions.
