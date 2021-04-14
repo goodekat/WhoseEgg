@@ -24,12 +24,11 @@ rfs <- readRDS("data/rfs_for_app.rds")
 
 # Prepare Rmarkdown text files
 # Run the code below or knit the Rmd whenever a file is updated
-#rmarkdown::render("text/05-help-faq.Rmd", quiet = TRUE)
-#rmarkdown::render("text/05-help-rf.Rmd", quiet = TRUE)
-#rmarkdown::render("text/05-help-vars-env.Rmd", quiet = TRUE)
-#rmarkdown::render("text/05-help-vars-morph.Rmd", quiet = TRUE)
-#rmarkdown::render("text/06-references.Rmd", quiet = TRUE)
-
+# rmarkdown::render("text/05-help-faq.Rmd", quiet = TRUE)
+# rmarkdown::render("text/05-help-rf.Rmd", quiet = TRUE)
+# rmarkdown::render("text/05-help-vars-env.Rmd", quiet = TRUE)
+# rmarkdown::render("text/05-help-vars-morph.Rmd", quiet = TRUE)
+# rmarkdown::render("text/06-references.Rmd", quiet = TRUE)
 
 ##### APP UI #####
 
