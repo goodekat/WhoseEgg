@@ -173,66 +173,22 @@ Details on Egg Morphological Variables
 
 <div id="TOC">
 <ul>
-<li><a href="#Membrane_Ave">Average of Membrane Diameters</a></li>
-<li><a href="#Embryo_Ave">Average of Embryo Diameters</a></li>
-<li><a href="#coefficient-of-variation-of-membrane-diameters">Coefficient of Variation of Membrane Diameters</a></li>
-<li><a href="#coefficient-of-variation-of-embryo-diameters">Coefficient of Variation of Embryo Diameters</a></li>
 <li><a href="#compact-or-diffuse">Compact or Diffuse</a></li>
 <li><a href="#deflated">Deflated</a></li>
 <li><a href="#egg-pigment">Egg Pigment</a></li>
 <li><a href="#egg-stage">Egg Stage</a></li>
-<li><a href="#larval-length">Larval Length</a></li>
-<li><a href="#standard-deviation-of-membrane-diameters">Standard Deviation of Membrane Diameters</a></li>
-<li><a href="#standard-deviation-of-embryo-diameters">Standard Deviation of Embryo Diameters</a></li>
-<li><a href="#sticky-debris">Sticky Debris</a></li>
+<li><a href="#Embryo_Ave">Embryo Diameter Average</a></li>
+<li><a href="#embryo-diameter-coefficient-of-variation">Embryo Diameter Coefficient of Variation</a></li>
+<li><a href="#embryo-diameter-standard-deviation">Embryo Diameter Standard Deviation</a></li>
 <li><a href="#embryo-to-membrane-ratio">Embryo to Membrane Ratio</a></li>
+<li><a href="#larval-length">Larval Length</a></li>
+<li><a href="#Membrane_Ave">Membrane Diameter Average</a></li>
+<li><a href="#membrane-diameter-coefficient-of-variation">Membrane Diameter Coefficient of Variation</a></li>
+<li><a href="#membrane-diameter-standard-deviation">Membrane Diameter Standard Deviation</a></li>
+<li><a href="#sticky-debris">Sticky Debris</a></li>
 </ul>
 </div>
 
-<div id="Membrane_Ave" class="section level3">
-<h3>Average of Membrane Diameters</h3>
-<p><strong>Definition</strong>: Average of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)</p>
-<p><strong>Spreadsheet Variable Name</strong>: <code>Membrane_Ave</code></p>
-<p><strong>Format</strong>: Positive continuous variable</p>
-<p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
-<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
-<p><strong>Additional Information</strong>: The training data averages of membrane diameters range between 0.728 mm and 5.492 mm</p>
-<p>The images below show examples of four equally spaced membrane diameter measurements.</p>
-<p><img src="../membrane-diameter.jpeg" height="200"></p>
-<hr/>
-</div>
-<div id="Embryo_Ave" class="section level3">
-<h3>Average of Embryo Diameters</h3>
-<p><strong>Definition</strong>: Average of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)</p>
-<p><strong>Spreadsheet Variable Name</strong>: <code>Embryo_Ave</code></p>
-<p><strong>Format</strong>: Positive continuous variable</p>
-<p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
-<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
-<p><strong>Additional Information</strong>: The training data averages of embryo diameters range between 0.434 mm and 4.371 mm</p>
-<p>The images below show examples of four equally spaced embryo diameter measurements.</p>
-<p><img src="../embryo-diameter.jpeg" height="200"></p>
-<hr/>
-</div>
-<div id="coefficient-of-variation-of-membrane-diameters" class="section level3">
-<h3>Coefficient of Variation of Membrane Diameters</h3>
-<p><strong>Definition</strong>: Coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)</p>
-<p><strong>Spreadsheet Variable Name</strong>: <code>Membrane_CV</code></p>
-<p><strong>Format</strong>: Positive continuous variable</p>
-<p><strong>Required Upload or Computed After Upload</strong>: Computed after upload</p>
-<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
-<p><strong>Additional Information</strong>: The training data coefficients of variation of membrane diameters range between 0.001 and 0.52. See the figures included underneath <a href="#Membrane_Ave">Average of Membrane Diameters</a> for examples of how the membrane diameters are measured.</p>
-<hr/>
-</div>
-<div id="coefficient-of-variation-of-embryo-diameters" class="section level3">
-<h3>Coefficient of Variation of Embryo Diameters</h3>
-<p><strong>Definition</strong>: Coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)</p>
-<p><strong>Spreadsheet Variable Name</strong>: <code>Embryo_CV</code></p>
-<p><strong>Format</strong>: Positive continuous variable</p>
-<p><strong>Required Upload or Computed After Upload</strong>: Computed after upload</p>
-<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
-<p><strong>Additional Information</strong>: The training data coefficients of variation of membrane diameters range between 0.003 and 0.724. See the figures included underneath <a href="#Embryo_Ave">Average of Embryo Diameters</a> for examples of how the membrane diameters are measured.</p>
-<hr/>
-</div>
 <div id="compact-or-diffuse" class="section level3">
 <h3>Compact or Diffuse</h3>
 <p><strong>Definition</strong>: Specifies whether the egg collected is compact or diffuse</p>
@@ -302,6 +258,47 @@ Details on Egg Morphological Variables
 <p><img src="../egg-stage-8.jpeg" height="200"></p>
 <hr/>
 </div>
+<div id="Embryo_Ave" class="section level3">
+<h3>Embryo Diameter Average</h3>
+<p><strong>Definition</strong>: Average of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)</p>
+<p><strong>Spreadsheet Variable Name</strong>: <code>Embryo_Ave</code></p>
+<p><strong>Format</strong>: Positive continuous variable</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
+<p><strong>Additional Information</strong>: The training data averages of embryo diameters range between 0.434 mm and 4.371 mm</p>
+<p>The images below show examples of four equally spaced embryo diameter measurements.</p>
+<p><img src="../embryo-diameter.jpeg" height="200"></p>
+<hr/>
+</div>
+<div id="embryo-diameter-coefficient-of-variation" class="section level3">
+<h3>Embryo Diameter Coefficient of Variation</h3>
+<p><strong>Definition</strong>: Coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)</p>
+<p><strong>Spreadsheet Variable Name</strong>: <code>Embryo_CV</code></p>
+<p><strong>Format</strong>: Positive continuous variable</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Computed after upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
+<p><strong>Additional Information</strong>: The training data coefficients of variation of membrane diameters range between 0.003 and 0.724. See the figures included underneath <a href="#Embryo_Ave">Average of Embryo Diameters</a> for examples of how the membrane diameters are measured.</p>
+<hr/>
+</div>
+<div id="embryo-diameter-standard-deviation" class="section level3">
+<h3>Embryo Diameter Standard Deviation</h3>
+<p><strong>Definition</strong>: Standard deviation of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)</p>
+<p><strong>Spreadsheet Variable Name</strong>: <code>Embryo_SD</code></p>
+<p><strong>Format</strong>: Positive continuous variable</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
+<p><strong>Additional Information</strong>: The training data standard deviations of embryo diameters range between 0.005 and 1.377. See the figures included underneath <a href="#Embryo_Ave">Average of Embryo Diameters</a> for examples of how the membrane diameters are measured.</p>
+<hr/>
+</div>
+<div id="embryo-to-membrane-ratio" class="section level3">
+<h3>Embryo to Membrane Ratio</h3>
+<p><strong>Definition</strong>: Ratio of average embryo diameter to average membrane diameter</p>
+<p><strong>Spreadsheet Variable Name</strong>: <code>Embryo_to_Membrane_Ratio</code></p>
+<p><strong>Format</strong>: Positive continuous variable</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Computed after upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
+<p><strong>Additional Information</strong>: The training data embryo to membrane ratios range between 0.257 and 1.137. See the figures included underneath <a href="#Membrane_Ave">Average of Membrane Diameters</a> and <a href="#Embryo_Ave">Average of Embryo Diameters</a> for examples of how the membrane and embryo diameters are measured.</p>
+</div>
 <div id="larval-length" class="section level3">
 <h3>Larval Length</h3>
 <p><strong>Definition</strong>: Total length measurement (mm) along the midline from all of the late stage embryos (eggs in stages 6-8)</p>
@@ -314,24 +311,36 @@ Details on Egg Morphological Variables
 <p><img src="../larval-length.jpeg" height="200"></p>
 <hr/>
 </div>
-<div id="standard-deviation-of-membrane-diameters" class="section level3">
-<h3>Standard Deviation of Membrane Diameters</h3>
+<div id="Membrane_Ave" class="section level3">
+<h3>Membrane Diameter Average</h3>
+<p><strong>Definition</strong>: Average of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)</p>
+<p><strong>Spreadsheet Variable Name</strong>: <code>Membrane_Ave</code></p>
+<p><strong>Format</strong>: Positive continuous variable</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
+<p><strong>Additional Information</strong>: The training data averages of membrane diameters range between 0.728 mm and 5.492 mm</p>
+<p>The images below show examples of four equally spaced membrane diameter measurements.</p>
+<p><img src="../membrane-diameter.jpeg" height="200"></p>
+<hr/>
+</div>
+<div id="membrane-diameter-coefficient-of-variation" class="section level3">
+<h3>Membrane Diameter Coefficient of Variation</h3>
+<p><strong>Definition</strong>: Coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)</p>
+<p><strong>Spreadsheet Variable Name</strong>: <code>Membrane_CV</code></p>
+<p><strong>Format</strong>: Positive continuous variable</p>
+<p><strong>Required Upload or Computed After Upload</strong>: Computed after upload</p>
+<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
+<p><strong>Additional Information</strong>: The training data coefficients of variation of membrane diameters range between 0.001 and 0.52. See the figures included underneath <a href="#Membrane_Ave">Average of Membrane Diameters</a> for examples of how the membrane diameters are measured.</p>
+<hr/>
+</div>
+<div id="membrane-diameter-standard-deviation" class="section level3">
+<h3>Membrane Diameter Standard Deviation</h3>
 <p><strong>Definition</strong>: Standard deviation of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)</p>
 <p><strong>Spreadsheet Variable Name</strong>: <code>Membrane_SD</code></p>
 <p><strong>Format</strong>: Positive continuous variable</p>
 <p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
 <p><strong>Random Forest Predictor Variable</strong>: Yes</p>
 <p><strong>Additional Information</strong>: The training data standard deviations of membrane diameters range between 0.001 mm and 1.472 mm. See the figures included underneath <a href="#Membrane_Ave">Average of Membrane Diameters</a> for examples of how the membrane diameters are measured.</p>
-<hr/>
-</div>
-<div id="standard-deviation-of-embryo-diameters" class="section level3">
-<h3>Standard Deviation of Embryo Diameters</h3>
-<p><strong>Definition</strong>: Standard deviation of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)</p>
-<p><strong>Spreadsheet Variable Name</strong>: <code>Embryo_SD</code></p>
-<p><strong>Format</strong>: Positive continuous variable</p>
-<p><strong>Required Upload or Computed After Upload</strong>: Required upload</p>
-<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
-<p><strong>Additional Information</strong>: The training data standard deviations of embryo diameters range between 0.005 and 1.377. See the figures included underneath <a href="#Embryo_Ave">Average of Embryo Diameters</a> for examples of how the membrane diameters are measured.</p>
 <hr/>
 </div>
 <div id="sticky-debris" class="section level3">
@@ -347,15 +356,6 @@ Details on Egg Morphological Variables
 <p>Examples of eggs without sticky debris. There is no debris or sand on the membranes.</p>
 <p><img src="../no-sticky-debris.jpeg" height="400"></p>
 <hr/>
-</div>
-<div id="embryo-to-membrane-ratio" class="section level3">
-<h3>Embryo to Membrane Ratio</h3>
-<p><strong>Definition</strong>: Ratio of average embryo diameter to average membrane diameter</p>
-<p><strong>Spreadsheet Variable Name</strong>: <code>Embryo_to_Membrane_Ratio</code></p>
-<p><strong>Format</strong>: Positive continuous variable</p>
-<p><strong>Required Upload or Computed After Upload</strong>: Computed after upload</p>
-<p><strong>Random Forest Predictor Variable</strong>: Yes</p>
-<p><strong>Additional Information</strong>: The training data embryo to membrane ratios range between 0.257 and 1.137. See the figures included underneath <a href="#Membrane_Ave">Average of Membrane Diameters</a> and <a href="#Embryo_Ave">Average of Embryo Diameters</a> for examples of how the membrane and embryo diameters are measured.</p>
 </div>
 
 

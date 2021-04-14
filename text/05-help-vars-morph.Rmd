@@ -11,78 +11,6 @@ output:
 eggdata <- read.csv("../data/eggdata_for_app.csv")
 ```
 
-### Average of Membrane Diameters {#Membrane_Ave}
-
-**Definition**: Average of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
-
-**Spreadsheet Variable Name**: `Membrane_Ave`
-
-**Format**: Positive continuous variable
-
-**Required Upload or Computed After Upload**: Required upload
-
-**Random Forest Predictor Variable**: Yes
-
-**Additional Information**: The training data averages of membrane diameters range between `r round(min(eggdata$Membrane_Ave), 3)` mm and `r round(max(eggdata$Membrane_Ave), 3)` mm
-
-The images below show examples of four equally spaced membrane diameter measurements.
-
-<img src="../membrane-diameter.jpeg" height="200">
-
-<hr/>
-
-### Average of Embryo Diameters {#Embryo_Ave}
-
-**Definition**: Average of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
-
-**Spreadsheet Variable Name**: `Embryo_Ave`
-
-**Format**: Positive continuous variable
-
-**Required Upload or Computed After Upload**: Required upload
-
-**Random Forest Predictor Variable**: Yes
-
-**Additional Information**: The training data averages of embryo diameters range between `r round(min(eggdata$Embryo_Ave), 3)` mm and `r round(max(eggdata$Embryo_Ave), 3)` mm
-
-The images below show examples of four equally spaced embryo diameter measurements.
-
-<img src="../embryo-diameter.jpeg" height="200">
-
-<hr/>
-
-### Coefficient of Variation of Membrane Diameters
-
-**Definition**: Coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
-
-**Spreadsheet Variable Name**: `Membrane_CV`
-
-**Format**: Positive continuous variable
-
-**Required Upload or Computed After Upload**: Computed after upload
-
-**Random Forest Predictor Variable**: Yes
-
-**Additional Information**: The training data coefficients of variation of membrane diameters range between `r round(min(eggdata$Membrane_CV), 3)` and `r round(max(eggdata$Membrane_CV), 3)`. See the figures included underneath [Average of Membrane Diameters](#Membrane_Ave) for examples of how the membrane diameters are measured.
-
-<hr/>
-
-### Coefficient of Variation of Embryo Diameters
-
-**Definition**: Coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
-
-**Spreadsheet Variable Name**: `Embryo_CV`
-
-**Format**: Positive continuous variable
-
-**Required Upload or Computed After Upload**: Computed after upload
-
-**Random Forest Predictor Variable**: Yes
-
-**Additional Information**: The training data coefficients of variation of membrane diameters range between `r round(min(eggdata$Embryo_CV), 3)` and `r round(max(eggdata$Embryo_CV), 3)`. See the figures included underneath [Average of Embryo Diameters](#Embryo_Ave) for examples of how the membrane diameters are measured.
-
-<hr/>
-
 ### Compact or Diffuse
 
 **Definition**: Specifies whether the egg collected is compact or diffuse
@@ -205,6 +133,72 @@ Egg Stage 8 (late embryo): The embryo is almost fully developed. Myomeres, eyes,
 
 <hr/>
 
+### Embryo Diameter Average {#Embryo_Ave}
+
+**Definition**: Average of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
+
+**Spreadsheet Variable Name**: `Embryo_Ave`
+
+**Format**: Positive continuous variable
+
+**Required Upload or Computed After Upload**: Required upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: The training data averages of embryo diameters range between `r round(min(eggdata$Embryo_Ave), 3)` mm and `r round(max(eggdata$Embryo_Ave), 3)` mm
+
+The images below show examples of four equally spaced embryo diameter measurements.
+
+<img src="../embryo-diameter.jpeg" height="200">
+
+<hr/>
+
+### Embryo Diameter Coefficient of Variation
+
+**Definition**: Coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
+
+**Spreadsheet Variable Name**: `Embryo_CV`
+
+**Format**: Positive continuous variable
+
+**Required Upload or Computed After Upload**: Computed after upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: The training data coefficients of variation of membrane diameters range between `r round(min(eggdata$Embryo_CV), 3)` and `r round(max(eggdata$Embryo_CV), 3)`. See the figures included underneath [Average of Embryo Diameters](#Embryo_Ave) for examples of how the membrane diameters are measured.
+
+<hr/>
+
+### Embryo Diameter Standard Deviation
+
+**Definition**: Standard deviation of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
+
+**Spreadsheet Variable Name**: `Embryo_SD`
+
+**Format**: Positive continuous variable
+
+**Required Upload or Computed After Upload**: Required upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: The training data standard deviations of embryo diameters range between `r round(min(eggdata$Embryo_SD), 3)` and `r round(max(eggdata$Embryo_SD), 3)`. See the figures included underneath [Average of Embryo Diameters](#Embryo_Ave) for examples of how the membrane diameters are measured.
+
+<hr/>
+
+### Embryo to Membrane Ratio
+
+**Definition**: Ratio of average embryo diameter to average membrane diameter
+
+**Spreadsheet Variable Name**: `Embryo_to_Membrane_Ratio`
+
+**Format**: Positive continuous variable
+
+**Required Upload or Computed After Upload**: Computed after upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: The training data embryo to membrane ratios range between `r round(min(eggdata$Embryo_to_Membrane_Ratio), 3)` and `r round(max(eggdata$Embryo_to_Membrane_Ratio), 3)`. See the figures included underneath [Average of Membrane Diameters](#Membrane_Ave) and [Average of Embryo Diameters](#Embryo_Ave) for examples of how the membrane and embryo diameters are measured.
+
 ### Larval Length
 
 **Definition**: Total length measurement (mm) along the midline from all of the late stage embryos (eggs in stages 6-8)
@@ -225,7 +219,43 @@ Below is an example showing how larval length is measured.
 
 <hr/>
 
-### Standard Deviation of Membrane Diameters
+### Membrane Diameter Average {#Membrane_Ave}
+
+**Definition**: Average of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
+
+**Spreadsheet Variable Name**: `Membrane_Ave`
+
+**Format**: Positive continuous variable
+
+**Required Upload or Computed After Upload**: Required upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: The training data averages of membrane diameters range between `r round(min(eggdata$Membrane_Ave), 3)` mm and `r round(max(eggdata$Membrane_Ave), 3)` mm
+
+The images below show examples of four equally spaced membrane diameter measurements.
+
+<img src="../membrane-diameter.jpeg" height="200">
+
+<hr/>
+
+### Membrane Diameter Coefficient of Variation
+
+**Definition**: Coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
+
+**Spreadsheet Variable Name**: `Membrane_CV`
+
+**Format**: Positive continuous variable
+
+**Required Upload or Computed After Upload**: Computed after upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: The training data coefficients of variation of membrane diameters range between `r round(min(eggdata$Membrane_CV), 3)` and `r round(max(eggdata$Membrane_CV), 3)`. See the figures included underneath [Average of Membrane Diameters](#Membrane_Ave) for examples of how the membrane diameters are measured.
+
+<hr/>
+
+### Membrane Diameter Standard Deviation
 
 **Definition**: Standard deviation of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
 
@@ -238,22 +268,6 @@ Below is an example showing how larval length is measured.
 **Random Forest Predictor Variable**: Yes
 
 **Additional Information**: The training data standard deviations of membrane diameters range between `r round(min(eggdata$Membrane_SD), 3)` mm and `r round(max(eggdata$Membrane_SD), 3)` mm. See the figures included underneath [Average of Membrane Diameters](#Membrane_Ave) for examples of how the membrane diameters are measured.
-
-<hr/>
-
-### Standard Deviation of Embryo Diameters
-
-**Definition**: Standard deviation of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
-
-**Spreadsheet Variable Name**: `Embryo_SD`
-
-**Format**: Positive continuous variable
-
-**Required Upload or Computed After Upload**: Required upload
-
-**Random Forest Predictor Variable**: Yes
-
-**Additional Information**: The training data standard deviations of embryo diameters range between `r round(min(eggdata$Embryo_SD), 3)` and `r round(max(eggdata$Embryo_SD), 3)`. See the figures included underneath [Average of Embryo Diameters](#Embryo_Ave) for examples of how the membrane diameters are measured.
 
 <hr/>
 
@@ -281,16 +295,3 @@ Examples of eggs without sticky debris. There is no debris or sand on the membra
 
 <hr/>
 
-### Embryo to Membrane Ratio
-
-**Definition**: Ratio of average embryo diameter to average membrane diameter
-
-**Spreadsheet Variable Name**: `Embryo_to_Membrane_Ratio`
-
-**Format**: Positive continuous variable
-
-**Required Upload or Computed After Upload**: Computed after upload
-
-**Random Forest Predictor Variable**: Yes
-
-**Additional Information**: The training data embryo to membrane ratios range between `r round(min(eggdata$Embryo_to_Membrane_Ratio), 3)` and `r round(max(eggdata$Embryo_to_Membrane_Ratio), 3)`. See the figures included underneath [Average of Membrane Diameters](#Membrane_Ave) and [Average of Embryo Diameters](#Embryo_Ave) for examples of how the membrane and embryo diameters are measured.
