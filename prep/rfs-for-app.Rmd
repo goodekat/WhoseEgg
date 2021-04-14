@@ -43,10 +43,10 @@ vars_pred = c(
   "Membrane_Ave",
   "Membrane_SD",
   "Membrane_CV",
-  "Yolk_to_Membrane_Ratio",
-  "Yolk_Ave",
-  "Yolk_SD",
-  "Yolk_CV",
+  "Embryo_to_Membrane_Ratio",
+  "Embryo_Ave",
+  "Embryo_SD",
+  "Embryo_CV",
   "Egg_Stage",
   "Compact_Diffuse",
   "Pigment",
@@ -65,9 +65,9 @@ eggdata_for_app <-
   read.csv(
     paste0(
       "https://raw.githubusercontent.com/goodekat/",
-      "carp-egg-rf-validation/master/results/eggdata141516.csv"
+      "carp-egg-rf-validation/master/data/eggdata141516.csv"
     )
-  ) %>% 
+  ) %>%
   # Convert necessary variables to factors
   mutate_at(
     .vars = c(
@@ -86,7 +86,14 @@ eggdata_for_app <-
     Genus_ACGC = forcats::fct_recode(Genus_ACGC, "Invasive Carp" = "ACGC"),
     Common_Name_ACGC = forcats::fct_recode(Common_Name_ACGC, "Invasive Carp" = "ACGC")
   ) %>%
-  # Make sure the Invasive Carp level is still the first factor level (like ACGC was)
+  # Remove eggs that appear to have Egg Stage labeled incorrectly since
+  # they are listed as an early stage or diffuse but also have larval lengths
+  # Note that all four fish were from 2016 (1 was genetically identified as
+  # Emerald Shiner and the other 3 were genetically identified as
+  # Freshwater Drum)
+  filter(!(Egg_Stage %in% c(1:5, "D")) | !(Larval_Length > 0)) %>%
+  # Make sure the Invasive Carp level is still the first factor level
+  # (like ACGC was)
   # Otherwise, the random forest results will change slightly
   mutate(
     Family_ACGC = forcats::fct_relevel(Family_ACGC, "Invasive Carp"),
@@ -144,16 +151,16 @@ rfs_for_app <-
   flatten()
 ```
 
-Check to make sure the random forests agree (note that these random forests are available on GitHub: https://github.com/goodekat/carp-egg-rf-validation/blob/master/results/rfs141516.rds)
+<!-- Check to make sure the random forests agree (note that these random forests are available on GitHub: https://github.com/goodekat/carp-egg-rf-validation/blob/master/results/rfs141516.rds) -->
 
-```{r}
-rfs141516 <- readRDS("../../../validation-paper/results/rfs141516.rds")
-c(
-  identical(rfs141516$Family_ACGC$forest, rfs_for_app$Family_ACGC$forest),
-  identical(rfs141516$Genus_ACGC$forest, rfs_for_app$Genus_ACGC$forest),
-  identical(rfs141516$Common_Name_ACGC$forest, rfs_for_app$Common_Name_ACGC$forest)
-)
-```
+<!-- ```{r} -->
+<!-- rfs141516 <- readRDS("../../../validation/results/rfs141516.rds") -->
+<!-- c( -->
+<!--   identical(rfs141516$Family_ACGC$forest, rfs_for_app$Family_ACGC$forest), -->
+<!--   identical(rfs141516$Genus_ACGC$forest, rfs_for_app$Genus_ACGC$forest), -->
+<!--   identical(rfs141516$Common_Name_ACGC$forest, rfs_for_app$Common_Name_ACGC$forest) -->
+<!-- ) -->
+<!-- ``` -->
 
 Save the random forests:
 

@@ -4,6 +4,10 @@
 ## Completed
 
 - Drafted introduction
+- Changed all wording to embryo instead of yolk
+- Made sure I'm always using embryo to membrane ratio instead of perivitelline space index
+- Dealt with larval length issue (see Mike's answer in email)
+- Prepared for lunchinatoRs
 
 ## To do
 
@@ -17,11 +21,11 @@ Overview page:
 
 Data input page:
 
-- **Add visualizations of new data compared to training data**
 - **Create an MDS plot with training and new data**
-  - Switch to computing MDS on training data first and then projecting input data on the training data space
-  - Scale the variables first
-  - Switch to using Gower distance and all variables
+  - **Switch to computing MDS on training data first and then projecting input data on the training data space**
+  - **Scale the variables first**
+  - **Switch to using Gower distance and all variables**
+- **Add visualizations of new data compared to training data**
 - Try computing Cook's D and leverage
 - Could email to ask the woman about the extra spaces to see if fixed now
 - Allow option for inputting Julian day
@@ -60,13 +64,9 @@ Testing:
 
 Other:
   
-- **Prepare for lunchinatoRs**
 - **Proofread app**
-- **Deal with larval length issue (see Mike's answer in email)**
-- **Change all wording to embryo instead of yolk**
-- **Make sure I'm always using embryo to membrane ratio instead of perivitelline space index**
-- Figure out a better way to fix the header so it doesn't cover material when the screen size changes
 - Add image during loading of swimming fish
+- Figure out a better way to fix the header so it doesn't cover material when the screen size changes
 - Can we fix the WhoseEgg color text when hovered over?
 - Organize helper functions
 - Organize github for future developers

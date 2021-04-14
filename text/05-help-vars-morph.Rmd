@@ -7,85 +7,17 @@ output:
     self_contained: false
 ---
 
-### Average of Membrane Diameters
-
-**Definition**: The average of four diameter measurements (mm) taken from the membrane with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
-
-**Spreadsheet Variable Name**: Membrane_Ave
-
-**Format**: Positive continuous variable
-
-**Required Upload or Computed After Upload**: Required upload
-
-**Random Forest Predictor Variable**: Yes
-
-**Additional Information**: Training data averages of membrane diameters range between 0.728	mm and 5.492 mm
-
-The images below show examples of four equally spaced membrane diameter measurements.
-
-<img src="../membrane-diameter.jpeg" height="200">
-
-<hr/>
-
-### Average of Yolk Diameters
-
-**Definition**: The average of four diameter measurements (mm) taken from the yolk with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
-
-**Spreadsheet Variable Name**: Yolk_Ave
-
-**Format**: Positive continuous variable
-
-**Required Upload or Computed After Upload**: Required upload
-
-**Random Forest Predictor Variable**: Yes
-
-**Additional Information**: Training data averages of yolk diameters range between 0.434	mm and 4.371 mm
-
-The images below show examples of four equally spaced yolk diameter measurements.
-
-<img src="../yolk-diameter.jpeg" height="200">
-
-<hr/>
-
-### Coefficient of Variation of Membrane Diameters
-
-**Definition**: The coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the membrane with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
-
-**Spreadsheet Variable Name**: Membrane_CV
-
-**Format**: Positive continuous variable
-
-**Required Upload or Computed After Upload**: Computed after upload
-
-**Random Forest Predictor Variable**: Yes
-
-**Additional Information**: Training data coefficients of variation of membrane diameters range between 0.001 and 0.520. See the figures included underneath "Average of Membrane Diameters" for examples of how the membrane diameters are measured.
-
-<hr/>
-
-### Coefficient of Variation of Yolk Diameters
-
-**Definition**: The coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the yolk with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
-
-**Spreadsheet Variable Name**: Yolk_CV
-
-**Format**: Positive continuous variable
-
-**Required Upload or Computed After Upload**: Computed after upload
-
-**Random Forest Predictor Variable**: Yes
-
-**Additional Information**: Training data coefficients of variation of membrane diameters range between 0.003 and 0.724. See the figures included underneath "Average of Yolk Diameters" for examples of how the membrane diameters are measured.
-
-<hr/>
+```{r echo = FALSE}
+eggdata <- read.csv("../data/eggdata_for_app.csv")
+```
 
 ### Compact or Diffuse
 
 **Definition**: Specifies whether the egg collected is compact or diffuse
 
-**Spreadsheet Variable Name**: Compact_Diffuse
+**Spreadsheet Variable Name**: `Compact_Diffuse`
 
-**Format**: C or D
+**Format**: `r paste(sort(unique(eggdata$Compact_Diffuse)), collapse = " or ")`
 
 **Required Upload or Computed After Upload**: Required upload
 
@@ -93,11 +25,11 @@ The images below show examples of four equally spaced yolk diameter measurements
 
 **Additional Information**:
 
-Examples of compact eggs: The yolk entity is clearly identifiable. Note that it is difficult to see the identifiable yolk of the egg in the top right corner. When the egg was viewed under a microscope, the yolk would roll around within the membrane. If you look closely at the right side of the yolk, you can see the space between the yolk and membrane. The yolk is compact but nearly as big as the membrane.
+Examples of compact eggs: The embryo entity is clearly identifiable. Note that it is difficult to see the identifiable embryo of the egg in the top right corner. When the egg was viewed under a microscope, the embryo would roll around within the membrane. If you look closely at the right side of the embryo, you can see the space between the embryo and membrane. The embryo is compact but nearly as big as the membrane.
 
 <img src="../compact.jpeg" width="800">
 
-Examples of diffuse eggs: The yolk is not in a tightly compact entity within the membrane. The membrane appears to be filled with smoke or the yolk material is scrambled within the membrane.
+Examples of diffuse eggs: The embryo is not in a tightly compact entity within the membrane. The membrane appears to be filled with smoke or the embryo material is scrambled within the membrane.
 
 <img src="../diffuse.jpeg" width="800">
 
@@ -107,9 +39,9 @@ Examples of diffuse eggs: The yolk is not in a tightly compact entity within the
 
 **Definition**: Specifies whether the egg is deflated or not
 
-**Spreadsheet Variable Name**: Deflated
+**Spreadsheet Variable Name**: `Deflated`
 
-**Format**: Y or N
+**Format**: `r paste(sort(unique(eggdata$Deflated)), collapse = " or ")`
 
 **Required Upload or Computed After Upload**: Required upload
 
@@ -117,7 +49,7 @@ Examples of diffuse eggs: The yolk is not in a tightly compact entity within the
 
 **Additional Information**: 
 
-Examples of deflated eggs. All these membranes do not have a smooth surface or spherical. Notice the dents and folds indicating the membrane is smaller now than it was when it was sampled. Some of this may be due to broken membranes from egg handling or desiccation from the ethanol. Most eggs in the training data were not ripped or broken. The membranes appeared intact but shriveled due to water being sucked out by the ethanol during preservation.
+Examples of deflated eggs. All these membranes do not have a smooth surface or are spherical. Notice the dents and folds indicating the membrane is smaller now than when sampled. Some of this may be due to broken membranes from egg handling or desiccation from the ethanol. Most eggs in the training data were not ripped or broken. The membranes appeared intact but shriveled due to water being sucked out by the ethanol during preservation.
 
 <img src="../deflated.jpeg" width="800">
 
@@ -131,9 +63,9 @@ Examples of eggs that are not deflated. Notice all the membranes are spherical a
 
 **Definition**: Specifies whether the egg has pigment or not
 
-**Spreadsheet Variable Name**: Pigment
+**Spreadsheet Variable Name**: `Pigment`
 
-**Format**: Y or N
+**Format**: `r paste(sort(unique(eggdata$Pigment)), collapse = " or ")`
 
 **Required Upload or Computed After Upload**: Required upload
 
@@ -141,7 +73,7 @@ Examples of eggs that are not deflated. Notice all the membranes are spherical a
 
 **Additional Information**: 
 
-Examples of eggs with pigment. Arrows point at chromatophores (cell containing pigment). Notice in the image in the bottom middle that the larger dark circles are eyes.
+Examples of eggs with pigment. Arrows point at chromatophores (cell containing pigment). Notice in the bottom middle image that the larger dark circles are eyes.
 
 <img src="../pigment.jpeg" width="800">
 
@@ -155,9 +87,9 @@ Examples of eggs without pigment. There are no chromatophores present.
 
 **Definition**: Stage of the egg when collected - either 1 through 8, broken, or diffuse
 
-**Spreadsheet Variable Name**: Egg_Stage
+**Spreadsheet Variable Name**: `Egg_Stage`
 
-**Format**: 1 through 8, BROKEN (if broken), or D (if diffuse)
+**Format**: One of `r paste(sort(unique(eggdata$Egg_Stage)), collapse = ", ")` (where BROKEN indicates that the egg is broken and D indicates the egg is diffuse)
 
 **Required Upload or Computed After Upload**: Required upload
 
@@ -165,9 +97,9 @@ Examples of eggs without pigment. There are no chromatophores present.
 
 **Additional Information**: Below are examples of the stages. Most of these pictures of the stages are not great representations. Assessing the stage is accomplished best with the egg under a microscope, so that it can be moved around to inspect all sides and angles.
 
-Egg Stage 1 (early cleavage): The blastomeres will look like prongs (typically 4) pointing in one direction. The arrows point to prongs. The top left is the best image showing the 4 prongs. They are not as pronounced, but the cleavage separating each blastomere is still apparent. The bottom left corner picture shows a side view of 2 prongs. It is difficult to get a picture looking directly into the prongs.
+*All diagrams of egg stages included below are from Kelso and Rutherford (1996). Permission to use the images was granted by the American Fisheries Society.*
 
-All diagrams of egg stages included below are from Kelso and Rutherford (1996). Permission to use the images was granted by the American Fisheries Society.
+Egg Stage 1 (early cleavage): The blastomeres will look like prongs (typically 4) pointing in one direction. The arrows in the images point to the prongs. The top left is the best image showing the 4 prongs. They are not as pronounced, but the cleavage separating each blastomere is still apparent. The bottom left corner picture shows a side view of 2 prongs. It is difficult to get a picture looking directly into the prongs.
 
 <img src="../egg-stage-1.jpeg" height="400">
 
@@ -179,33 +111,99 @@ Egg Stage 3 (blastula):
 
 <img src="../egg-stage-3.jpeg" height="200">
 
-Egg Stage 4 (gastrula): The arrow points to germ ring
+Egg Stage 4 (gastrula): The arrows point to germ rings.
 
 <img src="../egg-stage-4.jpeg" height="200">
 
-Egg Stage 5 (early yolk): The arrows point to yolknic axis (spine and back forming). This is best described as a ridge line that sticks out of the yolk.
+Egg Stage 5 (early embryo): The arrows point to embryonic axis (spine and back forming). This is best described as a ridge line that sticks out of the embryo.
 
 <img src="../egg-stage-5.jpeg" height="200">
 
-Egg Stage 6 (tail-bud stage): Out of the yolknic axis, the head and tail will form a rounded end. The tail will start to protrude away from the yolk.
+Egg Stage 6 (tail-bud stage): Out of the embryonic axis, the head and tail will form a rounded end. The tail will start to protrude away from the embryo.
 
 <img src="../egg-stage-6.jpeg" height="200">
 
-Egg Stage 7 (tail-free stage): The tail continues to protrude away from yolk and is now not touching the yolk. The arrows point to the tail not touching the yolk.
+Egg Stage 7 (tail-free stage): The tail continues to protrude away from the embryo and is no longer touching the embryo. The arrows point to the tail not touching the embryo.
 
 <img src="../egg-stage-7.jpeg" height="200">
 
-Egg Stage 8 (late yolk): The yolk is almost fully developed. Myomeres, eyes, auditory vesicle are all present. The egg is close to hatching.
+Egg Stage 8 (late embryo): The embryo is almost fully developed. Myomeres, eyes, auditory vesicle are all present. The egg is close to hatching.
 
 <img src="../egg-stage-8.jpeg" height="200">
 
 <hr/>
 
+### Embryo Diameter Average {#Embryo_Ave}
+
+**Definition**: Average of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
+
+**Spreadsheet Variable Name**: `Embryo_Ave`
+
+**Format**: Positive continuous variable
+
+**Required Upload or Computed After Upload**: Required upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: The training data averages of embryo diameters range between `r round(min(eggdata$Embryo_Ave), 3)` mm and `r round(max(eggdata$Embryo_Ave), 3)` mm
+
+The images below show examples of four equally spaced embryo diameter measurements.
+
+<img src="../embryo-diameter.jpeg" height="200">
+
+<hr/>
+
+### Embryo Diameter Coefficient of Variation
+
+**Definition**: Coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
+
+**Spreadsheet Variable Name**: `Embryo_CV`
+
+**Format**: Positive continuous variable
+
+**Required Upload or Computed After Upload**: Computed after upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: The training data coefficients of variation of membrane diameters range between `r round(min(eggdata$Embryo_CV), 3)` and `r round(max(eggdata$Embryo_CV), 3)`. See the figures included underneath [Average of Embryo Diameters](#Embryo_Ave) for examples of how the membrane diameters are measured.
+
+<hr/>
+
+### Embryo Diameter Standard Deviation
+
+**Definition**: Standard deviation of four diameter measurements (mm) taken from the embryo with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
+
+**Spreadsheet Variable Name**: `Embryo_SD`
+
+**Format**: Positive continuous variable
+
+**Required Upload or Computed After Upload**: Required upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: The training data standard deviations of embryo diameters range between `r round(min(eggdata$Embryo_SD), 3)` and `r round(max(eggdata$Embryo_SD), 3)`. See the figures included underneath [Average of Embryo Diameters](#Embryo_Ave) for examples of how the membrane diameters are measured.
+
+<hr/>
+
+### Embryo to Membrane Ratio
+
+**Definition**: Ratio of average embryo diameter to average membrane diameter
+
+**Spreadsheet Variable Name**: `Embryo_to_Membrane_Ratio`
+
+**Format**: Positive continuous variable
+
+**Required Upload or Computed After Upload**: Computed after upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: The training data embryo to membrane ratios range between `r round(min(eggdata$Embryo_to_Membrane_Ratio), 3)` and `r round(max(eggdata$Embryo_to_Membrane_Ratio), 3)`. See the figures included underneath [Average of Membrane Diameters](#Membrane_Ave) and [Average of Embryo Diameters](#Embryo_Ave) for examples of how the membrane and embryo diameters are measured.
+
 ### Larval Length
 
-**Definition**: Total length measurement (mm) along the midline from all of the late stage yolks (eggs in stages 6-8)
+**Definition**: Total length measurement (mm) along the midline from all of the late stage embryos (eggs in stages 6-8)
 
-**Spreadsheet Variable Name**: Larval_Length
+**Spreadsheet Variable Name**: `Larval_Length`
 
 **Format**: Positive continuous variable (set to 0 if egg is in stage 5 or less or egg is diffuse)
 
@@ -213,7 +211,7 @@ Egg Stage 8 (late yolk): The yolk is almost fully developed. Myomeres, eyes, aud
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**: Training data larval lengths range between 0 and 5.089 mm.
+**Additional Information**: The training data larval lengths range between `r round(min(eggdata$Larval_Length), 3)` mm and `r round(max(eggdata$Larval_Length), 3)` mm.
 
 Below is an example showing how larval length is measured.
 
@@ -221,11 +219,11 @@ Below is an example showing how larval length is measured.
 
 <hr/>
 
-### Standard Deviation of Membrane Diameters
+### Membrane Diameter Average {#Membrane_Ave}
 
-**Definition**: The standard deviation of four diameter measurements (mm) taken from the membrane with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
+**Definition**: Average of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
 
-**Spreadsheet Variable Name**: Membrane_SD
+**Spreadsheet Variable Name**: `Membrane_Ave`
 
 **Format**: Positive continuous variable
 
@@ -233,15 +231,35 @@ Below is an example showing how larval length is measured.
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**: Training data standard deviations of membrane diameters range between 0.001 mm and 1.472 mm. See the figures included underneath "Average of Membrane Diameters" for examples of how the membrane diameters are measured.
+**Additional Information**: The training data averages of membrane diameters range between `r round(min(eggdata$Membrane_Ave), 3)` mm and `r round(max(eggdata$Membrane_Ave), 3)` mm
+
+The images below show examples of four equally spaced membrane diameter measurements.
+
+<img src="../membrane-diameter.jpeg" height="200">
 
 <hr/>
 
-### Standard Deviation of Yolk Diameters
+### Membrane Diameter Coefficient of Variation
 
-**Definition**: The standard deviation of four diameter measurements (mm) taken from the yolk with starting points that were equally spaced around the circumference as defined by Kelso and Rutherford (1996).
+**Definition**: Coefficient of variation (standard deviation / average) of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
 
-**Spreadsheet Variable Name**: Yolk_SD
+**Spreadsheet Variable Name**: `Membrane_CV`
+
+**Format**: Positive continuous variable
+
+**Required Upload or Computed After Upload**: Computed after upload
+
+**Random Forest Predictor Variable**: Yes
+
+**Additional Information**: The training data coefficients of variation of membrane diameters range between `r round(min(eggdata$Membrane_CV), 3)` and `r round(max(eggdata$Membrane_CV), 3)`. See the figures included underneath [Average of Membrane Diameters](#Membrane_Ave) for examples of how the membrane diameters are measured.
+
+<hr/>
+
+### Membrane Diameter Standard Deviation
+
+**Definition**: Standard deviation of four diameter measurements (mm) taken from the membrane with starting points that are equally spaced around the circumference as defined by Kelso and Rutherford (1996)
+
+**Spreadsheet Variable Name**: `Membrane_SD`
 
 **Format**: Positive continuous variable
 
@@ -249,17 +267,17 @@ Below is an example showing how larval length is measured.
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**: Training data standard deviations of yolk diameters range between 0.005	mm and 1.377 mm. See the figures included underneath "Average of Yolk Diameters" for examples of how the membrane diameters are measured.
+**Additional Information**: The training data standard deviations of membrane diameters range between `r round(min(eggdata$Membrane_SD), 3)` mm and `r round(max(eggdata$Membrane_SD), 3)` mm. See the figures included underneath [Average of Membrane Diameters](#Membrane_Ave) for examples of how the membrane diameters are measured.
 
 <hr/>
 
 ### Sticky Debris
 
-**Definition**: Specifies whether there was debris on the egg
+**Definition**: Specifies whether there is debris on the egg
 
-**Spreadsheet Variable Name**: Sticky_Debris
+**Spreadsheet Variable Name**: `Sticky_Debris`
 
-**Format**: Y or N
+**Format**: `r paste(unique(eggdata$Sticky_Debris), collapse = " or ")`
 
 **Required Upload or Computed After Upload**: Required upload
 
@@ -267,7 +285,7 @@ Below is an example showing how larval length is measured.
 
 **Additional Information**: 
 
-Examples of eggs with sticky debris. In all pictures, the debris was adhered to the eggs. Some fish have sticky eggs to keep them from drifting. Most of the debris is wood but the top left shows sand can also stick to eggs.
+Examples of eggs with sticky debris. In all pictures, the debris is adhered to the eggs. Some fish have sticky eggs to keep them from drifting. Most of the debris is wood, but the top left shows sand can also stick to eggs.
 
 <img src="../sticky-debris.jpeg" height="400">
 
@@ -277,16 +295,3 @@ Examples of eggs without sticky debris. There is no debris or sand on the membra
 
 <hr/>
 
-### Yolk to Membrane Ratio
-
-**Definition**: The ratio of average yolk diameter to average membrane diameter
-
-**Spreadsheet Variable Name**: Yolk_to_Membrane_Ratio
-
-**Format**: Positive continuous variable
-
-**Required Upload or Computed After Upload**: Computed after upload
-
-**Random Forest Predictor Variable**: Yes
-
-**Additional Information**: Training data yolk to membrane ratios range between 0.257 and 1.137. See the figures included underneath "Average of Membrane Diameters" and "Average of Yolk Diameters" for examples of how the membrane and yolk diameters are measured.

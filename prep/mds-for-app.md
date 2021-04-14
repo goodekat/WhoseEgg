@@ -1,7 +1,7 @@
 Applying MDS to the Training Data for WhoseEgg Shiny App
 ================
 Katherine Goode <br>
-Last Updated: April 13, 2021
+Last Updated: April 14, 2021
 
 This document contains code that applies multidimensional scaling (MDS)
 to the random forest training data used in WhoseEgg. The results are
@@ -42,10 +42,10 @@ vars_pred = c(
   "Membrane_Ave",
   "Membrane_SD",
   "Membrane_CV",
-  "Yolk_to_Membrane_Ratio",
-  "Yolk_Ave",
-  "Yolk_SD",
-  "Yolk_CV",
+  "Embryo_to_Membrane_Ratio",
+  "Embryo_Ave",
+  "Embryo_SD",
+  "Embryo_CV",
   "Egg_Stage",
   "Compact_Diffuse",
   "Pigment",
@@ -76,7 +76,7 @@ n = dim(eggdata_preds)[1]
 n
 ```
 
-    ## [1] 1978
+    ## [1] 1974
 
 ## MDS on Training Data
 
@@ -128,9 +128,14 @@ data.frame(mds$points) %>%
 
 ![](mds-for-app_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
-Save the MDS results:
+Save the distance matrix and MDS results:
 
 ``` r
+saveRDS(
+  object = dist_matrix,
+  file = "../data/dist_for_app.rds"
+)
+
 saveRDS(
   object = mds,
   file = "../data/mds_for_app.rds"

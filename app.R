@@ -24,12 +24,11 @@ rfs <- readRDS("data/rfs_for_app.rds")
 
 # Prepare Rmarkdown text files
 # Run the code below or knit the Rmd whenever a file is updated
-#rmarkdown::render("text/05-help-faq.Rmd", quiet = TRUE)
-#rmarkdown::render("text/05-help-rf.Rmd", quiet = TRUE)
-#rmarkdown::render("text/05-help-vars-env.Rmd", quiet = TRUE)
-#rmarkdown::render("text/05-help-vars-morph.Rmd", quiet = TRUE)
-#rmarkdown::render("text/06-references.Rmd", quiet = TRUE)
-
+# rmarkdown::render("text/05-help-faq.Rmd", quiet = TRUE)
+# rmarkdown::render("text/05-help-rf.Rmd", quiet = TRUE)
+# rmarkdown::render("text/05-help-vars-env.Rmd", quiet = TRUE)
+# rmarkdown::render("text/05-help-vars-morph.Rmd", quiet = TRUE)
+# rmarkdown::render("text/06-references.Rmd", quiet = TRUE)
 
 ##### APP UI #####
 
@@ -263,14 +262,18 @@ ui <- navbarPage(
             # Tab for visualizations
             # tabPanel(
             #   "Visualizing Inputs",
+            #   conditionalPanel(
+            #     condition = "!is.na(output.message_provide_data_v3)", 
+            #     span(textOutput("message_provide_data_v3"), style = "color:grey;font-size:14px")
+            #   ),
             #   plotlyOutput("mds_plot"),
             #   br(),
             #   br(),
             #   br(),
             #   br(),
             #   br(),
-            #   plotOutput("poi_plot")
-            # )
+            #   plotOutput("ooi_plot")
+            #)
           )
         )
       )
@@ -725,42 +728,45 @@ server <- function(input, output, session) {
   })
   
   # Set a reactive value for putting a mark on the heatmap after a click 
-  poi <- reactiveValues(location = NULL)
+  #poi <- reactiveValues(location = NULL)
 
-  # create a waiter with an id
-  # w <- 
+  # Create a waiter with an id
+  # w <-
   #   Waiter$new(
-  #     id = "mds_plot", 
-  #     #color = transparent(.5), 
+  #     id = "mds_plot",
+  #     #color = transparent(.5),
   #     html = spin_ripple()
   #   )
   
   # Create MDS plot comparing training data to input data
   # output$mds_plot <- renderPlotly({
-  #   w$show()
-  #   on.exit({
-  #     w$hide()
-  #   })
-  #   ggplotly(
-  #     plot_mds(processed_inputs()),
-  #     source = "mds_plot",
-  #     width = 800,
-  #     height = 500
-  #   )
+  #   if (!is.null(input_data())) {
+  #     w$show()
+  #     on.exit({
+  #       w$hide()
+  #     })
+  #     ggplotly(
+  #       plot_mds(processed_inputs()),
+  #       source = "mds_plot",
+  #       width = 800,
+  #       height = 500
+  #     )
+  #   }
   # })
-  
-  # output$poi_plot <- renderPlot({
+  # 
+  # # Create plot of variables with observation of interest
+  # output$ooi_plot <- renderPlot({
   # 
   #   # Obtain the click data
   #   click_data <- event_data("plotly_click", source = "mds_plot")
-  #   
+  # 
   #   # Create the plot if an observation has been clicked
   #   if(length(click_data)){
   #     plot_features(click_data$pointNumber + 1, processed_inputs())
   #   }
   # 
   # }, height = 650, width = 850)
-  
+
   ## PREDICTIONS -------------------------------------------------------------
   
   # Obtain random forest predictions for the given inputs
@@ -898,8 +904,10 @@ server <- function(input, output, session) {
   })
   output$message_provide_data_v1 <- message_provide_data
   output$message_provide_data_v2 <- message_provide_data
+  output$message_provide_data_v3 <- message_provide_data
   outputOptions(output, "message_provide_data_v1", suspendWhenHidden = FALSE)
   outputOptions(output, "message_provide_data_v2", suspendWhenHidden = FALSE)
+  outputOptions(output, "message_provide_data_v3", suspendWhenHidden = FALSE)
   
   # Provide a message where prediction table will be
   output$message_pred_table <- reactive({
