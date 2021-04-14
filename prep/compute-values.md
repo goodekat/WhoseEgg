@@ -1,7 +1,7 @@
 Computing variable levels and extreme values
 ================
-Katherine Goode
-Last Updated: March 19, 2021
+Katherine Goode <br>
+Last Updated: April 14, 2021
 
 ``` r
 # Load packages
@@ -75,10 +75,10 @@ eggdata %>%
     Membrane_Ave,
     Membrane_SD,
     Membrane_CV,
-    Yolk_to_Membrane_Ratio,
-    Yolk_Ave,
-    Yolk_SD,
-    Yolk_CV
+    Embryo_to_Membrane_Ratio,
+    Embryo_Ave,
+    Embryo_SD,
+    Embryo_CV
   ) %>%
   pivot_longer(
     names_to = "variable",
@@ -93,15 +93,15 @@ eggdata %>%
 ```
 
     ## # A tibble: 10 x 3
-    ##    variable                   min     max
-    ##    <chr>                    <dbl>   <dbl>
-    ##  1 Conductivity           274     781    
-    ##  2 Larval_Length            0       5.09 
-    ##  3 Membrane_Ave             0.728   5.49 
-    ##  4 Membrane_CV              0.001   0.52 
-    ##  5 Membrane_SD              0.001   1.47 
-    ##  6 Temperature             11      30.7  
-    ##  7 Yolk_Ave                 0.434   4.37 
-    ##  8 Yolk_CV                  0.003   0.724
-    ##  9 Yolk_SD                  0.005   1.38 
-    ## 10 Yolk_to_Membrane_Ratio   0.257   1.14
+    ##    variable                     min     max
+    ##    <chr>                      <dbl>   <dbl>
+    ##  1 Conductivity             274     781    
+    ##  2 Embryo_Ave                 0.434   4.37 
+    ##  3 Embryo_CV                  0.003   0.724
+    ##  4 Embryo_SD                  0.005   1.38 
+    ##  5 Embryo_to_Membrane_Ratio   0.257   1.14 
+    ##  6 Larval_Length              0       5.09 
+    ##  7 Membrane_Ave               0.728   5.49 
+    ##  8 Membrane_CV                0.001   0.52 
+    ##  9 Membrane_SD                0.001   1.47 
+    ## 10 Temperature               11      30.7

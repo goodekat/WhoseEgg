@@ -61,8 +61,8 @@ Predictor variables:
 - Membrane_Ave
 - Membrane_SD
 - Membrane_CV
-- Yolk_Ave
-- Yolk_SD
-- Yolk_CV
-- Yolk_to_Membrane_Ratio
+- Embryo_Ave
+- Embryo_SD
+- Embryo_CV
+- Embryo_to_Membrane_Ratio
 - Larval_Length

@@ -1,6 +1,6 @@
 ---
 title: "Computing variable levels and extreme values"
-author: "Katherine Goode"
+author: "Katherine Goode <br>"
 date: 'Last Updated: `r format(Sys.time(), "%B %d, %Y")`'
 output: rmarkdown::github_document
 always_allow_html: true
@@ -49,10 +49,10 @@ eggdata %>%
     Membrane_Ave,
     Membrane_SD,
     Membrane_CV,
-    Yolk_to_Membrane_Ratio,
-    Yolk_Ave,
-    Yolk_SD,
-    Yolk_CV
+    Embryo_to_Membrane_Ratio,
+    Embryo_Ave,
+    Embryo_SD,
+    Embryo_CV
   ) %>%
   pivot_longer(
     names_to = "variable",

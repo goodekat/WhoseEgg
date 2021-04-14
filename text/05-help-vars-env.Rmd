@@ -7,11 +7,15 @@ output:
     self_contained: false
 ---
 
+```{r echo = FALSE}
+eggdata <- read.csv("../data/eggdata_for_app.csv")
+```
+
 ### Day
 
 **Definition**: Day of the month when the fish egg was collected 
 
-**Spreadsheet Variable Name**: Day
+**Spreadsheet Variable Name**: `Day`
 
 **Format**: Integer between 1 and 31, respective to the month
 
@@ -23,9 +27,9 @@ output:
 
 ### Conductivity
 
-**Definition**: Conductivity (microS/cm) of the water where the egg was collected
+**Definition**: Conductivity ($\mu$/cm) of the water where the egg was collected
 
-**Spreadsheet Variable Name**: Conductivity
+**Spreadsheet Variable Name**: `Conductivity`
 
 **Format**: Continuous variable greater than 0
 
@@ -33,7 +37,7 @@ output:
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**: Training data conductivity values range between 274 microS/cm and	781 microS/cm
+**Additional Information**: Training data conductivity values range between `r min(eggdata$Conductivity)` $\mu$S/cm and `r max(eggdata$Conductivity)` $\mu$S/cm
 
 <hr/>
 
@@ -41,7 +45,7 @@ output:
 
 **Definition**: Julian day when the fish egg was collected
 
-**Spreadsheet Variable Name**: Julian_Day
+**Spreadsheet Variable Name**: `Julian_Day`
 
 **Format**: Integer between 1 and 365
 
@@ -49,7 +53,7 @@ output:
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**: Julian days in training data range between 113 and 243
+**Additional Information**: Julian days in training data range between `r min(eggdata$Julian_Day)` and `r max(eggdata$Julian_Day)`
 
 <hr/>
 
@@ -57,7 +61,7 @@ output:
 
 **Definition**: Month when the fish egg was collected
 
-**Spreadsheet Variable Name**: Month
+**Spreadsheet Variable Name**: `Month`
 
 **Format**: Integer between 1 and 12
 
@@ -65,7 +69,7 @@ output:
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**: Months in training data are 4, 5, 6, 7, 8
+**Additional Information**: Months in training data are `r paste(sort(unique(eggdata$Month)), collapse = ", ")`
 
 <hr/>
 
@@ -73,7 +77,7 @@ output:
 
 **Definition**: Temperature (degrees Celsius) of the water where the egg was collected
 
-**Spreadsheet Variable Name**: Temperature
+**Spreadsheet Variable Name**: `Temperature`
 
 **Format**: Continuous variable
 
@@ -81,7 +85,7 @@ output:
 
 **Random Forest Predictor Variable**: Yes
 
-**Additional Information**: Training data temperature values range between 11 C and	30.7 C	
+**Additional Information**: Training data temperature values range between `r min(eggdata$Temperature)` C and `r max(eggdata$Temperature)` C	
 
 <hr/>
 
@@ -89,7 +93,7 @@ output:
 
 **Definition**: Year when the fish egg was collected
 
-**Spreadsheet Variable Name**: Year
+**Spreadsheet Variable Name**: `Year`
 
 **Format**: YYYY
 

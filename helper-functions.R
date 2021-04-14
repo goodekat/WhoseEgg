@@ -1,8 +1,31 @@
 # Load egg data
 eggdata <- read.csv("data/eggdata_for_app.csv")
 
+# Load the distance matrix from the training data
+dist = readRDS("data/dist_for_app.rds")
+
 # Load the training data MDS
 mds <- readRDS("data/mds_for_app.rds")
+
+vars_pred = c(
+  "Month",
+  "Julian_Day",
+  "Temperature",
+  "Conductivity",
+  "Larval_Length",
+  "Membrane_Ave",
+  "Membrane_SD",
+  "Membrane_CV",
+  "Embryo_to_Membrane_Ratio",
+  "Embryo_Ave",
+  "Embryo_SD",
+  "Embryo_CV",
+  "Egg_Stage",
+  "Compact_Diffuse",
+  "Pigment",
+  "Sticky_Debris",
+  "Deflated"
+)
 
 # Function for computing variables based on given input values
 compute_variables <- function(df) {
@@ -11,8 +34,8 @@ compute_variables <- function(df) {
     mutate(Date = lubridate::make_date(Year, Month, Day)) %>%
     mutate(Julian_Day = lubridate::yday(Date),
            Membrane_CV = Membrane_SD / Membrane_Ave,
-           Yolk_CV = Yolk_SD / Yolk_Ave, 
-           Yolk_to_Membrane_Ratio = 1 - (Yolk_Ave / Membrane_Ave)) %>%
+           Embryo_CV = Embryo_SD / Embryo_Ave, 
+           Embryo_to_Membrane_Ratio = 1 - (Embryo_Ave / Membrane_Ave)) %>%
     select(-Date)
 }
 
@@ -30,10 +53,10 @@ adjust_variable_types <- function(df) {
         "Membrane_Ave",
         "Membrane_SD",
         "Membrane_CV",
-        "Yolk_to_Membrane_Ratio",
-        "Yolk_Ave",
-        "Yolk_SD",
-        "Yolk_CV"
+        "Embryo_to_Membrane_Ratio",
+        "Embryo_Ave",
+        "Embryo_SD",
+        "Embryo_CV"
       ),
       .funs = as.numeric
     ) %>%
@@ -286,10 +309,10 @@ rf_pred_vars <-
     "Membrane_Ave",
     "Membrane_SD",
     "Membrane_CV",
-    "Yolk_Ave",
-    "Yolk_SD",
-    "Yolk_CV",
-    "Yolk_to_Membrane_Ratio",
+    "Embryo_Ave",
+    "Embryo_SD",
+    "Embryo_CV",
+    "Embryo_to_Membrane_Ratio",
     "Larval_Length"
   )
 
@@ -312,10 +335,10 @@ sort_vars <- function(df) {
       "Membrane_Ave",
       "Membrane_SD",
       "Membrane_CV",
-      "Yolk_Ave",
-      "Yolk_SD",
-      "Yolk_CV",
-      "Yolk_to_Membrane_Ratio",
+      "Embryo_Ave",
+      "Embryo_SD",
+      "Embryo_CV",
+      "Embryo_to_Membrane_Ratio",
       "Larval_Length",
       everything()
     )
@@ -337,8 +360,8 @@ check_for_vars <- function(df) {
       "Sticky_Debris",
       "Membrane_Ave",
       "Membrane_SD",
-      "Yolk_Ave",
-      "Yolk_SD",
+      "Embryo_Ave",
+      "Embryo_SD",
       "Larval_Length"
     )
   return(sum(necessary_vars %in% names(df)) == 16)
@@ -381,8 +404,8 @@ check_var_ranges <- function(df) {
     min(df$Temperature, na.rm = TRUE) < min(eggdata$Temperature, na.rm = TRUE),
     min(df$Membrane_Ave, na.rm = TRUE) < min(eggdata$Membrane_Ave, na.rm = TRUE),
     min(df$Membrane_SD, na.rm = TRUE) < min(eggdata$Membrane_SD, na.rm = TRUE),
-    min(df$Yolk_Ave, na.rm = TRUE) < min(eggdata$Yolk_Ave, na.rm = TRUE),
-    min(df$Yolk_SD, na.rm = TRUE) < min(eggdata$Yolk_SD, na.rm = TRUE),
+    min(df$Embryo_Ave, na.rm = TRUE) < min(eggdata$Embryo_Ave, na.rm = TRUE),
+    min(df$Embryo_SD, na.rm = TRUE) < min(eggdata$Embryo_SD, na.rm = TRUE),
     min(df$Larval_Length, na.rm = TRUE) < min(eggdata$Larval_Length, na.rm = TRUE),
     
     # Identify any values above the observed max
@@ -390,8 +413,8 @@ check_var_ranges <- function(df) {
     max(df$Temperature, na.rm = TRUE) > max(eggdata$Temperature, na.rm = TRUE),
     max(df$Membrane_Ave, na.rm = TRUE) > max(eggdata$Membrane_Ave, na.rm = TRUE),
     max(df$Membrane_SD, na.rm = TRUE) > max(eggdata$Membrane_SD, na.rm = TRUE),
-    max(df$Yolk_Ave, na.rm = TRUE) > max(eggdata$Yolk_Ave, na.rm = TRUE),
-    max(df$Yolk_SD, na.rm = TRUE) > max(eggdata$Yolk_SD, na.rm = TRUE),
+    max(df$Embryo_Ave, na.rm = TRUE) > max(eggdata$Embryo_Ave, na.rm = TRUE),
+    max(df$Embryo_SD, na.rm = TRUE) > max(eggdata$Embryo_SD, na.rm = TRUE),
     max(df$Larval_Length, na.rm = TRUE) > max(eggdata$Larval_Length, na.rm = TRUE),
     max(df$Julian_Day, na.rm = TRUE) > max(eggdata$Julian_Day, na.rm = TRUE),
     
@@ -420,8 +443,8 @@ get_missing_vars <- function(df) {
       "Sticky_Debris",
       "Membrane_Ave",
       "Membrane_SD",
-      "Yolk_Ave",
-      "Yolk_SD",
+      "Embryo_Ave",
+      "Embryo_SD",
       "Larval_Length"
     )
   return(necessary_vars[!(necessary_vars %in% names(df))])
@@ -482,8 +505,8 @@ get_outside_var_ranges <- function(df) {
   temp_check = df$Temperature < min(eggdata$Temperature) | df$Temperature > max(eggdata$Temperature)
   meav_check = df$Membrane_Ave < min(eggdata$Membrane_Ave) | df$Membrane_Ave > max(eggdata$Membrane_Ave)
   mesd_check = df$Membrane_SD < min(eggdata$Membrane_SD) | df$Membrane_SD > max(eggdata$Membrane_SD)
-  ykav_check = df$Yolk_Ave < min(eggdata$Yolk_Ave) | df$Yolk_Ave > max(eggdata$Yolk_Ave)
-  yksd_check = df$Yolk_SD < min(eggdata$Yolk_SD) | df$Yolk_SD > max(eggdata$Yolk_SD)
+  ykav_check = df$Embryo_Ave < min(eggdata$Embryo_Ave) | df$Embryo_Ave > max(eggdata$Embryo_Ave)
+  yksd_check = df$Embryo_SD < min(eggdata$Embryo_SD) | df$Embryo_SD > max(eggdata$Embryo_SD)
   lvln_check = df$Larval_Length < min(eggdata$Larval_Length) | df$Larval_Length > max(eggdata$Larval_Length)
   mnth_check = !(df$Month %in% unique(eggdata$Month))
   judy_check = df$Julian_Day < min(eggdata$Julian_Day) | df$Julian_Day > max(eggdata$Julian_Day)
@@ -493,8 +516,8 @@ get_outside_var_ranges <- function(df) {
   temp_range = paste0("Temperature (", min(eggdata$Temperature), " to ", max(eggdata$Temperature), " C):")
   meav_range = paste0("Membrane_Ave (", min(eggdata$Membrane_Ave), " to ", max(eggdata$Membrane_Ave), " mm):")
   mesd_range = paste0("Membrane_SD (", min(eggdata$Membrane_SD), " to ", max(eggdata$Membrane_SD), " mm):")
-  ykav_range = paste0("Yolk_Ave (", min(eggdata$Yolk_Ave), " to ", max(eggdata$Yolk_Ave), " mm):")
-  yksd_range = paste0("Yolk_SD (", min(eggdata$Yolk_SD), " to ", max(eggdata$Yolk_SD), " mm):")
+  ykav_range = paste0("Embryo_Ave (", min(eggdata$Embryo_Ave), " to ", max(eggdata$Embryo_Ave), " mm):")
+  yksd_range = paste0("Embryo_SD (", min(eggdata$Embryo_SD), " to ", max(eggdata$Embryo_SD), " mm):")
   lvln_range = paste0("Larval_Length (", min(eggdata$Larval_Length), " to ", max(eggdata$Larval_Length), " mm):")
   mnth_range = paste0("Month (", min(eggdata$Month), " to ", max(eggdata$Month), "):")
   judy_range = paste0("Julian_Day (", min(eggdata$Julian_Day), " to ", max(eggdata$Julian_Day), "):")
@@ -551,10 +574,10 @@ rf_num_vars <-
     "Membrane_Ave",
     "Membrane_SD",
     "Membrane_CV",
-    "Yolk_Ave",
-    "Yolk_SD",
-    "Yolk_CV",
-    "Yolk_to_Membrane_Ratio",
+    "Embryo_Ave",
+    "Embryo_SD",
+    "Embryo_CV",
+    "Embryo_to_Membrane_Ratio",
     "Larval_Length"
   )
 
@@ -575,15 +598,6 @@ prepare_mds_data <- function(processed_inputs) {
 # Plot MDS with training and input data
 plot_mds <- function(processed_inputs) {
   
-  #all_data <- prepare_mds_data(processed_inputs)
-  
-  # Compute a distance matrix and get MDS
-  #dist <- all_data %>% select(-dataset, -id, -Egg_ID) %>% dist()
-  #mds <- cmdscale(dist, eig = TRUE, k = 2)
-  
-  # Compute percent of variation
-  perc_var <- round((mds$eig / sum(mds$eig))[1:2] * 100, 2)
-  
   # Create the plot
   mds$points %>%
     data.frame() %>%
@@ -599,11 +613,7 @@ plot_mds <- function(processed_inputs) {
     geom_point() + 
     theme_bw(base_size = 12) + 
     theme(legend.position = "top") +
-    labs(
-      x = paste0("Coordinate 1 (", perc_var[1], "%)"),
-      y = paste0("Coordinate 2 (", perc_var[2], "%)"),
-      color = ""
-    ) + 
+    labs(color = "") + 
     scale_color_manual(values = c("#18bc9b", "#2b3e50"))
   
 }
