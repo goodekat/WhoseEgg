@@ -237,7 +237,7 @@ rf_pred_plot <- function(rf_results, idx) {
   plot_data %>%
     ggplot(aes(x = order, y = n, label = n)) + 
     geom_bar(stat = "identity", fill = "grey75") +
-    geom_text(aes(y = max_n), nudge_y = 0.1, vjust = 0) +
+    geom_text(aes(y = max_n), nudge_y = 1, vjust = 0) +
     facet_wrap(. ~ taxa, scales = "free_y") + 
     coord_flip() + 
     scale_x_discrete(

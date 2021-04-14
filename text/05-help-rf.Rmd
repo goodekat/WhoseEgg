@@ -39,30 +39,28 @@ Three random forest models:
 - Trained using the randomForest package in R
 - All other tuning parameters set to 
 
-Response variables of random forest models:
+Response variables of random forest models (all three treat Bighead, Grass, and Silver Carp as one category called invasive carp):
 
 - Family
 - Genus
 - Species
-- Note: all three of these variables treat Bighead, Grass, and Silver Carp as one category
   
 Predictor variables: 
 
-- Egg_ID
-- Month
-- Julian_Day
-- Temperature
+- Compact_Diffuse
 - Conductivity
 - Deflated
-- Pigment
 - Egg_Stage
-- Compact_Diffuse
-- Sticky_Debris
-- Membrane_Ave
-- Membrane_SD
-- Membrane_CV
 - Embryo_Ave
-- Embryo_SD
 - Embryo_CV
+- Embryo_SD
 - Embryo_to_Membrane_Ratio
+- Julian_Day
 - Larval_Length
+- Membrane_Ave
+- Membrane_CV
+- Membrane_SD
+- Month
+- Pigment
+- Sticky_Debris
+- Temperature
