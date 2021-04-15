@@ -8,6 +8,7 @@
 - Made sure I'm always using embryo to membrane ratio instead of perivitelline space index
 - Dealt with larval length issue (see Mike's answer in email)
 - Prepared for lunchinatoRs
+- Scaled the static images
 
 ## To do
 
