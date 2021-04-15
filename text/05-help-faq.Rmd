@@ -41,7 +41,7 @@ If there is interest in using WhoseEgg to make predictions on data collected in 
 
 - If you try validating or updating the WhoseEgg models, the creators of WhoseEgg would be interested to hear about your results. Let us know by emailing whoseegg@iastate.edu.
 
-<img src="../locations.jpeg" style="width:50%">
+<img src="../locations.jpeg" style="width:50%;height:auto">
 
 <hr>
 

@@ -27,11 +27,11 @@ eggdata <- read.csv("../data/eggdata_for_app.csv")
 
 Examples of compact eggs: The embryo entity is clearly identifiable. Note that it is difficult to see the identifiable embryo of the egg in the top right corner. When the egg was viewed under a microscope, the embryo would roll around within the membrane. If you look closely at the right side of the embryo, you can see the space between the embryo and membrane. The embryo is compact but nearly as big as the membrane.
 
-<img src="../compact.jpeg" width="800">
+<img src="../compact.jpeg" width="80%" height="auto">
 
 Examples of diffuse eggs: The embryo is not in a tightly compact entity within the membrane. The membrane appears to be filled with smoke or the embryo material is scrambled within the membrane.
 
-<img src="../diffuse.jpeg" width="800">
+<img src="../diffuse.jpeg" width="80%" height="auto">
 
 <hr/>
 
@@ -51,11 +51,11 @@ Examples of diffuse eggs: The embryo is not in a tightly compact entity within t
 
 Examples of deflated eggs. All these membranes do not have a smooth surface or are spherical. Notice the dents and folds indicating the membrane is smaller now than when sampled. Some of this may be due to broken membranes from egg handling or desiccation from the ethanol. Most eggs in the training data were not ripped or broken. The membranes appeared intact but shriveled due to water being sucked out by the ethanol during preservation.
 
-<img src="../deflated.jpeg" width="800">
+<img src="../deflated.jpeg" width="80%" height="auto">
 
 Examples of eggs that are not deflated. Notice all the membranes are spherical and smooth. You do not see folds or dents.
 
-<img src="../not-deflated.jpeg" width="800">
+<img src="../not-deflated.jpeg" width="80%" height="auto">
 
 <hr/>
 
@@ -75,11 +75,11 @@ Examples of eggs that are not deflated. Notice all the membranes are spherical a
 
 Examples of eggs with pigment. Arrows point at chromatophores (cell containing pigment). Notice in the bottom middle image that the larger dark circles are eyes.
 
-<img src="../pigment.jpeg" width="800">
+<img src="../pigment.jpeg" width="70%" height="auto">
 
 Examples of eggs without pigment. There are no chromatophores present.
 
-<img src="../no-pigment.jpeg" width="800">
+<img src="../no-pigment.jpeg" width="80%" height="auto">
 
 <hr/>
 
@@ -101,35 +101,35 @@ Examples of eggs without pigment. There are no chromatophores present.
 
 Egg Stage 1 (early cleavage): The blastomeres will look like prongs (typically 4) pointing in one direction. The arrows in the images point to the prongs. The top left is the best image showing the 4 prongs. They are not as pronounced, but the cleavage separating each blastomere is still apparent. The bottom left corner picture shows a side view of 2 prongs. It is difficult to get a picture looking directly into the prongs.
 
-<img src="../egg-stage-1.jpeg" height="400">
+<img src="../egg-stage-1.jpeg" width="90%" height="auto">
 
 Egg Stage 2 (morula): The arrows point to blastomeres.
 
-<img src="../egg-stage-2.jpeg" height="200">
+<img src="../egg-stage-2.jpeg" width="75%" height="auto">
 
 Egg Stage 3 (blastula):
 
-<img src="../egg-stage-3.jpeg" height="200">
+<img src="../egg-stage-3.jpeg" width="75%" height="auto">
 
 Egg Stage 4 (gastrula): The arrows point to germ rings.
 
-<img src="../egg-stage-4.jpeg" height="200">
+<img src="../egg-stage-4.jpeg" width="75%" height="auto">
 
 Egg Stage 5 (early embryo): The arrows point to embryonic axis (spine and back forming). This is best described as a ridge line that sticks out of the embryo.
 
-<img src="../egg-stage-5.jpeg" height="200">
+<img src="../egg-stage-5.jpeg" width="75%" height="auto">
 
 Egg Stage 6 (tail-bud stage): Out of the embryonic axis, the head and tail will form a rounded end. The tail will start to protrude away from the embryo.
 
-<img src="../egg-stage-6.jpeg" height="200">
+<img src="../egg-stage-6.jpeg" width="75%" height="auto">
 
 Egg Stage 7 (tail-free stage): The tail continues to protrude away from the embryo and is no longer touching the embryo. The arrows point to the tail not touching the embryo.
 
-<img src="../egg-stage-7.jpeg" height="200">
+<img src="../egg-stage-7.jpeg" width="75%" height="auto">
 
 Egg Stage 8 (late embryo): The embryo is almost fully developed. Myomeres, eyes, auditory vesicle are all present. The egg is close to hatching.
 
-<img src="../egg-stage-8.jpeg" height="200">
+<img src="../egg-stage-8.jpeg" width="100%" height="auto">
 
 <hr/>
 
@@ -149,7 +149,7 @@ Egg Stage 8 (late embryo): The embryo is almost fully developed. Myomeres, eyes,
 
 The images below show examples of four equally spaced embryo diameter measurements.
 
-<img src="../embryo-diameter.jpeg" height="200">
+<img src="../embryo-diameter.jpeg" width="50%" height="auto">
 
 <hr/>
 
@@ -199,6 +199,8 @@ The images below show examples of four equally spaced embryo diameter measuremen
 
 **Additional Information**: The training data embryo to membrane ratios range between `r round(min(eggdata$Embryo_to_Membrane_Ratio), 3)` and `r round(max(eggdata$Embryo_to_Membrane_Ratio), 3)`. See the figures included underneath [Average of Membrane Diameters](#Membrane_Ave) and [Average of Embryo Diameters](#Embryo_Ave) for examples of how the membrane and embryo diameters are measured.
 
+<hr/>
+
 ### Larval Length
 
 **Definition**: Total length measurement (mm) along the midline from all of the late stage embryos (eggs in stages 6-8)
@@ -215,7 +217,7 @@ The images below show examples of four equally spaced embryo diameter measuremen
 
 Below is an example showing how larval length is measured.
 
-<img src="../larval-length.jpeg" height="200">
+<img src="../larval-length.jpeg" width="50%" height="auto">
 
 <hr/>
 
@@ -235,7 +237,7 @@ Below is an example showing how larval length is measured.
 
 The images below show examples of four equally spaced membrane diameter measurements.
 
-<img src="../membrane-diameter.jpeg" height="200">
+<img src="../membrane-diameter.jpeg" width="50%" height="auto">
 
 <hr/>
 
@@ -287,11 +289,9 @@ The images below show examples of four equally spaced membrane diameter measurem
 
 Examples of eggs with sticky debris. In all pictures, the debris is adhered to the eggs. Some fish have sticky eggs to keep them from drifting. Most of the debris is wood, but the top left shows sand can also stick to eggs.
 
-<img src="../sticky-debris.jpeg" height="400">
+<img src="../sticky-debris.jpeg" width="80%" height="auto">
 
 Examples of eggs without sticky debris. There is no debris or sand on the membranes.
 
-<img src="../no-sticky-debris.jpeg" height="400">
-
-<hr/>
+<img src="../no-sticky-debris.jpeg" width="90%" height="auto">
 

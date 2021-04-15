@@ -21,7 +21,7 @@ Typically, many trees (such as 500) are trained and used within a forest. To get
 
 The diagram below shows a very simple example of a random forest for classification. There model has 4 predictor variables and a categorical response variable with three levels (species). The random forest is made up of three trees. The circles in the trees represent the features chosen by the tree, and the rectangles represent the classification at the end of a path. The bold lines represent the paths corresponding to an observation of interest. In a classification example such as this, the random forest returns a probability for each species. The example below shows the probability for species one, which is 2/3 since of the three trees returned a prediction of species 1. The random forests also returns a prediction. In the case of classification, the prediction is the level with the highest probability. In this example, the prediction is species 1.
 
-<img src="../rf-diagram.jpeg" height="450">
+<img src="../rf-diagram.jpeg" width="90%" height="auto">
 
 For more information on random forests, see the following resource: [Cutler et al. (2007)](https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1890/07-0539.1)
 
