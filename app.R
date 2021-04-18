@@ -14,7 +14,6 @@ library(shiny)
 library(shinythemes)
 library(stringr)
 library(tidyr)
-#library(waiter)
 
 # Source the helper functions used by the app
 source("helper-functions.R")
@@ -46,9 +45,6 @@ ui <- navbarPage(
     
     # Matomo 
     tags$head(includeHTML("matomo.txt")),
-    
-    # Specify for using the spinner
-    #use_waiter(),
     
     # Add padding to work with fixed upper panel
     # Remove comment if fixing the header
@@ -145,37 +141,37 @@ ui <- navbarPage(
     sidebarPanel(
       h3("Instructions"),
       span(
-      p(
-        "1. Download a spreadsheet template.",
-        br(),
-        br(),
-        downloadButton("downloadTemplate", "Download Template", style = "padding:5%; font-size:90%; width:95%; height:auto"),
-        br(),
-        br(),
-        "2. Add observed values to downloaded spreadsheet or a similarly 
+        p(
+          "1. Download a spreadsheet template.",
+          br(),
+          br(),
+          downloadButton("downloadTemplate", "Download Template", style = "padding:5%; font-size:90%; width:95%; height:auto"),
+          br(),
+          br(),
+          "2. Add observed values to downloaded spreadsheet or a similarly 
         formatted spreadsheet following the spreadsheet specifications 
         in the main panel.", 
-        br(),
-        br(),
-        span(
-          em("Note: See the", actionLink("input2help", "help page"),
-          "for detailed information on the egg characteristics.")
-        ),
-        br(),
-        br(),
-        "3. Upload a completed spreadsheet (saved as .csv, 
+          br(),
+          br(),
+          span(
+            em("Note: See the", actionLink("input2help", "help page"),
+               "for detailed information on the egg characteristics.")
+          ),
+          br(),
+          br(),
+          "3. Upload a completed spreadsheet (saved as .csv, 
         .xlsx, or .xls).",
-        br(),
-        fileInput("spreadsheet", ""),
-        "4. Preview the input and processed data displayed in the main 
+          br(),
+          fileInput("spreadsheet", ""),
+          "4. Preview the input and processed data displayed in the main 
         panel to check for correctness.",
-        br(),
-        br(),
-        "5. Go to the 'Predictions' page to obtain predictions.",
-        br(),
-        br(),
-        actionButton('jump2pred', 'Jump to Predictions', style = "padding:5%; font-size:90%; width:95%; height:auto")
-      ), style = "font-size:14px;"),
+          br(),
+          br(),
+          "5. Go to the 'Predictions' page to obtain predictions.",
+          br(),
+          br(),
+          actionButton('jump2pred', 'Jump to Predictions', style = "padding:5%; font-size:90%; width:95%; height:auto")
+        ), style = "font-size:14px;"),
       width = 3
     ),
     
@@ -258,22 +254,7 @@ ui <- navbarPage(
                 span(textOutput("message_provide_data_v2"), style = "color:grey;font-size:14px")
               ),
               div(dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
-            )#,
-            # Tab for visualizations
-            # tabPanel(
-            #   "Visualizing Inputs",
-            #   conditionalPanel(
-            #     condition = "!is.na(output.message_provide_data_v3)", 
-            #     span(textOutput("message_provide_data_v3"), style = "color:grey;font-size:14px")
-            #   ),
-            #   plotlyOutput("mds_plot"),
-            #   br(),
-            #   br(),
-            #   br(),
-            #   br(),
-            #   br(),
-            #   plotOutput("ooi_plot")
-            #)
+            )
           )
         )
       )
@@ -290,33 +271,33 @@ ui <- navbarPage(
     sidebarPanel(
       h3("Instructions"),
       span(
-      p(
-        "1. Provide egg data using the 'Data Input' tab and view the
+        p(
+          "1. Provide egg data using the 'Data Input' tab and view the
         processed data to check for correctness.",
-        br(),
-        br(),
-        "2. Click the button below to generate the random forest predictions.",
-        br(),
-        br(),
-        actionButton("getpreds", "Get Predictions", style = "padding:5%; font-size:90%; width:75%; height:auto"),
-        br(),
-        br(),
-        span(
-          em(strong("Note:"), "If a new spreadsheet is provided after predictions have been
+          br(),
+          br(),
+          "2. Click the button below to generate the random forest predictions.",
+          br(),
+          br(),
+          actionButton("getpreds", "Get Predictions", style = "padding:5%; font-size:90%; width:75%; height:auto"),
+          br(),
+          br(),
+          span(
+            em(strong("Note:"), "If a new spreadsheet is provided after predictions have been
            computed once, the predictions will be automatically updated."),
-          style = 'color:#3498db'
-        ),
-        br(),
-        br(),
-        "3. View the table and visualizations of the predictions that will appear 
+            style = 'color:#3498db'
+          ),
+          br(),
+          br(),
+          "3. View the table and visualizations of the predictions that will appear 
         in the main panel of this page.",
-        br(),
-        br(),
-        "4. Go to 'Downloads' tab to download data with predictions.",
-        br(),
-        br(),
-        actionButton('jump2download', 'Jump to Downloads', style = "padding:5%; font-size:90%; width:95%; height:auto")
-      ), style = "font-size:14px;"),
+          br(),
+          br(),
+          "4. Go to 'Downloads' tab to download data with predictions.",
+          br(),
+          br(),
+          actionButton('jump2download', 'Jump to Downloads', style = "padding:5%; font-size:90%; width:95%; height:auto")
+        ), style = "font-size:14px;"),
       width = 3
     ),
     mainPanel(
@@ -441,25 +422,25 @@ ui <- navbarPage(
     sidebarPanel(
       h3("Instructions"),
       span(
-      p(
-        "1. Provide egg data using the 'Data Input' tab and compute random
+        p(
+          "1. Provide egg data using the 'Data Input' tab and compute random
         forest predictions using the 'Predictions' tab.",
-        br(),
-        br(),
-        "2. Click the button below to preview a table with the egg data and
+          br(),
+          br(),
+          "2. Click the button below to preview a table with the egg data and
         predictions joined.",
-        br(),
-        br(),
-        actionButton("preview", "Preview Data", style = "padding:5%; font-size:90%; width:75%; height:auto"),
-        br(),
-        br(),
-        "3. Specify whether to download the spreadhseet as an Excel or csv file.",
-        selectInput("download_file_type", " ", c("xlsx" = "xlsx", "xls" = "xls", "csv" = "csv")),
-        "4. Click the button below to download the prepared spreadsheet.",
-        br(),
-        br(),
-        downloadButton("downloadPreds", "Download Predictions", style = "padding:5%; font-size:90%; width:95%; height:auto")
-      ), style = "font-size:14px;"),
+          br(),
+          br(),
+          actionButton("preview", "Preview Data", style = "padding:5%; font-size:90%; width:75%; height:auto"),
+          br(),
+          br(),
+          "3. Specify whether to download the spreadhseet as an Excel or csv file.",
+          selectInput("download_file_type", " ", c("xlsx" = "xlsx", "xls" = "xls", "csv" = "csv")),
+          "4. Click the button below to download the prepared spreadsheet.",
+          br(),
+          br(),
+          downloadButton("downloadPreds", "Download Predictions", style = "padding:5%; font-size:90%; width:95%; height:auto")
+        ), style = "font-size:14px;"),
       width = 3
     ),
     mainPanel(
@@ -511,9 +492,9 @@ ui <- navbarPage(
           ),
           div(dataTableOutput("download_table"), style = "font-size: 100%; width: 100%"),
           width = 12
-          )
         )
-      ) 
+      )
+    ) 
   ),
   
   # HELP PAGE ------------------------------------------------------------------
@@ -727,46 +708,6 @@ server <- function(input, output, session) {
     }
   })
   
-  # Set a reactive value for putting a mark on the heatmap after a click 
-  #poi <- reactiveValues(location = NULL)
-
-  # Create a waiter with an id
-  # w <-
-  #   Waiter$new(
-  #     id = "mds_plot",
-  #     #color = transparent(.5),
-  #     html = spin_ripple()
-  #   )
-  
-  # Create MDS plot comparing training data to input data
-  # output$mds_plot <- renderPlotly({
-  #   if (!is.null(input_data())) {
-  #     w$show()
-  #     on.exit({
-  #       w$hide()
-  #     })
-  #     ggplotly(
-  #       plot_mds(processed_inputs()),
-  #       source = "mds_plot",
-  #       width = 800,
-  #       height = 500
-  #     )
-  #   }
-  # })
-  # 
-  # # Create plot of variables with observation of interest
-  # output$ooi_plot <- renderPlot({
-  # 
-  #   # Obtain the click data
-  #   click_data <- event_data("plotly_click", source = "mds_plot")
-  # 
-  #   # Create the plot if an observation has been clicked
-  #   if(length(click_data)){
-  #     plot_features(click_data$pointNumber + 1, processed_inputs())
-  #   }
-  # 
-  # }, height = 650, width = 850)
-
   ## PREDICTIONS -------------------------------------------------------------
   
   # Obtain random forest predictions for the given inputs
@@ -890,7 +831,7 @@ server <- function(input, output, session) {
           )
       })
     }
-    })
+  })
   
   ## MESSAGES ----------------------------------------------------------------
   
@@ -951,7 +892,7 @@ server <- function(input, output, session) {
   outputOptions(output, "message_pred_plots_v2", suspendWhenHidden = FALSE)
   outputOptions(output, "message_pred_plots_v3", suspendWhenHidden = FALSE)
   outputOptions(output, "message_pred_plots_v4", suspendWhenHidden = FALSE)
-
+  
   # Provide a message where download table will be
   output$message_download_table <- reactive({
     if (input$preview == 0 | is.null(input$spreadsheet)) {
