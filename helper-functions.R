@@ -27,6 +27,44 @@ vars_pred = c(
   "Deflated"
 )
 
+rf_pred_vars <-
+  c(
+    "Egg_ID",
+    "Month",
+    "Julian_Day",
+    "Temperature",
+    "Conductivity",
+    "Deflated",
+    "Pigment",
+    "Egg_Stage",
+    "Compact_Diffuse",
+    "Sticky_Debris",
+    "Membrane_Ave",
+    "Membrane_SD",
+    "Membrane_CV",
+    "Embryo_Ave",
+    "Embryo_SD",
+    "Embryo_CV",
+    "Embryo_to_Membrane_Ratio",
+    "Larval_Length"
+  )
+
+rf_num_vars <-
+  c(
+    "Month",
+    "Julian_Day",
+    "Temperature",
+    "Conductivity",
+    "Membrane_Ave",
+    "Membrane_SD",
+    "Membrane_CV",
+    "Embryo_Ave",
+    "Embryo_SD",
+    "Embryo_CV",
+    "Embryo_to_Membrane_Ratio",
+    "Larval_Length"
+  )
+
 # Function for computing variables based on given input values
 compute_variables <- function(df) {
   df %>% 
@@ -294,28 +332,6 @@ rf_prob_plot <- function(rf_results, idx) {
   
 }
 
-rf_pred_vars <-
-  c(
-    "Egg_ID",
-    "Month",
-    "Julian_Day",
-    "Temperature",
-    "Conductivity",
-    "Deflated",
-    "Pigment",
-    "Egg_Stage",
-    "Compact_Diffuse",
-    "Sticky_Debris",
-    "Membrane_Ave",
-    "Membrane_SD",
-    "Membrane_CV",
-    "Embryo_Ave",
-    "Embryo_SD",
-    "Embryo_CV",
-    "Embryo_to_Membrane_Ratio",
-    "Larval_Length"
-  )
-
 # Function to sort variables
 sort_vars <- function(df) {
   df %>%
@@ -564,22 +580,6 @@ get_na_dates <- function(df){
     pull(Egg_ID)
   
 }
-
-rf_num_vars <-
-  c(
-    "Month",
-    "Julian_Day",
-    "Temperature",
-    "Conductivity",
-    "Membrane_Ave",
-    "Membrane_SD",
-    "Membrane_CV",
-    "Embryo_Ave",
-    "Embryo_SD",
-    "Embryo_CV",
-    "Embryo_to_Membrane_Ratio",
-    "Larval_Length"
-  )
 
 prepare_mds_data <- function(processed_inputs) {
   
