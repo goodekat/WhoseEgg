@@ -726,22 +726,20 @@ server <- function(input, output, session) {
         )
     }
   })
-
-  # Create a waiter with an id
-  w <-
-    Waiter$new(
-      id = "mds_plot",
-      #color = transparent(.5),
-      html = spin_ripple()
-    )
   
   # Create MDS plot comparing training data to input data
+  # gif <- "../app-prep/try.gif"
+  # loading_screen <- tagList(
+  #   img(src = gif, height = "200px")
+  # )
+  # w <- Waiter$new(html = loading_screen, color = "white")
+  # 
   output$mds_plot <- renderPlotly({
     if (!is.null(input_data())) {
-      w$show()
-      on.exit({
-        w$hide()
-      })
+      # w$show()
+      # on.exit({
+      #   w$hide()
+      # })
       ggplotly(
         plot_mds(processed_inputs()),
         source = "mds_plot",
