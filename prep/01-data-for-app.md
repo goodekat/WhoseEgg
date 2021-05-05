@@ -646,6 +646,12 @@ Plot the metrics:
 metrics_oob %>%
   pivot_longer(cols = c(pa, fpr, prec), names_to = "metric") %>%
   mutate(
+    metric = fct_recode(
+      metric,
+      "False positive rate" = "fpr",
+      "Predictive accuracy" = "pa",
+      "Precision" = "prec"
+    ),
     scenario = fct_relevel(
       scenario,
       "validation_paper",
