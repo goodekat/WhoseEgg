@@ -1,7 +1,7 @@
 Applying MDS to the Training Data for WhoseEgg Shiny App
 ================
 Katherine Goode <br>
-Last Updated: April 14, 2021
+Last Updated: May 05, 2021
 
 This document contains code that applies multidimensional scaling (MDS)
 to the random forest training data used in WhoseEgg. The results are
@@ -115,7 +115,7 @@ data.frame(eig = mds$eig) %>%
   geom_point()
 ```
 
-![](mds-for-app_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](03-mds-for-app_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 Plot the first two dimensions:
 
@@ -126,7 +126,7 @@ data.frame(mds$points) %>%
   theme(aspect.ratio = 1)
 ```
 
-![](mds-for-app_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](03-mds-for-app_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 Save the distance matrix and MDS results:
 
@@ -201,7 +201,7 @@ data.frame(mds$points) %>%
   theme(aspect.ratio = 1)
 ```
 
-![](mds-for-app_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](03-mds-for-app_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 Put a new observation in the low dimensional space of the training data
 MDS:
@@ -230,4 +230,4 @@ data.frame(mds$points) %>%
   theme(aspect.ratio = 1)
 ```
 
-![](mds-for-app_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](03-mds-for-app_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->

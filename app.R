@@ -16,6 +16,7 @@ library(stringr)
 library(tidyr)
 library(waiter)
 
+
 # Source the helper functions used by the app
 source("helper-functions.R")
 
@@ -145,37 +146,37 @@ ui <- navbarPage(
     sidebarPanel(
       h3("Instructions"),
       span(
-      p(
-        "1. Download a spreadsheet template.",
-        br(),
-        br(),
-        downloadButton("downloadTemplate", "Download Template", style = "padding:5%; font-size:90%; width:95%; height:auto"),
-        br(),
-        br(),
-        "2. Add observed values to downloaded spreadsheet or a similarly 
+        p(
+          "1. Download a spreadsheet template.",
+          br(),
+          br(),
+          downloadButton("downloadTemplate", "Download Template", style = "padding:5%; font-size:90%; width:95%; height:auto"),
+          br(),
+          br(),
+          "2. Add observed values to downloaded spreadsheet or a similarly 
         formatted spreadsheet following the spreadsheet specifications 
         in the main panel.", 
-        br(),
-        br(),
-        span(
-          em("Note: See the", actionLink("input2help", "help page"),
-          "for detailed information on the egg characteristics.")
-        ),
-        br(),
-        br(),
-        "3. Upload a completed spreadsheet (saved as .csv, 
+          br(),
+          br(),
+          span(
+            em("Note: See the", actionLink("input2help", "help page"),
+               "for detailed information on the egg characteristics.")
+          ),
+          br(),
+          br(),
+          "3. Upload a completed spreadsheet (saved as .csv, 
         .xlsx, or .xls).",
-        br(),
-        fileInput("spreadsheet", ""),
-        "4. Preview the input and processed data displayed in the main 
+          br(),
+          fileInput("spreadsheet", ""),
+          "4. Preview the input and processed data displayed in the main 
         panel to check for correctness.",
-        br(),
-        br(),
-        "5. Go to the 'Predictions' page to obtain predictions.",
-        br(),
-        br(),
-        actionButton('jump2pred', 'Jump to Predictions', style = "padding:5%; font-size:90%; width:95%; height:auto")
-      ), style = "font-size:14px;"),
+          br(),
+          br(),
+          "5. Go to the 'Predictions' page to obtain predictions.",
+          br(),
+          br(),
+          actionButton('jump2pred', 'Jump to Predictions', style = "padding:5%; font-size:90%; width:95%; height:auto")
+        ), style = "font-size:14px;"),
       width = 3
     ),
     
@@ -290,33 +291,33 @@ ui <- navbarPage(
     sidebarPanel(
       h3("Instructions"),
       span(
-      p(
-        "1. Provide egg data using the 'Data Input' tab and view the
+        p(
+          "1. Provide egg data using the 'Data Input' tab and view the
         processed data to check for correctness.",
-        br(),
-        br(),
-        "2. Click the button below to generate the random forest predictions.",
-        br(),
-        br(),
-        actionButton("getpreds", "Get Predictions", style = "padding:5%; font-size:90%; width:75%; height:auto"),
-        br(),
-        br(),
-        span(
-          em(strong("Note:"), "If a new spreadsheet is provided after predictions have been
+          br(),
+          br(),
+          "2. Click the button below to generate the random forest predictions.",
+          br(),
+          br(),
+          actionButton("getpreds", "Get Predictions", style = "padding:5%; font-size:90%; width:75%; height:auto"),
+          br(),
+          br(),
+          span(
+            em(strong("Note:"), "If a new spreadsheet is provided after predictions have been
            computed once, the predictions will be automatically updated."),
-          style = 'color:#3498db'
-        ),
-        br(),
-        br(),
-        "3. View the table and visualizations of the predictions that will appear 
+            style = 'color:#3498db'
+          ),
+          br(),
+          br(),
+          "3. View the table and visualizations of the predictions that will appear 
         in the main panel of this page.",
-        br(),
-        br(),
-        "4. Go to 'Downloads' tab to download data with predictions.",
-        br(),
-        br(),
-        actionButton('jump2download', 'Jump to Downloads', style = "padding:5%; font-size:90%; width:95%; height:auto")
-      ), style = "font-size:14px;"),
+          br(),
+          br(),
+          "4. Go to 'Downloads' tab to download data with predictions.",
+          br(),
+          br(),
+          actionButton('jump2download', 'Jump to Downloads', style = "padding:5%; font-size:90%; width:95%; height:auto")
+        ), style = "font-size:14px;"),
       width = 3
     ),
     mainPanel(
@@ -441,25 +442,25 @@ ui <- navbarPage(
     sidebarPanel(
       h3("Instructions"),
       span(
-      p(
-        "1. Provide egg data using the 'Data Input' tab and compute random
+        p(
+          "1. Provide egg data using the 'Data Input' tab and compute random
         forest predictions using the 'Predictions' tab.",
-        br(),
-        br(),
-        "2. Click the button below to preview a table with the egg data and
+          br(),
+          br(),
+          "2. Click the button below to preview a table with the egg data and
         predictions joined.",
-        br(),
-        br(),
-        actionButton("preview", "Preview Data", style = "padding:5%; font-size:90%; width:75%; height:auto"),
-        br(),
-        br(),
-        "3. Specify whether to download the spreadhseet as an Excel or csv file.",
-        selectInput("download_file_type", " ", c("xlsx" = "xlsx", "xls" = "xls", "csv" = "csv")),
-        "4. Click the button below to download the prepared spreadsheet.",
-        br(),
-        br(),
-        downloadButton("downloadPreds", "Download Predictions", style = "padding:5%; font-size:90%; width:95%; height:auto")
-      ), style = "font-size:14px;"),
+          br(),
+          br(),
+          actionButton("preview", "Preview Data", style = "padding:5%; font-size:90%; width:75%; height:auto"),
+          br(),
+          br(),
+          "3. Specify whether to download the spreadhseet as an Excel or csv file.",
+          selectInput("download_file_type", " ", c("xlsx" = "xlsx", "xls" = "xls", "csv" = "csv")),
+          "4. Click the button below to download the prepared spreadsheet.",
+          br(),
+          br(),
+          downloadButton("downloadPreds", "Download Predictions", style = "padding:5%; font-size:90%; width:95%; height:auto")
+        ), style = "font-size:14px;"),
       width = 3
     ),
     mainPanel(
@@ -511,9 +512,9 @@ ui <- navbarPage(
           ),
           div(dataTableOutput("download_table"), style = "font-size: 100%; width: 100%"),
           width = 12
-          )
         )
-      ) 
+      )
+    ) 
   ),
   
   # HELP PAGE ------------------------------------------------------------------
@@ -687,6 +688,16 @@ server <- function(input, output, session) {
         adjust_variable_types() %>%
         adjust_factor_levels() %>%
         sort_vars()
+      # Check to see if any observations outside training data
+      # variable ranges and if so, add a "Flagged" variable
+      if (!check_var_ranges(processed)) {
+        ids_outside = get_obs_outside_var_ranges(processed)
+        processed <- 
+          processed %>%
+          mutate(Flagged = ifelse(Egg_ID %in% ids_outside, TRUE, FALSE)) %>%
+          select(Egg_ID, Flagged, everything())
+      }
+      # Return processed data
       processed
     }
   })
@@ -712,8 +723,17 @@ server <- function(input, output, session) {
   # Create a table with the processed input values
   output$processed_table <- renderDataTable({
     if (!is.null(input_data())) {
-      processed_inputs() %>%
-        select(all_of(rf_pred_vars)) %>%
+      if ("Flagged" %in% names(processed_inputs())) {
+        pt_df <-
+          processed_inputs() %>%
+          select(all_of(rf_pred_vars), Flagged) %>%
+          select(Egg_ID, Flagged, everything())
+      } else {
+        pt_df <-
+          processed_inputs() %>%
+          select(all_of(rf_pred_vars))
+      }
+      pt_df %>%
         datatable(
           options = list(
             scrollY = "400px",
@@ -885,7 +905,7 @@ server <- function(input, output, session) {
           )
       })
     }
-    })
+  })
   
   ## MESSAGES ----------------------------------------------------------------
   
@@ -946,7 +966,7 @@ server <- function(input, output, session) {
   outputOptions(output, "message_pred_plots_v2", suspendWhenHidden = FALSE)
   outputOptions(output, "message_pred_plots_v3", suspendWhenHidden = FALSE)
   outputOptions(output, "message_pred_plots_v4", suspendWhenHidden = FALSE)
-
+  
   # Provide a message where download table will be
   output$message_download_table <- reactive({
     if (input$preview == 0 | is.null(input$spreadsheet)) {
@@ -1033,7 +1053,7 @@ server <- function(input, output, session) {
     if (!is.null(input_data())) {
       if (!check_fct_levels(input_data())) {
         paste(
-          "Error: Categorical variable levels found in data that are not permitted: \n", 
+          "Error: Variable levels found in data that are not permitted: \n", 
           paste(get_wrong_fct_levels(input_data()), collapse = ", ")
         )
       } else { NA }
@@ -1070,9 +1090,16 @@ server <- function(input, output, session) {
   warning_missing_vals <- reactive({
     if (!is.null(input_data())) {
       if (sum(is.na(processed_inputs() %>% select(all_of(rf_pred_vars)))) > 0) {
-        "Warning: Missing values detected in the processed data. 
-        Random forests cannot return predictions for observations with missing values.
-        These observations will be excluded on the 'Predictions' page."
+        paste(
+          "Warning: Missing values detected in the processed data. 
+          Random forests cannot return predictions for observations with missing values.
+          These observations will be excluded on the 'Predictions' page. Missing values
+          found in the following egg IDs: \n", 
+          paste(
+            get_missing_vals(processed_inputs() %>% select(all_of(rf_pred_vars))), 
+            collapse = ", "
+          )
+        )
       } else NA
     }
   })
@@ -1090,8 +1117,12 @@ server <- function(input, output, session) {
         paste(
           "Warning: Some variables outside of ranges in training data.
           This will lead to model extrapolation and possibly poor predictions.
-          Egg IDs with values outside of ranges: ",
-          get_outside_var_ranges(processed_inputs())
+          A variable called Flagged has been added to the processed
+          data indicating which rows contain observations that fall outside
+          the ranges of the training data. All training data variable ranges 
+          are included on the help page. Variables with observations outside of 
+          ranges (and corresponding training data ranges) are: ",
+          paste(get_vars_outside_ranges(processed_inputs()), collapse = ", ")
         )
       } else {
         NA

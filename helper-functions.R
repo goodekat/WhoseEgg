@@ -275,7 +275,7 @@ rf_pred_plot <- function(rf_results, idx) {
   plot_data %>%
     ggplot(aes(x = order, y = n, label = n)) + 
     geom_bar(stat = "identity", fill = "grey75") +
-    geom_text(aes(y = max_n), nudge_y = 0.5, vjust = 0) +
+    geom_text(aes(y = max_n), nudge_y = max_n * 0.1, vjust = 0) +
     facet_wrap(. ~ taxa, scales = "free_y") + 
     coord_flip() + 
     scale_x_discrete(
@@ -283,6 +283,7 @@ rf_pred_plot <- function(rf_results, idx) {
       labels = plot_data$pred,
       expand = c(0,0)
     ) +
+    ylim(c(0, max_n + (max_n * 0.2))) +
     theme_bw(base_size = 16) + 
     theme(
       axis.title.y = element_blank(),
@@ -434,7 +435,7 @@ check_var_ranges <- function(df) {
     max(df$Larval_Length, na.rm = TRUE) > max(eggdata$Larval_Length, na.rm = TRUE),
     max(df$Julian_Day, na.rm = TRUE) > max(eggdata$Julian_Day, na.rm = TRUE),
     
-    # Identify any months or Julian days not in training data
+    # Identify any months not in training data
     !(unique(na.omit(df$Month)) %in% unique(eggdata$Month))
   )
   
@@ -514,7 +515,7 @@ get_wrong_fct_levels <- function(df) {
   
 }
 
-get_outside_var_ranges <- function(df) {
+get_vars_outside_ranges <- function(df) {
   
   # Determine which variables have values outside of training data ranges
   cond_check = df$Conductivity < min(eggdata$Conductivity) | df$Conductivity > max(eggdata$Conductivity)
@@ -528,32 +529,63 @@ get_outside_var_ranges <- function(df) {
   judy_check = df$Julian_Day < min(eggdata$Julian_Day) | df$Julian_Day > max(eggdata$Julian_Day)
   
   # Specify the ranges of training data variables
-  cond_range = paste0("Conductivity (", min(eggdata$Conductivity), " to ", max(eggdata$Conductivity), " microS/cm):")
-  temp_range = paste0("Temperature (", min(eggdata$Temperature), " to ", max(eggdata$Temperature), " C):")
-  meav_range = paste0("Membrane_Ave (", min(eggdata$Membrane_Ave), " to ", max(eggdata$Membrane_Ave), " mm):")
-  mesd_range = paste0("Membrane_SD (", min(eggdata$Membrane_SD), " to ", max(eggdata$Membrane_SD), " mm):")
-  ykav_range = paste0("Embryo_Ave (", min(eggdata$Embryo_Ave), " to ", max(eggdata$Embryo_Ave), " mm):")
-  yksd_range = paste0("Embryo_SD (", min(eggdata$Embryo_SD), " to ", max(eggdata$Embryo_SD), " mm):")
-  lvln_range = paste0("Larval_Length (", min(eggdata$Larval_Length), " to ", max(eggdata$Larval_Length), " mm):")
-  mnth_range = paste0("Month (", min(eggdata$Month), " to ", max(eggdata$Month), "):")
-  judy_range = paste0("Julian_Day (", min(eggdata$Julian_Day), " to ", max(eggdata$Julian_Day), "):")
+  cond_range = paste0("Conductivity (", min(eggdata$Conductivity), " to ", max(eggdata$Conductivity), " microS/cm)")
+  temp_range = paste0("Temperature (", min(eggdata$Temperature), " to ", max(eggdata$Temperature), " C)")
+  meav_range = paste0("Membrane_Ave (", min(eggdata$Membrane_Ave), " to ", max(eggdata$Membrane_Ave), " mm)")
+  mesd_range = paste0("Membrane_SD (", min(eggdata$Membrane_SD), " to ", max(eggdata$Membrane_SD), " mm)")
+  ykav_range = paste0("Embryo_Ave (", min(eggdata$Embryo_Ave), " to ", max(eggdata$Embryo_Ave), " mm)")
+  yksd_range = paste0("Embryo_SD (", min(eggdata$Embryo_SD), " to ", max(eggdata$Embryo_SD), " mm)")
+  lvln_range = paste0("Larval_Length (", min(eggdata$Larval_Length), " to ", max(eggdata$Larval_Length), " mm)")
+  mnth_range = paste0("Month (", min(eggdata$Month), " to ", max(eggdata$Month), ")")
+  judy_range = paste0("Julian_Day (", min(eggdata$Julian_Day), " to ", max(eggdata$Julian_Day), ")")
   
   # Create a vector with the variables and their wrong levels
   messages <-
     c(
-      ifelse(TRUE %in% cond_check, paste(cond_range, "Egg IDs of", df$Egg_ID[cond_check], collapse = ","), NA),
-      ifelse(TRUE %in% temp_check, paste(temp_range, "Egg IDs of", df$Egg_ID[temp_check], collapse = ","), NA),
-      ifelse(TRUE %in% meav_check, paste(meav_range, "Egg IDs of", df$Egg_ID[meav_check], collapse = ","), NA),
-      ifelse(TRUE %in% mesd_check, paste(mesd_range, "Egg IDs of", df$Egg_ID[mesd_check], collapse = ","), NA),
-      ifelse(TRUE %in% ykav_check, paste(ykav_range, "Egg IDs of", df$Egg_ID[ykav_check], collapse = ","), NA),
-      ifelse(TRUE %in% yksd_check, paste(yksd_range, "Egg IDs of", df$Egg_ID[yksd_check], collapse = ","), NA),
-      ifelse(TRUE %in% lvln_check, paste(lvln_range, "Egg IDs of", df$Egg_ID[lvln_check], collapse = ","), NA),
-      ifelse(TRUE %in% mnth_check, paste(mnth_range, "Egg IDs of", df$Egg_ID[mnth_check], collapse = ","), NA),
-      ifelse(TRUE %in% judy_check, paste(judy_range, "Egg IDs of", df$Egg_ID[judy_check], collapse = ","), NA)
+      ifelse(TRUE %in% cond_check, cond_range, NA),
+      ifelse(TRUE %in% temp_check, temp_range, NA),
+      ifelse(TRUE %in% meav_check, meav_range, NA),
+      ifelse(TRUE %in% mesd_check, mesd_range, NA),
+      ifelse(TRUE %in% ykav_check, ykav_range, NA),
+      ifelse(TRUE %in% yksd_check, yksd_range, NA),
+      ifelse(TRUE %in% lvln_check, lvln_range, NA),
+      ifelse(TRUE %in% mnth_check, mnth_range, NA),
+      ifelse(TRUE %in% judy_check, judy_range, NA)
     )
   
   # Return the factors with wrong levels and the corresponding wrong levels
   return(messages[!is.na(messages)])
+  
+}
+
+get_obs_outside_var_ranges <- function(df) {
+  
+  # Determine which variables have values outside of training data ranges
+  cond_check = df$Conductivity < min(eggdata$Conductivity) | df$Conductivity > max(eggdata$Conductivity)
+  temp_check = df$Temperature < min(eggdata$Temperature) | df$Temperature > max(eggdata$Temperature)
+  meav_check = df$Membrane_Ave < min(eggdata$Membrane_Ave) | df$Membrane_Ave > max(eggdata$Membrane_Ave)
+  mesd_check = df$Membrane_SD < min(eggdata$Membrane_SD) | df$Membrane_SD > max(eggdata$Membrane_SD)
+  ykav_check = df$Embryo_Ave < min(eggdata$Embryo_Ave) | df$Embryo_Ave > max(eggdata$Embryo_Ave)
+  yksd_check = df$Embryo_SD < min(eggdata$Embryo_SD) | df$Embryo_SD > max(eggdata$Embryo_SD)
+  lvln_check = df$Larval_Length < min(eggdata$Larval_Length) | df$Larval_Length > max(eggdata$Larval_Length)
+  mnth_check = !(df$Month %in% unique(eggdata$Month))
+  judy_check = df$Julian_Day < min(eggdata$Julian_Day) | df$Julian_Day > max(eggdata$Julian_Day)
+  
+  # Create a vector with the variables and their wrong levels
+  ids_outside <-
+    c(df$Egg_ID[cond_check],
+      df$Egg_ID[temp_check],
+      df$Egg_ID[meav_check], 
+      df$Egg_ID[mesd_check],
+      df$Egg_ID[ykav_check], 
+      df$Egg_ID[yksd_check], 
+      df$Egg_ID[lvln_check], 
+      df$Egg_ID[mnth_check],
+      df$Egg_ID[judy_check]
+    ) %>% unique()
+  
+  # Return the egg IDs with observations outside ranges
+  return(ids_outside)
   
 }
 
@@ -580,6 +612,16 @@ get_na_dates <- function(df){
     pull(Egg_ID)
   
 }
+
+get_missing_vals <- function(df){
+  
+  # Identify rows in data with NAs
+  rows_with_missing = rowSums(is.na(df)) > 0
+  
+  # Return eggs IDs with missing values
+  df[rows_with_missing,]$Egg_ID
+
+ }
 
 # prepare_mds_data <- function(processed_inputs) {
 #   
@@ -633,7 +675,6 @@ plot_mds <- function(processed_inputs) {
     labs(color = "") +
     scale_color_manual(values = c("#18bc9b", "#2b3e50"))
 
-}
 # 
 # # Plot histograms of training data and an observation of interest
 # plot_features <- function(obs_of_int_id, processed_inputs) {
