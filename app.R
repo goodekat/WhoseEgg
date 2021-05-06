@@ -668,6 +668,16 @@ server <- function(input, output, session) {
         adjust_variable_types() %>%
         adjust_factor_levels() %>%
         sort_vars()
+      # Check to see if any observations outside training data
+      # variable ranges and if so, add a "Flagged" variable
+      if (!check_var_ranges(processed)) {
+        ids_outside = get_obs_outside_var_ranges(processed)
+        processed <- 
+          processed %>%
+          mutate(Flagged = ifelse(Egg_ID %in% ids_outside, TRUE, FALSE)) %>%
+          select(Egg_ID, Flagged, everything())
+      }
+      # Return processed data
       processed
     }
   })
@@ -693,8 +703,17 @@ server <- function(input, output, session) {
   # Create a table with the processed input values
   output$processed_table <- renderDataTable({
     if (!is.null(input_data())) {
-      processed_inputs() %>%
-        select(all_of(rf_pred_vars)) %>%
+      if ("Flagged" %in% names(processed_inputs())) {
+        pt_df <-
+          processed_inputs() %>%
+          select(all_of(rf_pred_vars), Flagged) %>%
+          select(Egg_ID, Flagged, everything())
+      } else {
+        pt_df <-
+          processed_inputs() %>%
+          select(all_of(rf_pred_vars))
+      }
+      pt_df %>%
         datatable(
           options = list(
             scrollY = "400px",
@@ -979,7 +998,7 @@ server <- function(input, output, session) {
     if (!is.null(input_data())) {
       if (!check_fct_levels(input_data())) {
         paste(
-          "Error: Categorical variable levels found in data that are not permitted: \n", 
+          "Error: Variable levels found in data that are not permitted: \n", 
           paste(get_wrong_fct_levels(input_data()), collapse = ", ")
         )
       } else { NA }
@@ -1016,9 +1035,16 @@ server <- function(input, output, session) {
   warning_missing_vals <- reactive({
     if (!is.null(input_data())) {
       if (sum(is.na(processed_inputs() %>% select(all_of(rf_pred_vars)))) > 0) {
-        "Warning: Missing values detected in the processed data. 
-        Random forests cannot return predictions for observations with missing values.
-        These observations will be excluded on the 'Predictions' page."
+        paste(
+          "Warning: Missing values detected in the processed data. 
+          Random forests cannot return predictions for observations with missing values.
+          These observations will be excluded on the 'Predictions' page. Missing values
+          found in the following egg IDs: \n", 
+          paste(
+            get_missing_vals(processed_inputs() %>% select(all_of(rf_pred_vars))), 
+            collapse = ", "
+          )
+        )
       } else NA
     }
   })
@@ -1036,8 +1062,12 @@ server <- function(input, output, session) {
         paste(
           "Warning: Some variables outside of ranges in training data.
           This will lead to model extrapolation and possibly poor predictions.
-          Egg IDs with values outside of ranges: ",
-          get_outside_var_ranges(processed_inputs())
+          A variable called Flagged has been added to the processed
+          data indicating which rows contain observations that fall outside
+          the ranges of the training data. All training data variable ranges 
+          are included on the help page. Variables with observations outside of 
+          ranges (and corresponding training data ranges) are: ",
+          paste(get_vars_outside_ranges(processed_inputs()), collapse = ", ")
         )
       } else {
         NA
