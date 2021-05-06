@@ -3,22 +3,16 @@
 
 ## Completed
 
-- Drafted introduction
-- Changed all wording to embryo instead of yolk
-- Made sure I'm always using embryo to membrane ratio instead of perivitelline space index
-- Dealt with larval length issue (see Mike's answer in email)
-- Prepared for lunchinatoRs
-- Scaled the static images
-
 ## To do
 
 Manuscript:
-  
-- **Draft description of app section**
+
+- Draft example
+- Create video showing how to use the app
 
 Overview page:
 
-- Create and add video showing how to use the app
+- Add video
 
 Data input page:
 
@@ -34,6 +28,7 @@ Data input page:
 Prediction page:
 
 - **Add interpretation of the random forest probabilities (look up a nice interpretation)**
+- **Read two papers from Dr. Dixon on calibration**
 - Add visualizations of the data (both input data and training data with input data included)
 - Add option to click on plot and show more plots (summary to input data features and individual to training data with observation)
 - Figure out how to compute prediction intervals
@@ -65,7 +60,6 @@ Testing:
 
 Other:
   
-- **Proofread app**
 - Add image during loading of swimming fish
 - Figure out a better way to fix the header so it doesn't cover material when the screen size changes
 - Can we fix the WhoseEgg color text when hovered over?
