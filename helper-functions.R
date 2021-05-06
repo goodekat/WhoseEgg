@@ -675,6 +675,7 @@ plot_mds <- function(processed_inputs) {
     labs(color = "") +
     scale_color_manual(values = c("#18bc9b", "#2b3e50"))
 
+}
 # 
 # # Plot histograms of training data and an observation of interest
 # plot_features <- function(obs_of_int_id, processed_inputs) {
