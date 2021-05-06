@@ -14,8 +14,6 @@ library(shiny)
 library(shinythemes)
 library(stringr)
 library(tidyr)
-library(waiter)
-
 
 # Source the helper functions used by the app
 source("helper-functions.R")
@@ -47,9 +45,6 @@ ui <- navbarPage(
     
     # Matomo 
     tags$head(includeHTML("matomo.txt")),
-    
-    # Specify for using the spinner
-    use_waiter(),
     
     # Add padding to work with fixed upper panel
     # Remove comment if fixing the header
@@ -259,21 +254,6 @@ ui <- navbarPage(
                 span(textOutput("message_provide_data_v2"), style = "color:grey;font-size:14px")
               ),
               div(dataTableOutput("processed_table"), style = "font-size: 100%; width: 100%")
-            ),
-            # Tab for visualizations
-            tabPanel(
-              "Visualizing Inputs",
-              conditionalPanel(
-                condition = "!is.na(output.message_provide_data_v3)",
-                span(textOutput("message_provide_data_v3"), style = "color:grey;font-size:14px")
-              ),
-              plotlyOutput("mds_plot"),
-              br(),
-              br(),
-              br(),
-              br(),
-              br(),
-              plotOutput("ooi_plot")
             )
           )
         )
@@ -746,41 +726,6 @@ server <- function(input, output, session) {
         )
     }
   })
-  
-  # Create MDS plot comparing training data to input data
-  # gif <- "../app-prep/try.gif"
-  # loading_screen <- tagList(
-  #   img(src = gif, height = "200px")
-  # )
-  # w <- Waiter$new(html = loading_screen, color = "white")
-  # 
-  output$mds_plot <- renderPlotly({
-    if (!is.null(input_data())) {
-      # w$show()
-      # on.exit({
-      #   w$hide()
-      # })
-      ggplotly(
-        plot_mds(processed_inputs()),
-        source = "mds_plot",
-        width = 800,
-        height = 500
-      )
-    }
-  })
-
-  # Create plot of variables with observation of interest
-  output$ooi_plot <- renderPlot({
-
-    # Obtain the click data
-    click_data <- event_data("plotly_click", source = "mds_plot")
-
-    # Create the plot if an observation has been clicked
-    if(length(click_data)){
-      plot_features(click_data$pointNumber + 1, processed_inputs())
-    }
-
-  }, height = 650, width = 850)
 
   ## PREDICTIONS -------------------------------------------------------------
   
