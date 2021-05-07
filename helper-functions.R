@@ -1,11 +1,4 @@
-# Load egg data
-eggdata <- read.csv("data/eggdata_for_app.csv")
 
-# Load the distance matrix from the training data
-dist = readRDS("data/dist_for_app.rds")
-
-# Load the training data MDS
-mds <- readRDS("data/mds_for_app.rds")
 
 vars_pred = c(
   "Month",
@@ -413,7 +406,7 @@ check_fct_levels <- function(df) {
 }
 
 # Function for checking for the correct factor levels
-check_var_ranges <- function(df) {
+check_var_ranges <- function(df, eggdata) {
   
   checks <- c(
     # Identify any values below the observed min
@@ -515,7 +508,7 @@ get_wrong_fct_levels <- function(df) {
   
 }
 
-get_vars_outside_ranges <- function(df) {
+get_vars_outside_ranges <- function(df, eggdata) {
   
   # Determine which variables have values outside of training data ranges
   cond_check = df$Conductivity < min(eggdata$Conductivity) | df$Conductivity > max(eggdata$Conductivity)
@@ -558,7 +551,7 @@ get_vars_outside_ranges <- function(df) {
   
 }
 
-get_obs_outside_var_ranges <- function(df) {
+get_obs_outside_var_ranges <- function(df, eggdata) {
   
   # Determine which variables have values outside of training data ranges
   cond_check = df$Conductivity < min(eggdata$Conductivity) | df$Conductivity > max(eggdata$Conductivity)

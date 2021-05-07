@@ -21,13 +21,16 @@ source("helper-functions.R")
 # Load the random forest models (trained on the years of 2014-2016)
 rfs <- readRDS("data/rfs_for_app.rds")
 
+# Load egg data
+eggdata <- read.csv("data/eggdata_for_app.csv")
+
 # Prepare Rmarkdown text files
 # Run the code below or knit the Rmd whenever a file is updated
-# rmarkdown::render("text/05-help-faq.Rmd", quiet = TRUE)
-# rmarkdown::render("text/05-help-rf.Rmd", quiet = TRUE)
-# rmarkdown::render("text/05-help-vars-env.Rmd", quiet = TRUE)
-# rmarkdown::render("text/05-help-vars-morph.Rmd", quiet = TRUE)
-# rmarkdown::render("text/06-references.Rmd", quiet = TRUE)
+#rmarkdown::render("text/05-help-faq.Rmd", quiet = TRUE)
+#rmarkdown::render("text/05-help-rf.Rmd", quiet = TRUE)
+#rmarkdown::render("text/05-help-vars-env.Rmd", quiet = TRUE)
+#rmarkdown::render("text/05-help-vars-morph.Rmd", quiet = TRUE)
+#rmarkdown::render("text/06-references.Rmd", quiet = TRUE)
 
 ##### APP UI #####
 
@@ -609,11 +612,11 @@ server <- function(input, output, session) {
   # Create a table with the input values
   output$species_table <- function() {
     eggdata %>% 
-      count(Family_ACGC, Genus_ACGC, Common_Name_ACGC) %>% 
+      count(Family_IC, Genus_IC, Common_Name_IC) %>% 
       rename(
-        "Family" = "Family_ACGC",
-        "Genus" = "Genus_ACGC",
-        "Common Name" = "Common_Name_ACGC",
+        "Family" = "Family_IC",
+        "Genus" = "Genus_IC",
+        "Common Name" = "Common_Name_IC",
         "Number of Eggs in Training Data" = "n"
       ) %>%
       knitr::kable("html", align = "lllc") %>%
@@ -669,13 +672,13 @@ server <- function(input, output, session) {
         adjust_factor_levels() %>%
         sort_vars()
       # Check to see if any observations outside training data
-      # variable ranges and if so, add a "Flagged" variable
-      if (!check_var_ranges(processed)) {
-        ids_outside = get_obs_outside_var_ranges(processed)
+      # variable ranges and if so, add a "Warning" variable
+      if (!check_var_ranges(processed, eggdata)) {
+        ids_outside = get_obs_outside_var_ranges(processed, eggdata)
         processed <- 
           processed %>%
-          mutate(Flagged = ifelse(Egg_ID %in% ids_outside, TRUE, FALSE)) %>%
-          select(Egg_ID, Flagged, everything())
+          mutate(Warning = ifelse(Egg_ID %in% ids_outside, "var(s) out of range", "none")) %>%
+          select(Egg_ID, Warning, everything())
       }
       # Return processed data
       processed
@@ -703,11 +706,11 @@ server <- function(input, output, session) {
   # Create a table with the processed input values
   output$processed_table <- renderDataTable({
     if (!is.null(input_data())) {
-      if ("Flagged" %in% names(processed_inputs())) {
+      if ("Warning" %in% names(processed_inputs())) {
         pt_df <-
           processed_inputs() %>%
-          select(all_of(rf_pred_vars), Flagged) %>%
-          select(Egg_ID, Flagged, everything())
+          select(all_of(rf_pred_vars), Warning) %>%
+          select(Egg_ID, Warning, everything())
       } else {
         pt_df <-
           processed_inputs() %>%
@@ -737,12 +740,12 @@ server <- function(input, output, session) {
       # Get the predictions and random forest probabilities
       pred_list <-
         list(
-          family_pred  = as.character(predict(rfs$Family_ACGC, inputs_clean)),
-          genus_pred   = as.character(predict(rfs$Genus_ACGC, inputs_clean)),
-          species_pred = as.character(predict(rfs$Common_Name_ACGC, inputs_clean)),
-          family_prob  = data.frame(predict(rfs$Family_ACGC, inputs_clean, type = "prob")),
-          genus_prob   = data.frame(predict(rfs$Genus_ACGC, inputs_clean, type = "prob")),
-          species_prob = data.frame(predict(rfs$Common_Name_ACGC, inputs_clean, type = "prob"))
+          family_pred  = as.character(predict(rfs$Family_IC, inputs_clean)),
+          genus_pred   = as.character(predict(rfs$Genus_IC, inputs_clean)),
+          species_pred = as.character(predict(rfs$Common_Name_IC, inputs_clean)),
+          family_prob  = data.frame(predict(rfs$Family_IC, inputs_clean, type = "prob")),
+          genus_prob   = data.frame(predict(rfs$Genus_IC, inputs_clean, type = "prob")),
+          species_prob = data.frame(predict(rfs$Common_Name_IC, inputs_clean, type = "prob"))
         )
       # Put the predictions in a data frame with the input values
       preds <- 
@@ -1058,16 +1061,17 @@ server <- function(input, output, session) {
   # Check for variables that will lead to extrapolation
   warning_vars_outside_ranges <- reactive({
     if (!is.null(input_data())) {
-      if (!check_var_ranges(processed_inputs())) {
+      if (!check_var_ranges(processed_inputs(), eggdata)) {
         paste(
           "Warning: Some variables outside of ranges in training data.
           This will lead to model extrapolation and possibly poor predictions.
-          A variable called Flagged has been added to the processed
+          A variable called 'Warning' has been added to the processed
           data indicating which rows contain observations that fall outside
           the ranges of the training data. All training data variable ranges 
-          are included on the help page. Variables with observations outside of 
-          ranges (and corresponding training data ranges) are: ",
-          paste(get_vars_outside_ranges(processed_inputs()), collapse = ", ")
+          are included in the variable descriptions on the help page. Variables 
+          with observations outside of ranges (and corresponding training data 
+          ranges) are: ",
+          paste(get_vars_outside_ranges(processed_inputs(), eggdata), collapse = ", ")
         )
       } else {
         NA
