@@ -61,6 +61,7 @@ ui <- navbarPage(
       column(
         width = 9,
         img(src = "eggs-in-a-row.jpeg", width = "100%", height = "auto"),
+        # Welcome overview
         h2(strong("Welcome to the WhoseEgg App")),
         span(
           includeMarkdown("text/01-home-header.Rmd"),
@@ -73,6 +74,7 @@ ui <- navbarPage(
         ),
         br(),
         br(),
+        # Tabs with information
         tabsetPanel(
           type = "tabs",
           tabPanel(
@@ -125,6 +127,7 @@ ui <- navbarPage(
           )
         ),
         hr(),
+        # Funding and privacy
         span(
           p(em("Funding for WhoseEgg was provided by the U.S. Fish and Wildlife Service through Grant #F20AP11535-00.")),
           p(em("Data privacy statement: Data uploaded to WhoseEgg will not be saved by WhoseEgg or distributed.")),
