@@ -725,12 +725,12 @@ server <- function(input, output, session) {
       if ("Warning" %in% names(processed_inputs())) {
         pt_df <-
           processed_inputs() %>%
-          select(all_of(rf_pred_vars), Warning) %>%
+          select(all_of(rf_pred_vars_plus_id), Warning) %>%
           select(Egg_ID, Warning, everything())
       } else {
         pt_df <-
           processed_inputs() %>%
-          select(all_of(rf_pred_vars))
+          select(all_of(rf_pred_vars_plus_id))
       }
       pt_df %>%
         datatable(
@@ -752,7 +752,7 @@ server <- function(input, output, session) {
   data_and_preds <- reactive({
     if (!is.null(input_data())) {
       # Prepare the inputs for the random forest
-      inputs_clean <- processed_inputs() %>% select(all_of(rf_pred_vars)) %>% na.omit()
+      inputs_clean <- processed_inputs() %>% select(all_of(rf_pred_vars_plus_id)) %>% na.omit()
       # Get the predictions and random forest probabilities
       pred_list <-
         list(
@@ -1071,14 +1071,14 @@ server <- function(input, output, session) {
   # Check for missing values
   warning_missing_vals <- reactive({
     if (!is.null(input_data())) {
-      if (sum(is.na(processed_inputs() %>% select(all_of(rf_pred_vars)))) > 0) {
+      if (sum(is.na(processed_inputs() %>% select(all_of(rf_pred_vars_plus_id)))) > 0) {
         paste(
           "Warning: Missing values detected in the processed data. 
           Random forests cannot return predictions for observations with missing values.
           These observations will be excluded on the 'Predictions' page. Missing values
           found in the following egg IDs: \n", 
           paste(
-            get_missing_vals(processed_inputs() %>% select(all_of(rf_pred_vars))), 
+            get_missing_vals(processed_inputs() %>% select(all_of(rf_pred_vars_plus_id))), 
             collapse = ", "
           )
         )
