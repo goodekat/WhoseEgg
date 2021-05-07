@@ -63,6 +63,10 @@ check_dates(input_data)
 ## [1] TRUE
 get_na_dates(input_data)
 ## numeric(0)
+check_for_historical_dates(input_data)
+## [1] TRUE
+get_any_future_dates(input_data)
+## numeric(0)
 ```
 
 Process the inputs as needed for the random forest:
@@ -86,7 +90,9 @@ if (!check_var_ranges(processed_inputs, eggdata)) {
     mutate(Warning = ifelse(Egg_ID %in% ids_outside, "var(s) out of range", "none")) %>%
           select(Egg_ID, Warning, everything())
 }
-processed_inputs %>% select(Egg_ID, Warning) %>% head()
+if (!check_var_ranges(processed_inputs, eggdata)) {
+  processed_inputs %>% select(Egg_ID, Warning) %>% head()
+}
 ```
 
     ## # A tibble: 6 x 2

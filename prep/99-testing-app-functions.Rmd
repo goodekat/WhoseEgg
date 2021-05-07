@@ -66,6 +66,8 @@ check_fct_levels(input_data)
 get_wrong_fct_levels(input_data)
 check_dates(input_data)
 get_na_dates(input_data)
+check_for_historical_dates(input_data)
+get_any_future_dates(input_data)
 ```
 
 Process the inputs as needed for the random forest:
@@ -89,7 +91,9 @@ if (!check_var_ranges(processed_inputs, eggdata)) {
     mutate(Warning = ifelse(Egg_ID %in% ids_outside, "var(s) out of range", "none")) %>%
           select(Egg_ID, Warning, everything())
 }
-processed_inputs %>% select(Egg_ID, Warning) %>% head()
+if (!check_var_ranges(processed_inputs, eggdata)) {
+  processed_inputs %>% select(Egg_ID, Warning) %>% head()
+}
 ```
 
 Prepare the inputs for the random forest:
@@ -154,4 +158,3 @@ Create plots with the random forest probabilities for all taxonomic levels:
 ```{r fig.width = 16, fig.height = 7}
 rf_prob_plot(data_and_preds, 1)
 ```
-

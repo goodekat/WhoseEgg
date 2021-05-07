@@ -614,4 +614,33 @@ get_missing_vals <- function(df) {
   # Return eggs IDs with missing values
   df[rows_with_missing,]$Egg_ID
 
- }
+}
+
+check_for_historical_dates <- function(df) {
+  
+  # Determine if any Dates are in the future
+  future_dates <-
+    df %>%
+    mutate(Date = lubridate::make_date(Year, Month, Day),
+           Current_Date = Sys.Date()) %>%
+    select(Egg_ID, Date, Current_Date) %>%
+    filter(Date > Current_Date)
+  
+  # Return TRUE if all levels are correct/acceptable
+  return(length(future_dates$Egg_ID) == 0)
+  
+}
+
+get_any_future_dates <- function(df){
+  
+  # Return Egg IDs where Date is in the future
+  df %>% 
+    mutate(
+      Date = lubridate::make_date(Year, Month, Day),
+      Current_Date = Sys.Date()
+    ) %>%
+    select(Egg_ID, Date, Current_Date) %>%
+    filter(Date > Current_Date) %>% 
+    pull(Egg_ID)
+  
+}

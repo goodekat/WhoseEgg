@@ -206,6 +206,10 @@ ui <- navbarPage(
         span(textOutput("error_na_in_dates_v1"), style = "color:#e44c3d")
       ),
       conditionalPanel(
+        condition = "!is.na(output.error_future_dates_v1)", 
+        span(textOutput("error_future_dates_v1"), style = "color:#e44c3d")
+      ),
+      conditionalPanel(
         condition = "!is.na(output.warning_missing_vals_v1)", 
         span(textOutput("warning_missing_vals_v1"), style = "color:#f39c13")
       ), 
@@ -324,6 +328,10 @@ ui <- navbarPage(
       conditionalPanel(
         condition = "!is.na(output.error_na_in_dates_v2)", 
         span(textOutput("error_na_in_dates_v2"), style = "color:#e44c3d")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_future_dates_v2)", 
+        span(textOutput("error_future_dates_v2"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.warning_missing_vals_v2)", 
@@ -467,6 +475,10 @@ ui <- navbarPage(
       conditionalPanel(
         condition = "!is.na(output.error_na_in_dates_v3)", 
         span(textOutput("error_na_in_dates_v3"), style = "color:#e44c3d")
+      ),
+      conditionalPanel(
+        condition = "!is.na(output.error_future_dates_v3)", 
+        span(textOutput("error_future_dates_v3"), style = "color:#e44c3d")
       ),
       conditionalPanel(
         condition = "!is.na(output.error_file_type_v3)", 
@@ -664,6 +676,8 @@ server <- function(input, output, session) {
       validate(need(check_for_vars(input_data()), message = FALSE))
       validate(need(check_fct_levels(input_data()), message = FALSE))
       validate(need(check_for_egg_ids(input_data()), message = FALSE))
+      validate(need(check_dates(input_data()), message = FALSE))
+      validate(need(check_for_historical_dates(input_data()), message = FALSE))
       # Process the inputs as needed for the random forest
       processed <- 
         input_data() %>%
@@ -1031,6 +1045,24 @@ server <- function(input, output, session) {
   outputOptions(output, "error_na_in_dates_v1", suspendWhenHidden = FALSE)
   outputOptions(output, "error_na_in_dates_v2", suspendWhenHidden = FALSE)
   outputOptions(output, "error_na_in_dates_v3", suspendWhenHidden = FALSE)
+  
+  # Check that all dates are in the past
+  error_future_dates <- reactive({
+    if (!is.null(input_data())) {
+      if (!check_for_historical_dates(input_data())) {
+        paste(
+          "Error: Dates are in the future for the following egg IDs: \n", 
+          paste(get_any_future_dates(input_data()), collapse = ", ")
+        )
+      } else { NA }
+    }
+  })
+  output$error_future_dates_v1 <- error_future_dates
+  output$error_future_dates_v2 <- error_future_dates
+  output$error_future_dates_v3 <- error_future_dates
+  outputOptions(output, "error_future_dates_v1", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_future_dates_v2", suspendWhenHidden = FALSE)
+  outputOptions(output, "error_future_dates_v3", suspendWhenHidden = FALSE)
   
   ## WARNINGS ----------------------------------------------------------------
   
