@@ -25,7 +25,7 @@ is available at <https://whoseegg.stat.iastate.edu/>.
 
 ## Repository Structure
 
-Folders:
+**Folders**
 
 -   [`data`](data/): Folder that contains the datasets used by WhoseEgg
     (or used to prepare the data used by WhoseEgg)
@@ -36,13 +36,13 @@ Folders:
     fish](prep/03-animation-for-app.md), investigating the use of [MDS
     to identify new observations outside of the training
     data](prep/04-mds-for-app.md), and [testing the
-    functions](99-testing-app-functions.md) used by WhoseEgg. (Look at
-    the .md files for easy viewing on GitHub.)
+    functions](prep/99-testing-app-functions.md) used by WhoseEgg. (Look
+    at the .md files for easy viewing on GitHub.)
 -   [`text`](text/): Folder with R markdown files accessed by WhoseEgg
     to incorporate text in the app
 -   [`www`](www/): Contains the figures used by WhoseEgg
 
-Files:
+**Files**
 
 -   [`app.R`](app.R): Main R script that contains the server and UI for
     the app
@@ -53,8 +53,8 @@ Files:
 -   [`r-requirements.txt`](r-requirements.txt): Text file with a list of
     R packages used by WhoseEgg that is necessary for the server to work
     correctly (DO NOT REMOVE)
--   [`README.md` and `README.Rmd`](README.md): README file for WhoseEgg
-    GitHub repository with lots of helpful information
+-   [`README.md`](README.md) and [`README.Rmd`](README.Rmd): README file
+    for WhoseEgg GitHub repository with lots of helpful information
 -   [`references.bib`](references.bib): File with BibTex citations used
     in WhoseEgg
 
@@ -101,12 +101,12 @@ If there is an error with the WhoseEgg server, you can check the log by
 going through these steps (must have the appropriate access):
 
 1.  Go [here](https://console.apps.nimbus.las.iastate.edu/) and login
-    with okta:
+    with okta.
 
-2.  If you see a dropdown near the top, choose ‘rit-pdixon-lab-carp’
-
-3.  Also make sure ‘Developer’ is selected from the dropdown in the top
+2.  Also make sure ‘Developer’ is selected from the dropdown in the top
     left rather than ‘Administrator’.
+
+3.  If you see a dropdown near the top, choose ‘rit-pdixon-lab-carp’.
 
 4.  Click ‘Topology’ on the left.
 
@@ -120,13 +120,13 @@ Weber and Philip Dixon.)
 
 ## Ideas for Future Versions
 
-Data Input:
+**Data Input**
 
 -   Add option for manual input of one observation (could try using a
     Google form embedding in the app)
 -   Look into research on data input in apps
 
-Methods:
+**Methods**
 
 -   Add more visualizations:
     -   Comparing input data to training data
@@ -148,14 +148,14 @@ Methods:
 -   Try using weighting in random forests to account for imbalance in
     classes
 
-Format:
+**Format**
 
 -   Figure out a better way to fix the header so it doesn’t cover
     material when the screen size changes
 -   Fix the WhoseEgg color text when hovered over
 -   Add a download image button
 
-Other:
+**Other**
 
 -   Add a check for when a new dataset is uploaded
 -   Add formal tests

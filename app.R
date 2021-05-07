@@ -1,3 +1,6 @@
+## This file contains the server and UI for the WhoseEgg R Shiny app
+## Created by Katherine Goode
+## Last Updated: May 7, 2021
 
 ##### SET UP #####
 
