@@ -13,10 +13,10 @@ Repository to store the code associated with the WhoseEgg R Shiny app for classi
 
 - Fix flagged variable
 - Add warning if the data is in the future
+- Fixed issues with uploading non- csv, xlsx, or xls files
 
 ## To do
 
-- If you try to upload a non-csv file after uploading a file, you get a weird error on the prediction page
 - Organize helper functions
 - Organize github for future developers
 - Create video showing how to use the app

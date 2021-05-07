@@ -662,10 +662,12 @@ server <- function(input, output, session) {
     if (ext == "csv") {
       read.csv(file$datapath) %>%
         filter_all(any_vars(!is.na(.)))
-    } else {
+    } else if (ext %in% c("xlsx", "xls")){
       file.rename(file$datapath, paste(file$datapath, ext, sep = "."))
       readxl::read_excel(paste(file$datapath, ext, sep = "."), 1) %>%
         filter_all(any_vars(!is.na(.)))
+    } else {
+      NULL
     }
   })
   
