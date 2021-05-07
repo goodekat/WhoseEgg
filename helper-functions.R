@@ -613,7 +613,7 @@ get_na_dates <- function(df){
   
 }
 
-get_missing_vals <- function(df){
+get_missing_vals <- function(df) {
   
   # Identify rows in data with NAs
   rows_with_missing = rowSums(is.na(df)) > 0
