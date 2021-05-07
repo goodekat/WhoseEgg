@@ -53,7 +53,7 @@ Animate the swimming fish:
 swimming_fish <- 
   swimming_fish_plot + 
   transition_states(states = id, state_length = 0, wrap = F)
-animate(plot = swimming_fish, nframes = 40)
+animate(plot = swimming_fish, nframes = 40, height = 100, width = 800, res = 300)
 ```
 
 ![](03-animation-for-app_files/figure-gfm/unnamed-chunk-4-1.gif)<!-- -->
@@ -63,6 +63,6 @@ Save the animation:
 ``` r
 anim_save(
   filename = "../www/swimming_fish.gif",
-  animation = animate(plot = swimming_fish, nframes = 40)
+  animation = animate(plot = swimming_fish, nframes = 40, height = 200, width = 800)
 )
 ```
