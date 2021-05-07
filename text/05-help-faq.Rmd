@@ -55,11 +55,11 @@ Random forests are only able to make predictions for response variable levels in
 
 ```{r echo = FALSE}
 read.csv("../data/eggdata_for_app.csv") %>%
-  count(Family_ACGC, Genus_ACGC, Common_Name_ACGC) %>% 
+  count(Family_IC, Genus_IC, Common_Name_IC) %>% 
   rename(
-    "Family" = "Family_ACGC",
-    "Genus" = "Genus_ACGC",
-    "Common Name" = "Common_Name_ACGC",
+    "Family" = "Family_IC",
+    "Genus" = "Genus_IC",
+    "Common Name" = "Common_Name_IC",
     "Number of Eggs in Training Data" = "n"
   ) %>%
   knitr::kable("html", align = "lllc") %>%

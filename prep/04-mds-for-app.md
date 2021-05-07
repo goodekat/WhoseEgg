@@ -122,7 +122,7 @@ data.frame(mds$points) %>%
   theme(aspect.ratio = 1)
 ```
 
-![](03-mds-for-app_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](04-mds-for-app_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## MDS on Testing Data
 
@@ -183,7 +183,7 @@ data.frame(mds$points) %>%
   theme(aspect.ratio = 1)
 ```
 
-![](03-mds-for-app_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](04-mds-for-app_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 Put a new observation in the low dimensional space of the training data
 MDS:
@@ -212,4 +212,4 @@ data.frame(mds$points) %>%
   theme(aspect.ratio = 1)
 ```
 
-![](03-mds-for-app_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](04-mds-for-app_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
