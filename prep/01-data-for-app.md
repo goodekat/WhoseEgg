@@ -1,7 +1,7 @@
 Preparing Egg Data for WhoseEgg Shiny App
 ================
 Katherine Goode <br>
-Last Updated: May 05, 2021
+Last Updated: May 07, 2021
 
 This notebook contains the code for preparing the egg data for the
 WhoseEgg app.
@@ -408,10 +408,12 @@ dim(eggdata_corrected)[1] == dim(eggdata_val_paper)[1]
 
     ## [1] TRUE
 
-## Create Data with Egg Stages Corrected by Mike and Larval Lengths Set to 0
+## Create Data with Egg Stages Corrected by Mike and Unknown Observations Removed
 
 There are still some eggs in the data in stages 7 and 8 with a larval
-length of 0. Mike was not able to fix the larval length for these eggs:
+length of 0. Mike was not able to fix the larval length for these eggs
+(due to eggs already having been destroyed and the pictures not
+providing good angles for measurement):
 
 ``` r
 dim(eggdata_corrected %>% filter(Egg_Stage %in% c(7,8), Larval_Length == 0))[1]
@@ -668,9 +670,9 @@ metrics_oob %>%
     color = scenario
   )) +
   geom_point() +
-  geom_line() +
+  geom_line(size = 1, alpha = 0.75) +
   facet_grid(metric ~ ., scales = "free_y") +
-  scale_color_grey() +
+  scale_color_manual(values = wesanderson::wes_palettes$Darjeeling1) +
   theme_bw() + 
   labs(
     x = "Model Response Variable",
@@ -684,3 +686,27 @@ metrics_oob %>%
 ![](01-data-for-app_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
 
 # Save the Egg Data for WhoseEgg
+
+Since the metric results were not very different across the models
+trained on the four datasets, we decided to use the dataset that is as
+accurate as possible: “corrected\_and\_removed”. That is, the data
+includes the corrections made by Mike, and the observations that are in
+egg stage 7 or 8 with a larval length of 0 have been removed.
+
+Perform some additional cleaning on the data:
+
+``` r
+eggdata_for_app <- 
+  eggdata_corrected_removed %>%
+  rename(Family_IC = Family_ACGC, Genus_IC = Genus_ACGC, Common_Name_IC = Common_Name_ACGC)
+```
+
+Save the data for WhoseEgg:
+
+``` r
+write.csv(
+  x = eggdata_for_app,
+  file = "../data/eggdata_for_app.csv",
+  row.names = FALSE
+)
+```

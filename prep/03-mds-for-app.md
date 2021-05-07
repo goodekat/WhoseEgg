@@ -1,15 +1,19 @@
 Applying MDS to the Training Data for WhoseEgg Shiny App
 ================
 Katherine Goode <br>
-Last Updated: May 05, 2021
+Last Updated: May 07, 2021
 
-This document contains code that applies multidimensional scaling (MDS)
-to the random forest training data used in WhoseEgg. The results are
-used to compare the input data points to the training data points to
-determine if there are any observations in the input data that are very
-different from the training data. If there observations that differ,
-then the random forest may have to extrapolate to make predictions for
-these observations leading to untrustworthy predictions.
+**Note: We have not finished implementing this procedure for WhoseEgg,
+so it is not currently available in the app.**
+
+This document contains some experimental code that applies
+multidimensional scaling (MDS) to the random forest training data used
+in WhoseEgg. The results are used to compare the input data points to
+the training data points to determine if there are any observations in
+the input data that are very different from the training data. If there
+observations that differ, then the random forest may have to extrapolate
+to make predictions for these observations leading to untrustworthy
+predictions.
 
 Note that this method is used as opposed considering each predictor
 variable individually, because there is moderate to high correlation
@@ -71,12 +75,15 @@ eggdata_preds <-
 
 # MDS with Gower Distance
 
+We choose to use Gower distance, because it allows for the inclusion of
+categorical variables.
+
 ``` r
 n = dim(eggdata_preds)[1]
 n
 ```
 
-    ## [1] 1974
+    ## [1] 1972
 
 ## MDS on Training Data
 
@@ -106,17 +113,6 @@ Apply MDS (specify that the eigenvalues are returned):
 mds <- cmdscale(dist_matrix, eig = TRUE, k = 2)
 ```
 
-Plot the eigenvalues:
-
-``` r
-data.frame(eig = mds$eig) %>%
-  mutate(num = 1:n(), prop = eig / sum(eig)) %>%
-  ggplot(aes(x = num, y = prop)) + 
-  geom_point()
-```
-
-![](03-mds-for-app_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
-
 Plot the first two dimensions:
 
 ``` r
@@ -126,21 +122,7 @@ data.frame(mds$points) %>%
   theme(aspect.ratio = 1)
 ```
 
-![](03-mds-for-app_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
-
-Save the distance matrix and MDS results:
-
-``` r
-saveRDS(
-  object = dist_matrix,
-  file = "../data/dist_for_app.rds"
-)
-
-saveRDS(
-  object = mds,
-  file = "../data/mds_for_app.rds"
-)
-```
+![](03-mds-for-app_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## MDS on Testing Data
 
@@ -201,7 +183,7 @@ data.frame(mds$points) %>%
   theme(aspect.ratio = 1)
 ```
 
-![](03-mds-for-app_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](03-mds-for-app_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 Put a new observation in the low dimensional space of the training data
 MDS:
@@ -230,4 +212,4 @@ data.frame(mds$points) %>%
   theme(aspect.ratio = 1)
 ```
 
-![](03-mds-for-app_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](03-mds-for-app_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->

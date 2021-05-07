@@ -1,7 +1,7 @@
 Fitting Random Forests for WhoseEgg Shiny App
 ================
 Katherine Goode <br>
-Last Updated: May 05, 2021
+Last Updated: May 07, 2021
 
 This document contains code that fits the three random forest models
 that will be used in the app: models with invasive carp species grouped
@@ -9,8 +9,6 @@ into one class and all other species classified into species, genus, and
 family. The data used to train the model is that used in Goode et
 al. (2021) to train the augmented models, and the same seed (808) is
 used, so the models should agree.
-
-# Setup
 
 Load packages:
 
@@ -24,9 +22,9 @@ Make a list of the response variables:
 
 ``` r
 vars_resp = c(
-  "Family_ACGC",
-  "Genus_ACGC",
-  "Common_Name_ACGC"
+  "Family_IC",
+  "Genus_IC",
+  "Common_Name_IC"
 )
 ```
 
@@ -54,20 +52,11 @@ vars_pred = c(
 )
 ```
 
-# Egg Data
-
-Load the data from Goode et al. (2021) to be prepared for the app:
+Load the prepared egg data and convert necessary variables to factors:
 
 ``` r
-eggdata_for_app <-
-  # Access the data
-  read.csv(
-    paste0(
-      "https://raw.githubusercontent.com/goodekat/",
-      "carp-egg-rf-validation/master/data/eggdata141516.csv"
-    )
-  ) %>%
-  # Convert necessary variables to factors
+eggdata_for_app <- 
+  read.csv("../data/eggdata_for_app.csv") %>%
   mutate_at(
     .vars = c(
       "Egg_Stage",
@@ -78,42 +67,36 @@ eggdata_for_app <-
       all_of(vars_resp)
     ),
     .funs = factor
-  ) %>%
-  # Change the level of ACGC to Invasive Carp for easier terminology in the app
-  mutate(
-    Family_ACGC = forcats::fct_recode(Family_ACGC, "Invasive Carp" = "ACGC"),
-    Genus_ACGC = forcats::fct_recode(Genus_ACGC, "Invasive Carp" = "ACGC"),
-    Common_Name_ACGC = forcats::fct_recode(Common_Name_ACGC, "Invasive Carp" = "ACGC")
-  ) %>%
-  # Remove eggs that appear to have Egg Stage labeled incorrectly since
-  # they are listed as an early stage or diffuse but also have larval lengths
-  # Note that all four fish were from 2016 (1 was genetically identified as
-  # Emerald Shiner and the other 3 were genetically identified as
-  # Freshwater Drum)
-  filter(!(Egg_Stage %in% c(1:5, "D")) | !(Larval_Length > 0)) %>%
-  # Make sure the Invasive Carp level is still the first factor level
-  # (like ACGC was)
-  # Otherwise, the random forest results will change slightly
-  mutate(
-    Family_ACGC = forcats::fct_relevel(Family_ACGC, "Invasive Carp"),
-    Genus_ACGC = forcats::fct_relevel(Genus_ACGC, "Invasive Carp"),
-    Common_Name_ACGC = forcats::fct_relevel(Common_Name_ACGC, "Invasive Carp")
   )
+str(eggdata_for_app)
 ```
 
-Save the prepared data (remember that if loaded again to train random
-forests, the order of the response variable factor levels will have to
-be the same to produce the exact same random forest):
-
-``` r
-write.csv(
-  x = eggdata_for_app,
-  file = "../data/eggdata_for_app.csv",
-  row.names = FALSE
-)
-```
-
-# Random Forests
+    ## 'data.frame':    1972 obs. of  25 variables:
+    ##  $ Site                    : chr  "UPI" "DNI" "MTH" "MTH" ...
+    ##  $ River                   : chr  "UMR" "UMR" "IAR" "IAR" ...
+    ##  $ Year                    : int  2014 2014 2014 2014 2014 2015 2015 2015 2015 2015 ...
+    ##  $ Month                   : int  7 8 6 6 8 8 6 6 5 5 ...
+    ##  $ Julian_Day              : int  209 227 172 172 236 222 161 161 151 151 ...
+    ##  $ Temperature             : num  24.7 25.3 26.3 26.3 25.5 26.3 23.1 23.1 19.2 19.2 ...
+    ##  $ Conductivity            : num  522 440 473 473 498 514 654 654 674 674 ...
+    ##  $ Larval_Length           : num  0 0 0 0 0 ...
+    ##  $ Membrane_Ave            : num  1.43 1.24 3.77 2.84 1.42 ...
+    ##  $ Membrane_SD             : num  0.0436 0.0291 0.1044 0.0685 0.0263 ...
+    ##  $ Membrane_CV             : num  0.0305 0.0234 0.0277 0.0241 0.0185 ...
+    ##  $ Embryo_to_Membrane_Ratio: num  1 0.821 0.336 0.568 0.78 ...
+    ##  $ Embryo_Ave              : num  1.43 1.02 1.27 1.61 1.11 ...
+    ##  $ Embryo_SD               : num  0.0436 0.092 0.0187 0.2585 0.1403 ...
+    ##  $ Embryo_CV               : num  0.0305 0.0901 0.0148 0.1602 0.1268 ...
+    ##  $ Egg_Stage               : Factor w/ 10 levels "1","2","3","4",..: 10 5 4 6 6 8 8 4 10 10 ...
+    ##  $ Compact_Diffuse         : Factor w/ 2 levels "C","D": 2 1 1 1 1 1 1 1 2 2 ...
+    ##  $ Pigment                 : Factor w/ 2 levels "N","Y": 2 2 1 1 2 1 1 1 1 1 ...
+    ##  $ Sticky_Debris           : Factor w/ 2 levels "N","Y": 1 1 1 1 1 2 1 1 2 2 ...
+    ##  $ Deflated                : Factor w/ 2 levels "N","Y": 1 1 2 2 1 2 2 2 2 2 ...
+    ##  $ Genus                   : chr  "Aplodinotus" "Aplodinotus" "Ctenopharyngodon" "Ctenopharyngodon" ...
+    ##  $ Common_Name             : chr  "Freshwater Drum" "Freshwater Drum" "Grass Carp" "Grass Carp" ...
+    ##  $ Family_IC               : Factor w/ 8 levels "Catostomidae",..: 8 8 5 5 8 3 5 5 5 5 ...
+    ##  $ Genus_IC                : Factor w/ 16 levels "Alosa","Aplodinotus",..: 2 2 9 9 2 13 9 9 9 9 ...
+    ##  $ Common_Name_IC          : Factor w/ 27 levels "Banded Darter",..: 11 11 14 14 11 17 14 14 14 14 ...
 
 Function for fitting a random forest model given a response variable,
 predictor variables, and a dataset (uses the same seed to fit the random
@@ -153,16 +136,6 @@ rfs_for_app <-
   ) %>%
   flatten()
 ```
-
-<!-- Check to make sure the random forests agree (note that these random forests are available on GitHub: https://github.com/goodekat/carp-egg-rf-validation/blob/master/results/rfs141516.rds) -->
-<!-- ```{r} -->
-<!-- rfs141516 <- readRDS("../../../validation/results/rfs141516.rds") -->
-<!-- c( -->
-<!--   identical(rfs141516$Family_ACGC$forest, rfs_for_app$Family_ACGC$forest), -->
-<!--   identical(rfs141516$Genus_ACGC$forest, rfs_for_app$Genus_ACGC$forest), -->
-<!--   identical(rfs141516$Common_Name_ACGC$forest, rfs_for_app$Common_Name_ACGC$forest) -->
-<!-- ) -->
-<!-- ``` -->
 
 Save the random forests:
 
