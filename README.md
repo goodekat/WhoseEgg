@@ -7,23 +7,25 @@ Repository to store the code associated with the WhoseEgg R Shiny app
 for classifying invasive carp eggs using a random forest model. The app
 is available at <https://whoseegg.stat.iastate.edu/>.
 
-## Completed
+## Tasks
+
+### Completed
 
 -   Fixed flagged variable
 -   Added warning if the data is in the future
 -   Fixed issues with uploading non- csv, xlsx, or xls files
 -   Organized helper functions
+-   Organized github repo for future developers
 
-## To do
+### To do
 
--   Organize github for future developers
 -   Create video showing how to use the app
 -   Add video to home page of app
 -   Add image during loading of swimming fish
 
 ## Repository Structure
 
-Folders in the WhoseEgg GitHub repository:
+Folders:
 
 -   [`data`](data/): Folder that contains the datasets used by WhoseEgg
     (or used to prepare the data used by WhoseEgg)
@@ -40,7 +42,7 @@ Folders in the WhoseEgg GitHub repository:
     to incorporate text in the app
 -   [`www`](www/): Contains the figures used by WhoseEgg
 
-Files in the WhoseEgg GitHub repository:
+Files:
 
 -   [`app.R`](app.R): Main R script that contains the server and UI for
     the app
@@ -58,7 +60,63 @@ Files in the WhoseEgg GitHub repository:
 
 ## Updating the App
 
-## Checking Matomo User
+1.  **Clone WhoseEgg Repository into R Studio**: See
+    [this](https://happygitwithr.com/rstudio-git-github.html) book
+    chapter for help if this is new to you.
+
+2.  **Edit code and/or files as needed**: If the only changes that need
+    to be made are updating the training data and random forests, you
+    only need to adjust the code in the files
+    [`01-data-for-app.Rmd`](prep/01-data-for-app.Rmd) and
+    [`02-rfs-for-app.Rmd`](prep/02-rfs-for-app.Rmd) and save the new
+    versions of the data and random forests. The code in app.R will
+    automatically use whatever versions of
+    [`eggdata_for_app.csv`](data/eggdata_for_app.csv) and
+    [`rfs_for_app.rds`](data/rfs_for_app.rds) are in the repository
+    [data](data/) folder.
+
+3.  **Commit and push the updates to the main branch of the
+    repository**: You could also create a new branch while working on
+    updating the app and then merge the new branch with the main branch.
+    The WhoseEgg server uses the files in the main branch.
+
+4.  **Wait for the server to update**: This may take a while.
+
+*If any new R packages are added to the app, their name must be added to
+the [`r-requirements.txt`](r-requirements.txt) file.*
+
+## ISU Developers Only
+
+### Checking Matomo User Data
+
+In order to access the Matomo user data associated with WhoseEgg, log in
+at <https://trends.ent.iastate.edu/>. Currently, only Katherine Goode
+has access. Contact <websupport@iastate.edu> to be added to the users
+who can access the Matomo data. (Must also have approval from Mike Weber
+and Philip Dixon.)
+
+### Check Log for WhoseEgg Server
+
+If there is an error with the WhoseEgg server, you can check the log by
+going through these steps (must have the appropriate access):
+
+1.  Go [here](https://console.apps.nimbus.las.iastate.edu/) and login
+    with okta:
+
+2.  If you see a dropdown near the top, choose ‘rit-pdixon-lab-carp’
+
+3.  Also make sure ‘Developer’ is selected from the dropdown in the top
+    left rather than ‘Administrator’.
+
+4.  Click ‘Topology’ on the left.
+
+5.  Then click the big circle.
+
+6.  Then under the ‘Pods’ heading, click ‘View’ Logs’.
+
+If you need to get access, contact <researchit@iastate.edu>. Currently,
+only Katherine Goode has access. (Must also have approval from Mike
+Weber and Philip Dixon.)
 
 ## Ideas for Future Versions
 
