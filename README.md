@@ -16,12 +16,12 @@ is available at <https://whoseegg.stat.iastate.edu/>.
 -   Fixed issues with uploading non- csv, xlsx, or xls files
 -   Organized helper functions
 -   Organized github repo for future developers
+-   Add swimming fish to contributors tab
 
 ### To do
 
 -   Create video showing how to use the app
 -   Add video to home page of app
--   Add image during loading of swimming fish
 
 ## Repository Structure
 

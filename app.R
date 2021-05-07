@@ -126,7 +126,8 @@ ui <- navbarPage(
           tabPanel(
             "Contributors and Contact",
             br(),
-            span(includeMarkdown("text/01-home-cc.Rmd"), style = "font-size:14px;")
+            span(includeMarkdown("text/01-home-cc.Rmd"), style = "font-size:14px;"),
+            img(src = "swimming_fish.gif", width = "100%", height = "auto")
           )
         ),
         hr(),
