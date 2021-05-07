@@ -1,26 +1,11 @@
+## This file contains helper functions used by the WhoseEgg R Shiny app
+## Created by Katherine Goode
+## Last Updated: May 7, 2021
 
+#### Variable Vectors ####
 
-vars_pred = c(
-  "Month",
-  "Julian_Day",
-  "Temperature",
-  "Conductivity",
-  "Larval_Length",
-  "Membrane_Ave",
-  "Membrane_SD",
-  "Membrane_CV",
-  "Embryo_to_Membrane_Ratio",
-  "Embryo_Ave",
-  "Embryo_SD",
-  "Embryo_CV",
-  "Egg_Stage",
-  "Compact_Diffuse",
-  "Pigment",
-  "Sticky_Debris",
-  "Deflated"
-)
-
-rf_pred_vars <-
+# Vector of Egg ID plus predictor variables
+rf_pred_vars_plus_id <-
   c(
     "Egg_ID",
     "Month",
@@ -42,26 +27,11 @@ rf_pred_vars <-
     "Larval_Length"
   )
 
-rf_num_vars <-
-  c(
-    "Month",
-    "Julian_Day",
-    "Temperature",
-    "Conductivity",
-    "Membrane_Ave",
-    "Membrane_SD",
-    "Membrane_CV",
-    "Embryo_Ave",
-    "Embryo_SD",
-    "Embryo_CV",
-    "Embryo_to_Membrane_Ratio",
-    "Larval_Length"
-  )
+#### Data Manipulation #### 
 
 # Function for computing variables based on given input values
 compute_variables <- function(df) {
   df %>% 
-    # Compute Julian day
     mutate(Date = lubridate::make_date(Year, Month, Day)) %>%
     mutate(Julian_Day = lubridate::yday(Date),
            Membrane_CV = Membrane_SD / Membrane_Ave,
@@ -233,6 +203,36 @@ adjust_factor_levels <- function(df) {
   
 }
 
+# Function to sort variables
+sort_vars <- function(df) {
+  df %>%
+    select(
+      "Egg_ID",
+      "Year",
+      "Month",
+      "Day",
+      "Julian_Day",
+      "Temperature",
+      "Conductivity",
+      "Deflated",
+      "Pigment",
+      "Egg_Stage",
+      "Compact_Diffuse",
+      "Sticky_Debris",
+      "Membrane_Ave",
+      "Membrane_SD",
+      "Membrane_CV",
+      "Embryo_Ave",
+      "Embryo_SD",
+      "Embryo_CV",
+      "Embryo_to_Membrane_Ratio",
+      "Larval_Length",
+      everything()
+    )
+}
+
+#### Random Forest Predictions #### 
+
 # Function for extracting the RF probabilities for the maximum level
 get_rf_prob <- function(rf_results, taxa) {
   n_eggs <- length(rf_results[[paste0(taxa, "_pred")]])
@@ -326,34 +326,9 @@ rf_prob_plot <- function(rf_results, idx) {
   
 }
 
-# Function to sort variables
-sort_vars <- function(df) {
-  df %>%
-    select(
-      "Egg_ID",
-      "Year",
-      "Month",
-      "Day",
-      "Julian_Day",
-      "Temperature",
-      "Conductivity",
-      "Deflated",
-      "Pigment",
-      "Egg_Stage",
-      "Compact_Diffuse",
-      "Sticky_Debris",
-      "Membrane_Ave",
-      "Membrane_SD",
-      "Membrane_CV",
-      "Embryo_Ave",
-      "Embryo_SD",
-      "Embryo_CV",
-      "Embryo_to_Membrane_Ratio",
-      "Larval_Length",
-      everything()
-    )
-}
+#### Checks #### 
 
+# Function for making sure that all necessary variables have been input
 check_for_vars <- function(df) {
   necessary_vars <- 
     c(
@@ -377,11 +352,12 @@ check_for_vars <- function(df) {
   return(sum(necessary_vars %in% names(df)) == 16)
 }
 
+# Check to make sure all eggs have an ID
 check_for_egg_ids <- function(df) {
   return(sum(is.na(df$Egg_ID)) == 0)
 }
 
-# Function for checking for the correct factor levels
+# Function that checks for the correct factor levels
 check_fct_levels <- function(df) {
   
   # Create vectors of required factor levels
@@ -405,7 +381,8 @@ check_fct_levels <- function(df) {
   
 }
 
-# Function for checking for the correct factor levels
+# Function that checks if the numeric variables are within the ranges
+# of the training data
 check_var_ranges <- function(df, eggdata) {
   
   checks <- c(
@@ -437,6 +414,40 @@ check_var_ranges <- function(df, eggdata) {
   
 }
 
+# Function that checks if it is possible to compute Julian day
+check_dates <- function(df) {
+  
+  # Determine if any NAs are computed when applying lubridate
+  date_computed_nas <- 
+    df %>% 
+    mutate(Date = lubridate::make_date(Year, Month, Day)) %>%
+    select(Date) %>% 
+    is.na()
+  
+  # Return TRUE if all levels are correct/acceptable
+  return(sum(date_computed_nas) == 0)
+  
+}
+
+# Function that checks if all dates are in the past
+check_for_historical_dates <- function(df) {
+  
+  # Determine if any Dates are in the future
+  future_dates <-
+    df %>%
+    mutate(Date = lubridate::make_date(Year, Month, Day),
+           Current_Date = Sys.Date()) %>%
+    select(Egg_ID, Date, Current_Date) %>%
+    filter(Date > Current_Date)
+  
+  # Return TRUE if all levels are correct/acceptable
+  return(length(future_dates$Egg_ID) == 0)
+  
+}
+
+#### Extract Problem Observations #### 
+
+# Function that extracts the necessary input variables that are missing 
 get_missing_vars <- function(df) {
   necessary_vars <- 
     c(
@@ -460,6 +471,7 @@ get_missing_vars <- function(df) {
   return(necessary_vars[!(necessary_vars %in% names(df))])
 }
 
+# Function that extracts the levels in factor variables that are not allowed
 get_wrong_fct_levels <- function(df) {
   
   # Create vectors of required factor levels
@@ -508,6 +520,8 @@ get_wrong_fct_levels <- function(df) {
   
 }
 
+# Function that extracts the variables have have observations outside 
+# the range of the training data variables
 get_vars_outside_ranges <- function(df, eggdata) {
   
   # Determine which variables have values outside of training data ranges
@@ -551,6 +565,8 @@ get_vars_outside_ranges <- function(df, eggdata) {
   
 }
 
+# Function that extracts the egg IDs with variables that have values 
+# outside the range of the training data
 get_obs_outside_var_ranges <- function(df, eggdata) {
   
   # Determine which variables have values outside of training data ranges
@@ -582,20 +598,19 @@ get_obs_outside_var_ranges <- function(df, eggdata) {
   
 }
 
-check_dates <- function(df) {
+# Function that extracts the egg IDs with missing values
+get_missing_vals <- function(df) {
   
-  # Determine if any NAs are computed when applying lubridate
-  date_computed_nas <- 
-    df %>% 
-    mutate(Date = lubridate::make_date(Year, Month, Day)) %>%
-    select(Date) %>% 
-    is.na()
+  # Identify rows in data with NAs
+  rows_with_missing = rowSums(is.na(df)) > 0
   
-  # Return TRUE if all levels are correct/acceptable
-  return(sum(date_computed_nas) == 0)
+  # Return eggs IDs with missing values
+  df[rows_with_missing,]$Egg_ID
   
 }
 
+# Function that extracts the egg IDs where it is not possible 
+# to compute Julian day
 get_na_dates <- function(df){
   
   # Return Egg IDs where Date becomes NA
@@ -606,31 +621,7 @@ get_na_dates <- function(df){
   
 }
 
-get_missing_vals <- function(df) {
-  
-  # Identify rows in data with NAs
-  rows_with_missing = rowSums(is.na(df)) > 0
-  
-  # Return eggs IDs with missing values
-  df[rows_with_missing,]$Egg_ID
-
-}
-
-check_for_historical_dates <- function(df) {
-  
-  # Determine if any Dates are in the future
-  future_dates <-
-    df %>%
-    mutate(Date = lubridate::make_date(Year, Month, Day),
-           Current_Date = Sys.Date()) %>%
-    select(Egg_ID, Date, Current_Date) %>%
-    filter(Date > Current_Date)
-  
-  # Return TRUE if all levels are correct/acceptable
-  return(length(future_dates$Egg_ID) == 0)
-  
-}
-
+# Function that extracts the egg IDs where date is in the futures
 get_any_future_dates <- function(df){
   
   # Return Egg IDs where Date is in the future

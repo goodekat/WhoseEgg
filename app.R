@@ -1,3 +1,6 @@
+## This file contains the server and UI for the WhoseEgg R Shiny app
+## Created by Katherine Goode
+## Last Updated: May 7, 2021
 
 ##### SET UP #####
 
@@ -61,6 +64,7 @@ ui <- navbarPage(
       column(
         width = 9,
         img(src = "eggs-in-a-row.jpeg", width = "100%", height = "auto"),
+        # Welcome overview
         h2(strong("Welcome to the WhoseEgg App")),
         span(
           includeMarkdown("text/01-home-header.Rmd"),
@@ -73,6 +77,7 @@ ui <- navbarPage(
         ),
         br(),
         br(),
+        # Tabs with information
         tabsetPanel(
           type = "tabs",
           tabPanel(
@@ -125,6 +130,7 @@ ui <- navbarPage(
           )
         ),
         hr(),
+        # Funding and privacy
         span(
           p(em("Funding for WhoseEgg was provided by the U.S. Fish and Wildlife Service through Grant #F20AP11535-00.")),
           p(em("Data privacy statement: Data uploaded to WhoseEgg will not be saved by WhoseEgg or distributed.")),
@@ -662,10 +668,12 @@ server <- function(input, output, session) {
     if (ext == "csv") {
       read.csv(file$datapath) %>%
         filter_all(any_vars(!is.na(.)))
-    } else {
+    } else if (ext %in% c("xlsx", "xls")){
       file.rename(file$datapath, paste(file$datapath, ext, sep = "."))
       readxl::read_excel(paste(file$datapath, ext, sep = "."), 1) %>%
         filter_all(any_vars(!is.na(.)))
+    } else {
+      NULL
     }
   })
   
@@ -723,12 +731,12 @@ server <- function(input, output, session) {
       if ("Warning" %in% names(processed_inputs())) {
         pt_df <-
           processed_inputs() %>%
-          select(all_of(rf_pred_vars), Warning) %>%
+          select(all_of(rf_pred_vars_plus_id), Warning) %>%
           select(Egg_ID, Warning, everything())
       } else {
         pt_df <-
           processed_inputs() %>%
-          select(all_of(rf_pred_vars))
+          select(all_of(rf_pred_vars_plus_id))
       }
       pt_df %>%
         datatable(
@@ -750,7 +758,7 @@ server <- function(input, output, session) {
   data_and_preds <- reactive({
     if (!is.null(input_data())) {
       # Prepare the inputs for the random forest
-      inputs_clean <- processed_inputs() %>% select(all_of(rf_pred_vars)) %>% na.omit()
+      inputs_clean <- processed_inputs() %>% select(all_of(rf_pred_vars_plus_id)) %>% na.omit()
       # Get the predictions and random forest probabilities
       pred_list <-
         list(
@@ -1069,14 +1077,14 @@ server <- function(input, output, session) {
   # Check for missing values
   warning_missing_vals <- reactive({
     if (!is.null(input_data())) {
-      if (sum(is.na(processed_inputs() %>% select(all_of(rf_pred_vars)))) > 0) {
+      if (sum(is.na(processed_inputs() %>% select(all_of(rf_pred_vars_plus_id)))) > 0) {
         paste(
           "Warning: Missing values detected in the processed data. 
           Random forests cannot return predictions for observations with missing values.
           These observations will be excluded on the 'Predictions' page. Missing values
           found in the following egg IDs: \n", 
           paste(
-            get_missing_vals(processed_inputs() %>% select(all_of(rf_pred_vars))), 
+            get_missing_vals(processed_inputs() %>% select(all_of(rf_pred_vars_plus_id))), 
             collapse = ", "
           )
         )
