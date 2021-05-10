@@ -52,11 +52,11 @@ swimming_fish_plot
 
 Animate the swimming fish:
 
-```{r}
+```{r fig.width = 10, fig.height = 2}
 swimming_fish <- 
   swimming_fish_plot + 
   transition_states(states = id, state_length = 0, wrap = F)
-animate(plot = swimming_fish, nframes = 40, height = 100, width = 800, res = 300)
+animate(plot = swimming_fish, nframes = 40)
 ```
 
 Save the animation:

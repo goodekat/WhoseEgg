@@ -1,7 +1,7 @@
 Creating a Swimming Fish Animation for WhoseEgg Shiny App
 ================
 Katherine Goode <br>
-Last Updated: May 07, 2021
+Last Updated: May 10, 2021
 
 This notebook contains the code for creating a swimming fish animation
 to use in the app.
@@ -53,7 +53,7 @@ Animate the swimming fish:
 swimming_fish <- 
   swimming_fish_plot + 
   transition_states(states = id, state_length = 0, wrap = F)
-animate(plot = swimming_fish, nframes = 40, height = 100, width = 800, res = 300)
+animate(plot = swimming_fish, nframes = 40)
 ```
 
 ![](03-animation-for-app_files/figure-gfm/unnamed-chunk-4-1.gif)<!-- -->
