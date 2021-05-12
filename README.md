@@ -7,22 +7,6 @@ Repository to store the code associated with the WhoseEgg R Shiny app
 for classifying invasive carp eggs using a random forest model. The app
 is available at <https://whoseegg.stat.iastate.edu/>.
 
-## Tasks
-
-### Completed
-
--   Fixed flagged variable
--   Added warning if the data is in the future
--   Fixed issues with uploading non- csv, xlsx, or xls files
--   Organized helper functions
--   Organized github repo for future developers
--   Add swimming fish to contributors tab
-
-### To do
-
--   Create video showing how to use the app
--   Add video to home page of app
-
 ## Repository Structure
 
 **Folders**
