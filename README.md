@@ -13,6 +13,16 @@ is available at <https://whoseegg.stat.iastate.edu/>.
 
 -   [`data`](data/): Folder that contains the datasets used by WhoseEgg
     (or used to prepare the data used by WhoseEgg)
+    -   [`2016 eggs with incorrect data_MW.csv`](data/2016%20eggs%20with%20incorrect%20data_MW.csv):
+        Contains the problematic eggs with corrections by Mike
+    -   [`eggdata_for_app.csv`](data/eggdata_for_app.csv): The data used
+        to train the random forest models used by WhoseEgg
+    -   [`problematic-eggs.csv`](data/problematic-eggs.csv): The dataset
+        with identified problematic eggs
+    -   [`rfs_for_app.rds`](data/rfs_for_app.rds): The random forests
+        used by WhoseEgg to make predictions
+    -   [`template.xlsx`](data/template.xlsx): The template for users of
+        WhoseEgg that is downloable via the app
 -   [`prep`](prep/): Folder that contains the code used to prepare the
     [training data](prep/01-data-for-app.md) and [random
     forests](prep/02-rfs-for-app.md) for WhoseEgg. There are also files
@@ -85,7 +95,7 @@ If there is an error with the WhoseEgg server, you can check the log by
 going through these steps (must have the appropriate access):
 
 1.  Go [here](https://console.apps.nimbus.las.iastate.edu/) and login
-    with okta.
+    with okta (must be connected to the ISU VPN).
 
 2.  Also make sure ‘Developer’ is selected from the dropdown in the top
     left rather than ‘Administrator’.
@@ -99,8 +109,8 @@ going through these steps (must have the appropriate access):
 6.  Then under the ‘Pods’ heading, click ‘View’ Logs’.
 
 If you need to get access, contact <researchit@iastate.edu>. Currently,
-only Katherine Goode has access. (Must also have approval from Mike
-Weber and Philip Dixon.)
+only Katherine and Philip have access. (Must also have approval from
+Philip Dixon.)
 
 ## Ideas for Future Versions
 
