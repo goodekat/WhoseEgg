@@ -3,6 +3,7 @@ title: "Fitting Random Forests for WhoseEgg Shiny App"
 author: "Katherine Goode <br>"
 date: 'Last Updated: `r format(Sys.time(), "%B %d, %Y")`'
 output: rmarkdown::github_document
+#output: pdf_document
 ---
 
 ```{r setup, include = FALSE}
@@ -118,3 +119,8 @@ saveRDS(
 )
 ```
 
+# Session Info
+
+```{r}
+sessionInfo()
+```
