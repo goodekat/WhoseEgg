@@ -1,7 +1,7 @@
 Preparing Egg Data for WhoseEgg Shiny App
 ================
 Katherine Goode <br>
-Last Updated: May 07, 2021
+Last Updated: July 08, 2021
 
 This notebook contains the code for preparing the egg data for the
 WhoseEgg app.
@@ -29,10 +29,9 @@ problematic eggs.
 Load the raw 2014-2016 data from the validation paper:
 
 ``` r
-eggdata_raw <-
-  read.csv(
-    "https://raw.githubusercontent.com/goodekat/carp-egg-rf-validation/master/data/eggdata141516_raw.csv"
-  )
+eggdata_csv_pt1 = "https://raw.githubusercontent.com/goodekat/carp-egg-rf-validation/"
+eggdata_csv_pt2 = "master/data/eggdata141516_raw.csv"
+eggdata_raw <- read.csv(paste0(eggdata_csv_pt1, eggdata_csv_pt2))
 ```
 
 Clean the data to match what was done to the data for the validation
@@ -710,3 +709,40 @@ write.csv(
   row.names = FALSE
 )
 ```
+
+# Session Info
+
+``` r
+sessionInfo()
+```
+
+    ## R version 4.0.4 (2021-02-15)
+    ## Platform: x86_64-apple-darwin17.0 (64-bit)
+    ## Running under: macOS Big Sur 10.16
+    ## 
+    ## Matrix products: default
+    ## BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
+    ## LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+    ## 
+    ## locale:
+    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+    ## 
+    ## attached base packages:
+    ## [1] tools     stats     graphics  grDevices utils     datasets  methods  
+    ## [8] base     
+    ## 
+    ## other attached packages:
+    ## [1] tidyr_1.1.3         stringr_1.4.0       randomForest_4.6-14
+    ## [4] purrr_0.3.4         ggplot2_3.3.3       forcats_0.5.1      
+    ## [7] dplyr_1.0.6        
+    ## 
+    ## loaded via a namespace (and not attached):
+    ##  [1] pillar_1.6.1      compiler_4.0.4    highr_0.9         digest_0.6.27    
+    ##  [5] evaluate_0.14     lifecycle_1.0.0   tibble_3.1.2      gtable_0.3.0     
+    ##  [9] pkgconfig_2.0.3   rlang_0.4.11      DBI_1.1.1         yaml_2.2.1       
+    ## [13] xfun_0.23         withr_2.4.2       knitr_1.33        generics_0.1.0   
+    ## [17] vctrs_0.3.8       grid_4.0.4        tidyselect_1.1.1  glue_1.4.2       
+    ## [21] R6_2.5.0          fansi_0.5.0       wesanderson_0.3.6 rmarkdown_2.9    
+    ## [25] farver_2.1.0      magrittr_2.0.1    scales_1.1.1      ellipsis_0.3.2   
+    ## [29] htmltools_0.5.1.1 assertthat_0.2.1  colorspace_2.0-1  labeling_0.4.2   
+    ## [33] utf8_1.2.1        stringi_1.6.2     munsell_0.5.0     crayon_1.4.1
