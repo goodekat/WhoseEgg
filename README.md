@@ -4,8 +4,12 @@
 ![](www/eggs-in-a-row.jpeg)
 
 Repository to store the code associated with the WhoseEgg R Shiny app
-for classifying invasive carp eggs using a random forest model. The app
-is available at <https://whoseegg.stat.iastate.edu/>.
+for classifying invasive carp eggs using a random forest model.
+
+-   App Location: <https://whoseegg.stat.iastate.edu/>.
+-   Creators: [Katherine Goode](https://goodekat.github.io/), [Michael
+    Weber](https://michaeljohnweber.wixsite.com/fisherieslab), and
+    [Philip Dixon](https://pdixon.stat.iastate.edu/)
 
 ## Repository Structure
 
@@ -84,10 +88,10 @@ the [`r-requirements.txt`](r-requirements.txt) file.*
 ### Checking Matomo User Data
 
 In order to access the Matomo user data associated with WhoseEgg, log in
-at <https://trends.ent.iastate.edu/>. Currently, only Katherine Goode
-has access. Contact <websupport@iastate.edu> to be added to the users
-who can access the Matomo data. (Must also have approval from Mike Weber
-and Philip Dixon.)
+at <https://trends.ent.iastate.edu/>. Currently, Katherine Goode, Mike
+Weber, and Philip Dixon have access. Contact <websupport@iastate.edu> to
+be added to the users who can access the Matomo data. (Must also have
+approval from Mike Weber and Philip Dixon.)
 
 ### Check Log for WhoseEgg Server
 
