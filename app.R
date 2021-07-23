@@ -4,19 +4,19 @@
 
 ##### SET UP #####
 
-# Load packages
-library(dplyr)
-library(DT)
-library(forcats)
-library(ggplot2)
-library(markdown)
-library(plotly)
-library(purrr)
-library(randomForest)
-library(shiny)
-library(shinythemes)
-library(stringr)
-library(tidyr)
+# Load packages (versions currently used by WhoseEgg included below)
+library(dplyr)        # version 1.0.6
+library(DT)           # version 0.17
+library(forcats)      # version 0.5.1
+library(ggplot2)      # version 3.3.3
+library(markdown)     # version 1.1
+library(plotly)       # version 4.9.3
+library(purrr)        # version 0.3.4
+library(randomForest) # version 4.6-14
+library(shiny)        # version 1.6.0
+library(shinythemes)  # version 1.2.0
+library(stringr)      # version 1.4.0
+library(tidyr)        # version 1.1.3
 
 # Source the helper functions used by the app
 source("helper-functions.R")
